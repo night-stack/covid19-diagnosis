@@ -2953,6 +2953,10 @@ select {
     padding-top: 6rem;
   }
 
+  .lg\:pb-48 {
+    padding-bottom: 12rem;
+  }
+
   .lg\:pb-64 {
     padding-bottom: 16rem;
   }
