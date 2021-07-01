@@ -85,7 +85,7 @@ export default function Landing() {
                 <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
                   <div className="px-4 py-5 flex-auto">
                     <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-red-400">
-                      <i class="fas fa-notes-medical"></i>
+                      <i className="fas fa-notes-medical"></i>
                     </div>
                     <h6 className="text-xl font-semibold">Catatan Medis</h6>
                     <p className="mt-2 mb-4 text-blueGray-500">
@@ -100,7 +100,7 @@ export default function Landing() {
                 <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
                   <div className="px-4 py-5 flex-auto">
                     <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-lightBlue-400">
-                      <i class="fas fa-diagnoses fa-lg"></i>
+                      <i className="fas fa-diagnoses fa-lg"></i>
                     </div>
                     <h6 className="text-xl font-semibold">Diagnosis Gratis</h6>
                     <p className="mt-2 mb-4 text-blueGray-500">
@@ -120,7 +120,7 @@ export default function Landing() {
                 <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
                   <div className="px-4 py-5 flex-auto">
                     <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-emerald-400">
-                      <i class="fas fa-universal-access fa-lg"></i>
+                      <i className="fas fa-universal-access fa-lg"></i>
                     </div>
                     <h6 className="text-xl font-semibold">
                       Bisa Diakses Kapan Saja
@@ -218,7 +218,7 @@ export default function Landing() {
               <div className="w-full md:w-5/12 ml-auto mr-auto px-4">
                 <div className="md:pr-12">
                   <div className="text-lightBlue-600 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-lightBlue-300">
-                    <i class="fas fa-virus fa-lg"></i>
+                    <i className="fas fa-virus fa-lg"></i>
                   </div>
                   <h3 className="text-3xl font-semibold">
                     Perkembangan kasus di Indonesia
@@ -238,7 +238,7 @@ export default function Landing() {
                       <div className="flex items-center">
                         <div>
                           <span className="text-xs font-semibold inline-block py-2 px-3 uppercase rounded-full text-lightBlue-600 bg-lightBlue-200 mr-3">
-                            <i class="fas fa-head-side-mask fa-lg"></i>
+                            <i className="fas fa-head-side-mask fa-lg"></i>
                           </span>
                         </div>
                         <div>
@@ -250,7 +250,7 @@ export default function Landing() {
                       <div className="flex items-center">
                         <div>
                           <span className="text-xs font-semibold inline-block py-2 px-3 uppercase rounded-full text-lightBlue-600 bg-lightBlue-200 mr-3">
-                            <i class="fas fa-hands-wash fa-lg"></i>
+                            <i className="fas fa-hands-wash fa-lg"></i>
                           </span>
                         </div>
                         <div>
@@ -262,7 +262,7 @@ export default function Landing() {
                       <div className="flex items-center">
                         <div>
                           <span className="text-xs font-semibold inline-block py-2 px-3 uppercase rounded-full text-lightBlue-600 bg-lightBlue-200 mr-3">
-                            <i class="fas fa-people-arrows fa-lg"></i>
+                            <i className="fas fa-people-arrows fa-lg"></i>
                           </span>
                         </div>
                         <div>
