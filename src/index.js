@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/styles/tailwind.css";
+import "assets/styles/profile.css";
 
 // layouts
 
@@ -14,6 +15,8 @@ import Auth from "layouts/Auth.js";
 
 import Landing from "views/Landing.js";
 import Profile from "views/Profile.js";
+import Diagnosis from "views/Diagnosis";
+import History from "views/History";
 // import Index from "views/Index.js";
 
 ReactDOM.render(
@@ -24,6 +27,8 @@ ReactDOM.render(
       <Route path="/auth" component={Auth} />
       {/* add routes without layouts */}
       <Route path="/profile" exact component={Profile} />
+      <Route path="/diagnosis" exact component={Diagnosis} />
+      <Route path="/history" exact component={History} />
       <Route path="/" exact component={Landing} />
       {/* add redirect for first page */}
       <Redirect from="*" to="/" />
