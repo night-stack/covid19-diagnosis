@@ -1,6 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Axios from "axios";
+import firebase from "../../services/firebase";
 
 const FORM_INITIAL = {
   name: "",
@@ -12,6 +13,7 @@ const FORM_INITIAL = {
 
 export default function Register() {
   const [formData, setFormData] = React.useState(FORM_INITIAL);
+  const history = useHistory();
 
   React.useEffect(() => {
     Axios.get("http://localhost:3001/api/member").then((response) => {
@@ -20,13 +22,82 @@ export default function Register() {
   }, []);
 
   const submit = () => {
-    Axios.post("http://localhost:3001/api/add", {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
+    const { name, email, password } = formData;
+
+    Axios.post("http://localhost:3001/api/auth/register", {
+      name: name,
+      email: email,
+      password: password,
     }).then(() => {
       alert("Success");
     });
+  };
+
+  const deleteMember = async (id) => {
+    await Axios.delete(`http://localhost:3001/api/member/delete/${id}`);
+  };
+
+  const doLoginSocial = (googleProvider = true) => {
+    const provider = googleProvider
+      ? new firebase.auth.GoogleAuthProvider()
+      : new firebase.auth.FacebookAuthProvider();
+
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then((authUser) => {
+        return afterSocial(authUser);
+      })
+      .then(() => {
+        history.push("/profile");
+      })
+      .catch((error) => {
+        if (error.code === "auth/account-exists-with-different-credential") {
+          const pendingCred = error.credential;
+          firebase
+            .auth()
+            .fetchSignInMethodsForEmail(error.email)
+            .then((methods) => {
+              if (methods[0] === "password") {
+                // TODO: will implement later
+                return;
+              }
+
+              const otherProvider = new firebase.auth.GoogleAuthProvider();
+              firebase
+                .auth()
+                .signInWithPopup(otherProvider)
+                .then((result) => {
+                  result.user
+                    .linkAndRetrieveDataWithCredential(pendingCred)
+                    .then(() => {
+                      return afterSocial(result);
+                    })
+                    .then(() => {
+                      history.push("/profile");
+                    });
+                });
+            });
+        } else {
+          const errorMessage = error.message;
+          alert("Login gagal atau akun sudah digunakan!", errorMessage);
+        }
+      });
+  };
+
+  const afterSocial = async (authUser) => {
+    const { password } = formData;
+
+    await Axios.post("http://localhost:3001/api/auth/register", {
+      name: authUser.user.providerData[0].displayName,
+      email: authUser.user.providerData[0].email,
+      password: password,
+      image: authUser.user.providerData[0].photoURL,
+    }).then(() => {
+      alert("Success");
+    });
+
+    return true;
   };
 
   const handleInputChange = (event) => {

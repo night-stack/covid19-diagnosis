@@ -2,8 +2,34 @@ import React from "react";
 
 import Navbar from "components/Navbars/AuthNavbar.js";
 import Footer from "components/Footers/Footer.js";
+import firebase from "../services/firebase";
+import { DateTimeHelper } from "../helpers";
 
 export default function Profile() {
+  const editProfile = async () => {
+    const metadata = {
+      contentType: "image/jpeg",
+    };
+    const type = "png";
+    const newKey = this.formData.id
+      ? this.formData.id
+      : DateTimeHelper.getCurrentTimeMs();
+    let urlImg = this.formData.id ? this.formData.image : "";
+    if (this.formData.image) {
+      if (this.formData.urlImage) {
+        await firebase.storage().ref(`users/img-${newKey}.${type}`).delete();
+      }
+      await firebase
+        .storage()
+        .ref(`users/img-${newKey}.${type}`)
+        .put(this.formData.image, metadata);
+      urlImg = await firebase
+        .storage()
+        .ref(`users/img-${newKey}.${type}`)
+        .getDownloadURL();
+    }
+  };
+
   return (
     <>
       <Navbar />
