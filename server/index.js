@@ -10,8 +10,11 @@ const db = mysql.createPool({
   password: "12345",
   database: "covid19",
 });
+const corsOptions = {
+  "Access-Control-Allow-Origin": "*",
+};
 
-app.use(cors);
+app.use(cors());
 app.use(express.json());
 app.use(
   express.urlencoded({
@@ -179,115 +182,122 @@ app.put("/api/admin/edit/:id", (req, res) => {
 });
 
 // api auth
-app.post("/api/auth/register", (req, res) => {
-  const body = req.body;
-  if (!(body.email && body.password)) {
-    return res.status(400).send({ error: "Data not formatted properly" });
-  }
-  if (body.image) {
-    const query = "INSERT INTO member (foto_profil) VALUES ? WHERE email = ?";
-    db.query(query, [body.email, body.image], (err, result) => {
-      console.log(result);
+app.post("/api/auth/register", async (req, res) => {
+  try {
+    const body = req.body;
+    if (!(body.email && body.password)) {
+      return res.status(400).send({ error: "Data not formatted properly" });
+    }
+    if (body.image) {
+      const query = "INSERT INTO member (foto_profil) VALUES ? WHERE email = ?";
+      db.query(query, [body.email, body.image], (err, result) => {
+        console.log(result);
+      });
+    }
+
+    // generate salt to hash password
+    const hash = await bcrypt.hash(body.password, 10);
+    const query =
+      "INSERT INTO member (nama_member, email, password) VALUES (?,?,?)";
+    db.query(query, [body.name, body.email, hash], (err, result) => {
+      res.send(result);
     });
+  } catch {
+    res.status(500).send();
   }
-  // generate salt to hash password
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(body.password, salt);
-
-  const query =
-    "INSERT INTO member (nama_member, email, password) VALUES (?,?,?)";
-  db.query(query, [body.name, body.email, hash], (err, result) => {
-    console.log(result);
-  });
 });
 
-app.post("/api/auth/admin/register", (req, res) => {
-  const body = req.body;
-  if (!(body.email && body.password)) {
-    return res.status(400).send({ error: "Data not formatted properly" });
-  }
-  if (body.image) {
-    const query = "INSERT INTO admin (foto_profil) VALUES ? WHERE email = ?";
-    db.query(query, [body.email, body.image], (err, result) => {
-      console.log(result);
+app.post("/api/auth/admin/register", async (req, res) => {
+  try {
+    const body = req.body;
+    if (!(body.email && body.password)) {
+      return res.status(400).send({ error: "Data not formatted properly" });
+    }
+    if (body.image) {
+      const query = "INSERT INTO admin (foto_profil) VALUES ? WHERE email = ?";
+      db.query(query, [body.email, body.image], (err, result) => {
+        res.send(result);
+      });
+    }
+
+    // generate salt to hash password
+    const salt = await bcrypt.genSalt();
+    const hash = await bcrypt.hash(body.password, salt);
+
+    const query =
+      "INSERT INTO admin (nama_admin, email, password) VALUES (?,?,?)";
+    db.query(query, [body.name, body.email, hash], (err, result) => {
+      res.send(result);
     });
+  } catch {
+    res.status(500).send();
   }
-  // generate salt to hash password
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(body.password, salt);
-
-  const query =
-    "INSERT INTO admin (nama_admin, email, password) VALUES (?,?,?)";
-  db.query(query, [body.name, body.email, hash], (err, result) => {
-    console.log(result);
-  });
 });
 
-app.put("/api/auth/change-password", (req, res) => {
-  const { password, id } = req.body;
-  // generate salt to hash password
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(password, salt);
+app.put("/api/auth/change-password", async (req, res) => {
+  try {
+    const { password, id } = req.body;
+    // generate salt to hash password
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
 
-  const query = "UPDATE SET member password = ? WHERE id_member = '" + id + "'";
-  db.query(query, hash, (err, result) => {
-    res.send(result);
-  });
+    const query =
+      "UPDATE SET member password = ? WHERE id_member = '" + id + "'";
+    db.query(query, hash, (err, result) => {
+      res.send(result);
+    });
+  } catch {
+    res.status(500).send();
+  }
 });
 
-app.put("/api/auth/admin/change-password", (req, res) => {
-  const { password, id } = req.body;
-  // generate salt to hash password
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(password, salt);
+app.put("/api/auth/admin/change-password", async (req, res) => {
+  try {
+    const { password, id } = req.body;
+    // generate salt to hash password
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(password, salt);
 
-  const query = "UPDATE SET admin password = ? WHERE id_admin = '" + id + "'";
-  db.query(query, hash, (err, result) => {
-    res.send(result);
-  });
+    const query = "UPDATE SET admin password = ? WHERE id_admin = '" + id + "'";
+    db.query(query, hash, (err, result) => {
+      res.send(result);
+    });
+  } catch {
+    res.status(500).send();
+  }
 });
 
 // login
 app.post("/api/auth/login", async (req, res) => {
   const body = req.body;
-  const checkUser = "SELECT * member WHERE email = '" + body.email + "'";
   const query = "SELECT password member WHERE email = ?";
   const userPassword = db.query(query, [body.email]);
-  db.query(checkUser, [body.email], (err, result) => {
-    console.log(result);
-    if (result) {
-      // check user password with hashed password stored in the database
-      const validPassword = await bcrypt.compare(body.password, userPassword);
-      if (validPassword) {
-        res.status(200).json({ message: "Valid password" });
-      } else {
-        res.status(400).json({ error: "Invalid Password" });
-      }
+
+  try {
+    if (await bcrypt.compare(body.password, userPassword)) {
+      res.status(200).json({ message: "Success" });
     } else {
-      res.status(401).json({ error: "User does not exist" });
+      res.status(400).json({ error: "Invalid Password" });
     }
-  });
+  } catch {
+    res.status(400).json({ error: "User does not exist" });
+  }
 });
 
 app.post("/api/auth/admin/login", async (req, res) => {
   const body = req.body;
-  const checkUser = "SELECT * admin WHERE email = '" + body.email + "'";
   const query = "SELECT password admin WHERE email = ?";
   const userPassword = db.query(query, [body.email]);
-  db.query(checkUser, [body.email], (err, result) => {
-    console.log(result);
-    if (result) {
-      // check user password with hashed password stored in the database
-      const validPassword = await bcrypt.compare(body.password, userPassword);
-      if (validPassword) {
-        res.status(200).json({ message: "Valid password" });
-      } else {
-        res.status(400).json({ error: "Invalid Password" });
-      }
+
+  try {
+    if (await bcrypt.compare(body.password, userPassword)) {
+      res.status(200).json({ message: "Success" });
     } else {
-      res.status(401).json({ error: "User does not exist" });
+      res.status(400).json({ error: "Invalid Password" });
     }
-  });
+  } catch {
+    res.status(400).json({ error: "User does not exist" });
+  }
 });
 
 app.listen(3001, () => {

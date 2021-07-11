@@ -26,6 +26,18 @@ export default function Login() {
                     />
                     Google
                   </button>
+                  <button
+                    className="active:bg-blueGray-50 text-white px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
+                    style={{ backgroundColor: "#0B84ED" }}
+                    type="button"
+                  >
+                    <img
+                      alt="..."
+                      className="w-5 mr-1"
+                      src={require("assets/img/facebook.svg").default}
+                    />
+                    Facebook
+                  </button>
                 </div>
                 <hr className="mt-6 border-b-1 border-blueGray-300" />
               </div>
