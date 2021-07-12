@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import Axios from "axios";
 import firebase from "../../services/firebase";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
 const FORM_INITIAL = {
@@ -23,15 +23,18 @@ export default function Register() {
     });
   }, []);
 
-  const submit = async () => {
+  const submit = () => {
     const { name, email, password } = formData;
 
     Axios.post("http://localhost:3001/api/auth/register", {
       name: name,
       email: email,
       password: password,
-    }).then((result) => {
-      toast.success("Registrasi berhasil");
+    }).then(() => {
+      toast.success("Registrasi berhasil silahkan login");
+      setTimeout(() => {
+        history.push("/auth/login");
+      }, 1500);
     });
   };
 
@@ -118,6 +121,7 @@ export default function Register() {
 
   return (
     <>
+      <ToastContainer position="top-center" />
       <div className="container mx-auto px-4 h-full">
         <div className="flex content-center items-center justify-center h-full">
           <div className="w-full lg:w-6/12 px-4">

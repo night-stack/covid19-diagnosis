@@ -1,9 +1,51 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import Axios from "axios";
+// import firebase from "../../../services/firebase";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 export default function Login() {
+  const [formData, setFormData] = React.useState({
+    email: "",
+    password: "",
+  });
+  const history = useHistory();
+
+  const submit = () => {
+    const { email, password } = formData;
+
+    Axios.post("http://localhost:3001/api/auth/login", {
+      email: email,
+      password: password,
+    })
+      .then((httpResponse) => {
+        if (httpResponse.data) {
+          toast.success("Login berhasil");
+          const data = JSON.stringify(httpResponse.data.authUser);
+          window.localStorage.setItem("authUser", data);
+          setTimeout(() => {
+            history.push("/");
+          }, 1500);
+        } else {
+          toast.error("Email atau password salah");
+        }
+      })
+      .catch(() => {
+        toast.error("Email atau password salah");
+      });
+  };
+
+  const handleInputChange = (event) => {
+    const { target } = event;
+    const { name, value } = target;
+
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
+  };
+
   return (
     <>
+      <ToastContainer position="top-center" />
       <div className="container mx-auto px-4 h-full">
         <div className="flex content-center items-center justify-center h-full">
           <div className="w-full lg:w-4/12 px-4">
@@ -55,8 +97,11 @@ export default function Login() {
                     </label>
                     <input
                       type="email"
+                      name="email"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Email"
+                      value={formData.email}
+                      onChange={handleInputChange}
                     />
                   </div>
 
@@ -69,8 +114,11 @@ export default function Login() {
                     </label>
                     <input
                       type="password"
+                      name="password"
                       className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                       placeholder="Password"
+                      value={formData.password}
+                      onChange={handleInputChange}
                     />
                   </div>
                   {/* <div>
@@ -90,6 +138,7 @@ export default function Login() {
                     <button
                       className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       type="button"
+                      onClick={submit}
                     >
                       Sign In
                     </button>

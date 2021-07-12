@@ -14,13 +14,18 @@
     "firebase": "^8.7.0",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.8",
+    "memoize-one": "^5.2.1",
     "postcss": "8.2.8",
     "react": "17.0.1",
+    "react-data-table-component": "^7.0.0-rc2",
+    "react-datepicker": "^4.1.1",
     "react-dom": "17.0.1",
+    "react-responsive-modal": "^6.1.0",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.3",
     "react-toastify": "^7.0.4",
+    "styled-components": "^5.3.0",
     "tailwindcss": "2.0.4"
   },
   "scripts": {

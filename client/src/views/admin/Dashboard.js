@@ -1,13 +1,26 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 
-// components
-
-// import CardLineChart from "components/Cards/CardLineChart.js";
-// import CardBarChart from "components/Cards/CardBarChart.js";
 import CardPageVisits from "components/Cards/CardPageVisits.js";
-// import CardSocialTraffic from "components/Cards/CardSocialTraffic.js";
 
 export default function Dashboard() {
+  const [user, setUser] = React.useState(null);
+  const history = useHistory();
+  const data = localStorage.getItem("authUser");
+
+  React.useEffect(() => {
+    if (data) {
+      const authUser = JSON.parse(data);
+      if (authUser.role !== "admin") {
+        history.push("/auth/admin/login");
+      } else {
+        setUser(authUser);
+      }
+    } else {
+      history.push("/auth/admin/login");
+    }
+  }, [data, history]);
+
   return (
     <>
       <div className="flex flex-wrap">

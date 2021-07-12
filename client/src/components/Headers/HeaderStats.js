@@ -1,10 +1,17 @@
 import React from "react";
-
-// components
+import Axios from "axios";
 
 import CardStats from "components/Cards/CardStats.js";
 
 export default function HeaderStats() {
+  const [data, setData] = React.useState([]);
+
+  React.useEffect(() => {
+    Axios.get("http://localhost:3001/api/member").then((response) => {
+      setData(response.data);
+    });
+  }, []);
+
   return (
     <>
       {/* Header */}
@@ -15,8 +22,8 @@ export default function HeaderStats() {
             <div className="flex flex-wrap">
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
-                  statSubtitle="NEW USERS"
-                  statTitle="2,356"
+                  statSubtitle="MEMBER"
+                  statTitle={data.length}
                   statIconName="fas fa-users"
                   statIconColor="bg-orange-500"
                 />

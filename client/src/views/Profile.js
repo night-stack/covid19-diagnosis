@@ -1,11 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 import Navbar from "components/Navbars/AuthNavbar.js";
 import Footer from "components/Footers/Footer.js";
 import firebase from "../services/firebase";
+import Axios from "axios";
 import { DateTimeHelper } from "../helpers";
 
 export default function Profile() {
+  const [user, setUser] = React.useState(null);
+  const [riwayat, setRiwayat] = React.useState([]);
+
+  const history = useHistory();
+  const data = localStorage.getItem("authUser");
+
+  React.useEffect(() => {
+    if (data) {
+      const authUser = JSON.parse(data);
+      if (authUser.role !== "user") {
+        history.push("/auth/login");
+      } else {
+        Axios.get(
+          `http://localhost:3001/api/member/${authUser.id_member}`
+        ).then((response) => {
+          response.data.forEach((item) => {
+            setUser({ ...item });
+          });
+        });
+
+        Axios.get(
+          `http://localhost:3001/api/history/${authUser.id_member}`
+        ).then((response) => {
+          response.data.forEach((item) => {
+            setRiwayat({ ...item });
+          });
+        });
+      }
+    } else {
+      history.push("/auth/login");
+    }
+  }, [data, history]);
+
   const editProfile = async () => {
     const metadata = {
       contentType: "image/jpeg",
@@ -76,7 +111,12 @@ export default function Profile() {
                     <div className="relative profilepic">
                       <img
                         alt="..."
-                        src={require("assets/img/team-2-800x800.jpg").default}
+                        src={
+                          user && user.foto_profil
+                            ? user.foto_profil
+                            : require("assets/img/default-image-user.png")
+                                .default
+                        }
                         className="profilepic__image shadow-xl rounded-full h-auto align-middle border-none max-w-150-px"
                       />
                       <div className="profilepic__content">
@@ -101,7 +141,7 @@ export default function Profile() {
                     <div className="flex justify-center py-4 lg:pt-4 pt-8">
                       <div className="mr-4 p-3 text-center">
                         <span className="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
-                          22
+                          {riwayat.length}
                         </span>
                         <span className="text-sm text-blueGray-400">
                           Riwayat Diagnosis
@@ -111,23 +151,43 @@ export default function Profile() {
                   </div>
                 </div>
                 <div className="text-center mt-12">
-                  <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
-                    Jenna Stones
+                  <h3 className="text-4xl font-semibold leading-normal text-blueGray-700 mb-2">
+                    {user && user.nama_member}
                   </h3>
                   <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
-                    <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>{" "}
-                    Los Angeles, California
+                    {user && user.jenis_kelamin === "P" ? (
+                      <i
+                        className="fas fa-female"
+                        style={{ color: "#F783AC", fontSize: "24px" }}
+                      ></i>
+                    ) : (
+                      <i
+                        className="fas fa-male text-lightBlue-400"
+                        style={{ fontSize: "24px" }}
+                      ></i>
+                    )}
+                  </div>
+                  <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
+                    {user && user.tempat_lahir},{" "}
+                    {DateTimeHelper.getFormatedDate(
+                      user && user.tanggal_lahir,
+                      "DD MMMM YYYY"
+                    )}
+                  </div>
+                  <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
+                    <i className="fas fa-envelope mr-2 text-lg text-blueGray-400"></i>
+                    {user && user.email}
+                  </div>
+                  <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
+                    <i className="fas fa-mobile-alt mr-2 text-lg text-blueGray-400"></i>
+                    {user && user.nomor_hp}
                   </div>
                 </div>
                 <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
                   <div className="flex flex-wrap justify-center">
                     <div className="w-full lg:w-9/12 px-4">
                       <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
-                        An artist of considerable range, Jenna the name taken by
-                        Melbourne-raised, Brooklyn-based Nick Murphy writes,
-                        performs and records all of his own music, giving it a
-                        warm, intimate feel with a solid groove structure. An
-                        artist of considerable range.
+                        {user && user.alamat}
                       </p>
                     </div>
                   </div>

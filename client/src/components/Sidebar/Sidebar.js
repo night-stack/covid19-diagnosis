@@ -1,12 +1,28 @@
 /*eslint-disable*/
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
-import NotificationDropdown from "components/Dropdowns/NotificationDropdown.js";
 import UserDropdown from "components/Dropdowns/UserDropdown.js";
 
 export default function Sidebar() {
   const [collapseShow, setCollapseShow] = React.useState("hidden");
+  const [user, setUser] = React.useState(null);
+  const history = useHistory();
+  const data = localStorage.getItem("authUser");
+
+  React.useEffect(() => {
+    if (data) {
+      const authUser = JSON.parse(data);
+      setUser(authUser);
+    }
+  }, [data]);
+
+  const logout = () => {
+    history.push("/auth/admin/login");
+    setUser(null);
+    localStorage.removeItem("authUser");
+  };
+
   return (
     <>
       <nav className="md:left-0 md:block md:fixed md:top-0 md:bottom-0 md:overflow-y-auto md:flex-row md:flex-nowrap md:overflow-hidden shadow-xl bg-white flex flex-wrap items-center justify-between relative md:w-64 z-10 py-4 px-6">
@@ -22,7 +38,7 @@ export default function Sidebar() {
           {/* Brand */}
           <Link
             className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
-            to="/"
+            to="/admin/dashboard"
           >
             COVID-19
           </Link>
@@ -48,7 +64,7 @@ export default function Sidebar() {
                 <div className="w-6/12">
                   <Link
                     className="md:block text-left md:pb-2 text-blueGray-600 mr-0 inline-block whitespace-nowrap text-sm uppercase font-bold p-4 px-0"
-                    to="/"
+                    to="/admin/dashboard"
                   >
                     COVID-19
                   </Link>
@@ -106,16 +122,16 @@ export default function Sidebar() {
                 <Link
                   className={
                     "text-xs uppercase py-3 font-bold block " +
-                    (window.location.href.indexOf("/admin/tables") !== -1
+                    (window.location.href.indexOf("/admin/users") !== -1
                       ? "text-lightBlue-500 hover:text-lightBlue-600"
                       : "text-blueGray-700 hover:text-blueGray-500")
                   }
-                  to="/admin/tables"
+                  to="/admin/users"
                 >
                   <i
                     className={
                       "fas fa-user mr-2 text-sm " +
-                      (window.location.href.indexOf("/admin/tables") !== -1
+                      (window.location.href.indexOf("/admin/users") !== -1
                         ? "opacity-75"
                         : "text-blueGray-300")
                     }
@@ -124,20 +140,20 @@ export default function Sidebar() {
                 </Link>
               </li>
 
-              <li className="items-center">
+              {/* <li className="items-center">
                 <Link
                   className={
                     "text-xs uppercase py-3 font-bold block " +
-                    (window.location.href.indexOf("/admin/tables") !== -1
+                    (window.location.href.indexOf("/admin/request") !== -1
                       ? "text-lightBlue-500 hover:text-lightBlue-600"
                       : "text-blueGray-700 hover:text-blueGray-500")
                   }
-                  to="/admin/tables"
+                  to="/admin/request"
                 >
                   <i
                     className={
                       "fas fa-clipboard-check mr-2 text-sm " +
-                      (window.location.href.indexOf("/admin/tables") !== -1
+                      (window.location.href.indexOf("/admin/request") !== -1
                         ? "opacity-75"
                         : "text-blueGray-300")
                     }
@@ -166,19 +182,25 @@ export default function Sidebar() {
                   ></i>{" "}
                   Settings
                 </Link>
-              </li>
+              </li> */}
             </ul>
             <ul
               className="md:flex-col md:min-w-full flex flex-col list-none"
               style={{ marginTop: "auto" }}
             >
               <li className="cursor-pointer items-center text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500">
-                <i
-                  className={
-                    "fas fa-sign-out-alt mr-2 text-sm text-blueGray-300"
-                  }
-                ></i>{" "}
-                Logout
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="cursor-pointer items-center text-xs uppercase py-3 font-bold block text-blueGray-700 hover:text-blueGray-500"
+                >
+                  <i
+                    className={
+                      "fas fa-sign-out-alt mr-2 text-sm text-blueGray-300"
+                    }
+                  ></i>
+                  Logout
+                </button>
               </li>
             </ul>
           </div>
