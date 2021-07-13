@@ -65,7 +65,7 @@ export default function Navbar(props) {
                 </a>
               </li>
 
-              {/* <li className="flex items-center">
+              <li className="flex items-center">
                 <a
                   className="lg:text-white lg:hover:text-blueGray-200 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
                   href="/history"
@@ -73,7 +73,7 @@ export default function Navbar(props) {
                   <i className="lg:text-blueGray-200 text-blueGray-400 fas fa-book-medical text-lg leading-lg " />
                   <span className="inline-block ml-2">Riwayat</span>
                 </a>
-              </li> */}
+              </li>
 
               {user && (
                 <li className="flex items-center">

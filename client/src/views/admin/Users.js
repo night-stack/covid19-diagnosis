@@ -81,23 +81,43 @@ export default function Users() {
   }, [user, history]);
 
   const onSave = async (formData) => {
-    Axios.post("http://localhost:3001/api/member/add", {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      gender: formData.gender,
-      place: formData.place,
-      address: formData.address,
-      date: DateTimeHelper.getFormatedDate(
-        formData.date,
-        "YYYY-MM-DD HH:mm:ss"
-      ),
-      phone: formData.phone,
-      status: formData.status,
-    }).then(() => {
-      toast.success("Member berhasil ditambah");
-      window.location.reload();
-    });
+    if (formData === "") {
+      Axios.post("http://localhost:3001/api/member/add", {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        gender: formData.gender,
+        place: formData.place,
+        address: formData.address,
+        date: DateTimeHelper.getFormatedDate(
+          formData.date,
+          "YYYY-MM-DD HH:mm:ss"
+        ),
+        phone: formData.phone,
+        status: formData.status,
+      }).then(() => {
+        toast.success("Member berhasil ditambah");
+        window.location.reload();
+      });
+    } else {
+      Axios.post(`http://localhost:3001/api/member/edit/${formData.id}`, {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        gender: formData.gender,
+        place: formData.place,
+        address: formData.address,
+        date: DateTimeHelper.getFormatedDate(
+          formData.date,
+          "YYYY-MM-DD HH:mm:ss"
+        ),
+        phone: formData.phone,
+        status: formData.status,
+      }).then(() => {
+        toast.success("Data member berhasil dirubah");
+        window.location.reload();
+      });
+    }
   };
 
   const onToggleEditMode = (user) => {
