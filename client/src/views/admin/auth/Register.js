@@ -20,14 +20,14 @@ export default function Register() {
   const submit = () => {
     const { name, email, password } = formData;
 
-    Axios.post("http://localhost:3001/api/admin/auth/register", {
+    Axios.post("http://localhost:3001/api/auth/admin/register", {
       name: name,
       email: email,
       password: password,
     }).then(() => {
       toast.success("Registrasi berhasil silahkan login");
       setTimeout(() => {
-        history.push("/auth/login");
+        history.push("/auth/admin/login");
       }, 1500);
     });
   };
@@ -266,7 +266,7 @@ export default function Register() {
             </div>
             <div className="flex flex-wrap mt-6 relative">
               <div className="w-1/2">
-                <Link to="/auth/login" className="text-blueGray-200">
+                <Link to="/auth/admin/login" className="text-blueGray-200">
                   <small>Back to Login</small>
                 </Link>
               </div>

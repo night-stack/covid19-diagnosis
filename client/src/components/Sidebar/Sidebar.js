@@ -160,7 +160,7 @@ export default function Sidebar() {
                   ></i>{" "}
                   Permintaan
                 </Link>
-              </li>
+              </li> */}
 
               <li className="items-center">
                 <Link
@@ -182,7 +182,7 @@ export default function Sidebar() {
                   ></i>{" "}
                   Settings
                 </Link>
-              </li> */}
+              </li>
             </ul>
             <ul
               className="md:flex-col md:min-w-full flex flex-col list-none"

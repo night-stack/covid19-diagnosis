@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Axios from "axios";
 
 const QUESTION_DATA = [
   {
@@ -31,9 +33,26 @@ const QUESTION_DATA = [
 const FormDiagnosis = () => {
   const [review, setReview] = useState([]);
   const [session, setSession] = useState(0);
+  const [user, setUser] = useState(null);
   const [start, setStart] = useState(false);
   const [finish, setFinish] = useState(false);
   const [pertanyaan, setPertanyaan] = useState(QUESTION_DATA);
+  const data = localStorage.getItem("authUser");
+
+  React.useEffect(() => {
+    if (data) {
+      const authUser = JSON.parse(data);
+      if (authUser.role === "user") {
+        Axios.get(
+          `http://localhost:3001/api/member/${authUser.id_member}`
+        ).then((response) => {
+          response.data.forEach((item) => {
+            setUser({ ...item });
+          });
+        });
+      }
+    }
+  }, [data]);
 
   const nextSession = (id, item) => {
     const array = [...review];
@@ -72,6 +91,14 @@ const FormDiagnosis = () => {
     question[id].answer = answer;
 
     setPertanyaan(question);
+  };
+
+  const clearForm = () => {
+    setReview([]);
+    setSession(0);
+    setFinish(false);
+    setStart(false);
+    setPertanyaan(QUESTION_DATA);
   };
 
   const finishSession = (id, item) => {
@@ -136,17 +163,38 @@ const FormDiagnosis = () => {
                   jawaban sesi tanya jawab sebelumnya, bahwasannya pengguna atas
                   nama <b>Mifta Huda</b> telah <b>Terbebas</b> dari Covid-19.
                 </div>
-                <div
-                  className="border-t-2 flex justify-between items-center"
-                  style={{ paddingTop: "1.2rem" }}
-                >
-                  <button className="w-full px-3 py-2 rounded text-white bg-lightBlue-400 mr-4">
-                    Coba lagi
-                  </button>
-                  <button className="w-full px-3 py-2 rounded text-white bg-blueGray-800">
-                    Lihat riwayat
-                  </button>
-                </div>
+                {user && (
+                  <div
+                    className="border-t-2 flex justify-between items-center"
+                    style={{ paddingTop: "1.2rem" }}
+                  >
+                    <button
+                      onClick={clearForm}
+                      className="w-full px-3 py-2 rounded text-white bg-lightBlue-400 mr-4"
+                    >
+                      Coba lagi
+                    </button>
+                    <Link
+                      to="/history"
+                      className="w-full px-3 py-2 rounded text-white bg-blueGray-800"
+                    >
+                      Lihat riwayat
+                    </Link>
+                  </div>
+                )}
+                {!user && (
+                  <div
+                    className="border-t-2 flex justify-between items-center"
+                    style={{ paddingTop: "1.2rem" }}
+                  >
+                    <button
+                      onClick={clearForm}
+                      className="w-full px-3 py-2 rounded text-white bg-lightBlue-400"
+                    >
+                      Coba lagi
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <>

@@ -218,7 +218,7 @@ const FormMember = ({
               <div className="md:w-1/3">
                 <label
                   className="block md:text-right mb-1 md:mb-0 pr-4 text-sm"
-                  htmlFor="bank"
+                  htmlFor="gender"
                 >
                   Jenis Kelamin
                 </label>
@@ -259,50 +259,54 @@ const FormMember = ({
                 />
               </div>
             </div>
-            <div className="md:flex md:items-center mb-6">
-              <div className="md:w-1/3">
-                <label
-                  className="block md:text-right mb-1 md:mb-0 pr-4 text-sm"
-                  htmlFor="password"
-                >
-                  Password
-                </label>
-              </div>
-              <div className="md:w-2/3">
-                <input
-                  id="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleInputChange}
-                  className="text-sm appearance-none border-none w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blueGray-800"
-                  placeholder=" Password"
-                  type="password"
-                  required
-                />
-              </div>
-            </div>
-            <div className="md:flex md:items-center mb-6">
-              <div className="md:w-1/3">
-                <label
-                  className="block md:text-right mb-1 md:mb-0 pr-4 text-sm"
-                  htmlFor="retype"
-                >
-                  Retype Password
-                </label>
-              </div>
-              <div className="md:w-2/3">
-                <input
-                  id="retype"
-                  name="retype"
-                  value={formData.retype}
-                  onChange={handleInputChange}
-                  className="text-sm appearance-none border-none w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blueGray-800"
-                  placeholder=" Retype Password"
-                  type="password"
-                  required
-                />
-              </div>
-            </div>
+            {!editMode ? (
+              <>
+                <div className="md:flex md:items-center mb-6">
+                  <div className="md:w-1/3">
+                    <label
+                      className="block md:text-right mb-1 md:mb-0 pr-4 text-sm"
+                      htmlFor="password"
+                    >
+                      Password
+                    </label>
+                  </div>
+                  <div className="md:w-2/3">
+                    <input
+                      id="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleInputChange}
+                      className="text-sm appearance-none border-none w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blueGray-800"
+                      placeholder=" Password"
+                      type="password"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="md:flex md:items-center mb-6">
+                  <div className="md:w-1/3">
+                    <label
+                      className="block md:text-right mb-1 md:mb-0 pr-4 text-sm"
+                      htmlFor="retype"
+                    >
+                      Retype Password
+                    </label>
+                  </div>
+                  <div className="md:w-2/3">
+                    <input
+                      id="retype"
+                      name="retype"
+                      value={formData.retype}
+                      onChange={handleInputChange}
+                      className="text-sm appearance-none border-none w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blueGray-800"
+                      placeholder=" Retype Password"
+                      type="password"
+                      required
+                    />
+                  </div>
+                </div>
+              </>
+            ) : null}
 
             <div className="flex items-center justify-between py-4 rounded-b border-t border-gray-300">
               <div className="w-full text-right">
@@ -330,7 +334,9 @@ const FormMember = ({
                         ? "w-3/12 bg-blueGray-800 hover:bg-blueGray-600 text-white py-2 px-3 rounded ml-2 text-sm"
                         : "w-3/12 bg-blueGray-800 hover:bg-blueGray-600 text-white py-2 px-3 rounded text-sm"
                     }
-                    disabled={formData.password !== formData.retype}
+                    disabled={
+                      editMode ? formData.password !== formData.retype : false
+                    }
                   >
                     {editMode ? "Simpan" : "Tambah"}
                   </button>

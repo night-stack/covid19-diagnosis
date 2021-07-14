@@ -35,7 +35,7 @@ export default function Auth() {
               exact
               component={RegisterAdmin}
             />
-            <Redirect from="/auth" to="/auth/login" />
+            {/* <Redirect from="/auth" to="/auth/login" /> */}
           </Switch>
           <FooterSmall absolute />
         </section>

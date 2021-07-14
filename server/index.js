@@ -62,17 +62,15 @@ app.delete("/api/member/delete/:id", (req, res) => {
 });
 
 app.put("/api/member/edit/:id", async (req, res) => {
-  const { name, phone, gender, place, date, address, email, password } =
-    req.body;
+  const { name, phone, gender, place, date, address, email } = req.body;
   const id = req.params.id;
-  const hash = await bcrypt.hash(password, 10);
   const query =
-    "UPDATE SET member nama_member = ?, password = ?, jenis_kelamin = ?, tempat_lahir = ?, tanggal_lahir = ?, alamat = ?, email = ?, nomor_hp = ? WHERE id_member = '" +
+    "UPDATE SET member nama_member = ?, jenis_kelamin = ?, tempat_lahir = ?, tanggal_lahir = ?, alamat = ?, email = ?, nomor_hp = ? WHERE id_member = '" +
     id +
     "'";
   db.query(
     query,
-    [name, hash, gender, place, date, address, email, phone],
+    [name, gender, place, date, address, email, phone],
     (err, result) => {
       res.send(result);
     }
@@ -88,7 +86,7 @@ app.put("/api/member/status/:id", (req, res) => {
   });
 });
 
-app.put("/api/member/profile/:id", (req, res) => {
+app.put("/api/member/img-profile/:id", (req, res) => {
   const { image } = req.body;
   const id = req.params.id;
   const query =
@@ -186,10 +184,26 @@ app.post("/api/diagnosis/add", (req, res) => {
   });
 });
 
+// dashboard
+app.get("/api/dashboard", (req, res) => {
+  const query = "SELECT * FROM member ORDER BY id_member DESC LIMIT 5";
+  db.query(query, (err, result) => {
+    res.send(result);
+  });
+});
+
 // api admin
 app.get("/api/admin", (req, res) => {
-  const query = "SELECT * FROM diagnosis";
+  const query = "SELECT * FROM admin";
   db.query(query, (err, result) => {
+    res.send(result);
+  });
+});
+
+app.get("/api/admin/:id", (req, res) => {
+  const id = req.params.id;
+  const query = "SELECT * FROM admin WHERE id_admin = ?";
+  db.query(query, id, (err, result) => {
     res.send(result);
   });
 });
@@ -203,15 +217,19 @@ app.delete("/api/admin/delete/:id", (req, res) => {
 });
 
 app.put("/api/admin/edit/:id", (req, res) => {
-  const { date, result, percent, status } = req.body;
+  const { name, phone, gender, place, date, address, email } = req.body;
   const id = req.params.id;
   const query =
-    "UPDATE SET diagnosis pertanyaan = ?, hasil_diagnosis = ? WHERE id_diagnosis = '" +
+    "UPDATE SET admin nama_admin = ?, jenis_kelamin = ?, tempat_lahir = ?, tanggal_lahir = ?, alamat = ?, email = ?, nomor_hp = ? WHERE id_admin = '" +
     id +
     "'";
-  db.query(query, [date, result, percent, status], (err, result) => {
-    res.send(result);
-  });
+  db.query(
+    query,
+    [name, gender, place, date, address, email, phone],
+    (err, result) => {
+      res.send(result);
+    }
+  );
 });
 
 // api auth
@@ -232,33 +250,6 @@ app.post("/api/auth/register", async (req, res) => {
     const hash = await bcrypt.hash(body.password, 10);
     const query =
       "INSERT INTO member (nama_member, email, password) VALUES (?,?,?)";
-    db.query(query, [body.name, body.email, hash], (err, result) => {
-      res.send(result);
-    });
-  } catch {
-    res.status(500).send();
-  }
-});
-
-app.post("/api/auth/admin/register", async (req, res) => {
-  try {
-    const body = req.body;
-    if (!(body.email && body.password)) {
-      return res.status(400).send({ error: "Data not formatted properly" });
-    }
-    if (body.image) {
-      const query = "INSERT INTO admin (foto_profil) VALUES ? WHERE email = ?";
-      db.query(query, [body.email, body.image], (err, result) => {
-        res.send(result);
-      });
-    }
-
-    // generate salt to hash password
-    const salt = await bcrypt.genSalt();
-    const hash = await bcrypt.hash(body.password, salt);
-
-    const query =
-      "INSERT INTO admin (nama_admin, email, password) VALUES (?,?,?)";
     db.query(query, [body.name, body.email, hash], (err, result) => {
       res.send(result);
     });
@@ -300,6 +291,33 @@ app.put("/api/auth/admin/change-password", async (req, res) => {
   }
 });
 
+app.post("/api/auth/admin/register", async (req, res) => {
+  try {
+    const body = req.body;
+    if (!(body.email && body.password)) {
+      return res.status(400).send({ error: "Data not formatted properly" });
+    }
+    if (body.image) {
+      const query = "INSERT INTO admin (foto_profil) VALUES ? WHERE email = ?";
+      db.query(query, [body.email, body.image], (err, result) => {
+        res.send(result);
+      });
+    }
+
+    // generate salt to hash password
+    const salt = await bcrypt.genSalt();
+    const hash = await bcrypt.hash(body.password, salt);
+
+    const query =
+      "INSERT INTO admin (nama_admin, email, password) VALUES (?,?,?)";
+    db.query(query, [body.name, body.email, hash], (err, result) => {
+      res.send(result);
+    });
+  } catch {
+    res.status(500).send();
+  }
+});
+
 // login
 app.post("/api/auth/login", (req, res) => {
   const body = req.body;
@@ -326,8 +344,7 @@ app.post("/api/auth/login", (req, res) => {
 
 app.post("/api/auth/admin/login", async (req, res) => {
   const body = req.body;
-  const query =
-    "SELECT id_admin, email, nama_member FROM admin WHERE email = ?";
+  const query = "SELECT id_admin, email, nama_admin FROM admin WHERE email = ?";
   const userQuery = "SELECT password FROM admin WHERE email = ?";
   db.query(userQuery, [body.email], async (err, result) => {
     try {

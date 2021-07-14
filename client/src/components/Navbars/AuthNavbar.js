@@ -20,6 +20,7 @@ export default function Navbar(props) {
   };
 
   const logout = () => {
+    history.push("/auth/login");
     setUser(null);
     localStorage.removeItem("authUser");
   };

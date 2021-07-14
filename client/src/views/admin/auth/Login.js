@@ -15,7 +15,7 @@ export default function Login() {
   const submit = () => {
     const { email, password } = formData;
 
-    Axios.post("http://localhost:3001/api/admin/auth/login", {
+    Axios.post("http://localhost:3001/api/auth/admin/login", {
       email: email,
       password: password,
     })
@@ -25,7 +25,7 @@ export default function Login() {
           const data = JSON.stringify(httpResponse.data.authUser);
           window.localStorage.setItem("authUser", data);
           setTimeout(() => {
-            history.push("/");
+            history.push("/admin");
           }, 1500);
         } else {
           toast.error("Email atau password salah");
@@ -157,7 +157,7 @@ export default function Login() {
                 </a>
               </div>
               <div className="w-1/2 text-right">
-                <Link to="/auth/register" className="text-blueGray-200">
+                <Link to="/auth/admin/register" className="text-blueGray-200">
                   <small>Create new account</small>
                 </Link>
               </div>

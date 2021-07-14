@@ -17,12 +17,6 @@ export default function Register() {
   const [formData, setFormData] = React.useState(FORM_INITIAL);
   const history = useHistory();
 
-  React.useEffect(() => {
-    Axios.get("http://localhost:3001/api/member").then((response) => {
-      console.log(response.data);
-    });
-  }, []);
-
   const submit = () => {
     const { name, email, password } = formData;
 

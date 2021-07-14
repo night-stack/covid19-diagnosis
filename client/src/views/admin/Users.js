@@ -6,53 +6,65 @@ import memoize from "memoize-one";
 // import CardTable from "components/Cards/CardTable.js";
 import Axios from "axios";
 import FormMember from "../modal/memberForm";
+import FormPasswordMember from "../modal/passwordForm";
 import { ToastContainer, toast } from "react-toastify";
 import { DateTimeHelper } from "../../helpers";
 
-const columns = memoize((onToggleEditMode, onRemoveAdmin) => [
-  {
-    name: "ID",
-    selector: "id_member",
-    sortable: true,
-  },
-  {
-    name: "Email",
-    selector: "email",
-    sortable: true,
-  },
-  {
-    name: "Nama",
-    selector: "nama_member",
-    sortable: true,
-  },
-  {
-    name: "Aksi",
-    center: true,
-    cell: (row) => (
-      <div>
-        <div
-          className="mb-3 mb-xl-0 float-left"
-          style={{ marginRight: "2rem" }}
-        >
-          <button type="button" onClick={() => onToggleEditMode(row)}>
-            <i class="fas fa-pencil-alt"></i>
-          </button>
+const columns = memoize(
+  (onToggleEditMode, onToggleEditPasswordMode, onRemoveAdmin) => [
+    {
+      name: "ID",
+      selector: "id_member",
+      sortable: true,
+    },
+    {
+      name: "Email",
+      selector: "email",
+      sortable: true,
+    },
+    {
+      name: "Nama",
+      selector: "nama_member",
+      sortable: true,
+    },
+    {
+      name: "Aksi",
+      center: true,
+      cell: (row) => (
+        <div>
+          <div
+            className="mb-3 mb-xl-0 float-left"
+            style={{ marginRight: "2rem" }}
+          >
+            <button type="button" onClick={() => onToggleEditMode(row)}>
+              <i class="fas fa-pencil-alt"></i>
+            </button>
+          </div>
+          <div
+            className="mb-3 mb-xl-0 float-left"
+            style={{ marginRight: "2rem" }}
+          >
+            <button type="button" onClick={() => onToggleEditPasswordMode(row)}>
+              <i class="fas fa-unlock-alt"></i>
+            </button>
+          </div>
+          <div className="mb-3 mb-xl-0 float-left">
+            <button type="button" onClick={() => onRemoveAdmin(row.id_member)}>
+              <i className="fa fa-trash"></i>
+            </button>
+          </div>
         </div>
-        <div className="mb-3 mb-xl-0 float-left">
-          <button type="button" onClick={() => onRemoveAdmin(row.id_member)}>
-            <i className="fa fa-trash"></i>
-          </button>
-        </div>
-      </div>
-    ),
-  },
-]);
+      ),
+    },
+  ]
+);
 
 export default function Users() {
   const [search, setSearch] = React.useState("");
   const [handle, setHandle] = React.useState({
     editMode: false,
     addMode: false,
+    editPassword: false,
     user: null,
     proses: false,
   });
@@ -81,7 +93,7 @@ export default function Users() {
   }, [user, history]);
 
   const onSave = async (formData) => {
-    if (formData === "") {
+    if (formData.id === "") {
       Axios.post("http://localhost:3001/api/member/add", {
         name: formData.name,
         email: formData.email,
@@ -103,7 +115,6 @@ export default function Users() {
       Axios.post(`http://localhost:3001/api/member/edit/${formData.id}`, {
         name: formData.name,
         email: formData.email,
-        password: formData.password,
         gender: formData.gender,
         place: formData.place,
         address: formData.address,
@@ -120,11 +131,29 @@ export default function Users() {
     }
   };
 
+  const onSavePassword = async (formData) => {
+    Axios.post("http://localhost:3001/api/auth/change-password", {
+      id: formData.id,
+      password: formData.password,
+    }).then(() => {
+      toast.success("Password berhasil dirubah");
+      window.location.reload();
+    });
+  };
+
   const onToggleEditMode = (user) => {
     setHandle((prevState) => ({
       ...prevState,
       addMode: true,
       editMode: true,
+      user,
+    }));
+  };
+
+  const onToggleEditPasswordMode = (user) => {
+    setHandle((prevState) => ({
+      ...prevState,
+      editPassword: true,
       user,
     }));
   };
@@ -156,6 +185,7 @@ export default function Users() {
     setHandle({
       editMode: false,
       addMode: false,
+      editPassword: false,
       user: null,
       proses: false,
     });
@@ -166,7 +196,6 @@ export default function Users() {
   };
 
   const onCloseModal = () => {
-    setHandle((prevState) => ({ ...prevState, addMode: !handle.addMode }));
     clearForm();
   };
 
@@ -212,7 +241,11 @@ export default function Users() {
             </div>
           </div>
           <DataTable
-            columns={columns(onToggleEditMode, onRemove)}
+            columns={columns(
+              onToggleEditMode,
+              onToggleEditPasswordMode,
+              onRemove
+            )}
             data={filteredItems}
             highlightOnHover
             pagination
@@ -229,6 +262,14 @@ export default function Users() {
           clearForm={clearForm}
           proses={handle.proses}
           open={handle.addMode}
+        />
+        <FormPasswordMember
+          user={handle.user}
+          onSave={onSavePassword}
+          onCloseModal={onCloseModal}
+          clearForm={clearForm}
+          proses={handle.proses}
+          open={handle.editPassword}
         />
       </div>
     </>
