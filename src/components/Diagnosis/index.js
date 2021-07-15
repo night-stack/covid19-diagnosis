@@ -5,27 +5,53 @@ import Axios from "axios";
 const QUESTION_DATA = [
   {
     title: "Pertanyaan 1",
-    question: "Apakah kamu sering batuk belakangan ini?",
+    question:
+      "Apakah anda ada interaksi langsung dengan pasien positif covid dalam 14 hari kebelakang?",
     answer: false,
   },
   {
     title: "Pertanyaan 2",
-    question: "Apakah kamu mengalami demam?",
+    question:
+      "Apakah anda dalam 14 hari kebelakang pernah berpergian ketempat umum. Seperti Pusat Perbelanjaan, Tempat Wisata, Pasar, Restoran, Taman, Gym dsb.?",
     answer: false,
   },
   {
     title: "Pertanyaan 3",
-    question: "Apakah kamu mengalami masalah pernafasan?",
+    question:
+      "Apakah anda pernah berpergian keluar negeri dalam 14 hari kebelakang?",
     answer: false,
   },
   {
     title: "Pertanyaan 4",
-    question: "Apakah kondisi tubuh kamu sekarang lemas dan tidak nafsu makan?",
+    question:
+      "Apakah anda mengalami Batuk berkepanjangan dalam 5 hari kebelakang?",
     answer: false,
   },
   {
     title: "Pertanyaan 5",
-    question: "Apakah kamu tidak dapat mencium aroma atau mengecap rasa?",
+    question:
+      "Apakah anda mengalami Demam dengan suhu 37.5 derajat celcius atau selebihnya?",
+    answer: false,
+  },
+  {
+    title: "Pertanyaan 6",
+    question:
+      "Apakah anda mengalami Demam dengan suhu 37.5 derajat celcius atau selebihnya?",
+    answer: false,
+  },
+  {
+    title: "Pertanyaan 7",
+    question: "Apakah anda mengalami sakit di tenggorokan anda?",
+    answer: false,
+  },
+  {
+    title: "Pertanyaan 8",
+    question: "Apakah anda mengalami sakit di kepala anda?",
+    answer: false,
+  },
+  {
+    title: "Pertanyaan 9",
+    question: "Apakah anda mengalami Sesak Napas?",
     answer: false,
   },
 ];
