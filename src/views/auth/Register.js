@@ -32,10 +32,6 @@ export default function Register() {
     });
   };
 
-  const deleteMember = async (id) => {
-    Axios.delete(`http://localhost:3001/api/member/delete/${id}`);
-  };
-
   const doLoginSocial = (googleProvider = true) => {
     const provider = googleProvider
       ? new firebase.auth.GoogleAuthProvider()
