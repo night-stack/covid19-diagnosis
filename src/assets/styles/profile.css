@@ -55,3 +55,15 @@
   .react-datepicker-wrapper {
     width: 100%;
   }
+
+  .file + label {
+    cursor: pointer; /* "hand" cursor */
+  }
+
+  .file {
+    position: absolute;
+    overflow: hidden;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+  }

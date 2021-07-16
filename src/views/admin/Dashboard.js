@@ -5,7 +5,7 @@ import Axios from "axios";
 import CardPageVisits from "components/Cards/CardPageVisits.js";
 
 export default function Dashboard() {
-  const [user, setUser] = React.useState(null);
+  // const [user, setUser] = React.useState(null);
   const [lastUser, setLastUser] = React.useState([]);
 
   const history = useHistory();
@@ -20,8 +20,7 @@ export default function Dashboard() {
         Axios.get("http://localhost:3001/api/dashboard").then((response) => {
           setLastUser(response.data);
         });
-
-        setUser(authUser);
+        // setUser(authUser);
       }
     } else {
       history.push("/auth/admin/login");

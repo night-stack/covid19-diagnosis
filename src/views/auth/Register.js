@@ -81,15 +81,13 @@ export default function Register() {
   };
 
   const afterSocial = async (authUser) => {
-    const { password } = formData;
-
-    await Axios.post("http://localhost:3001/api/auth/register", {
+    await Axios.post("http://localhost:3001/api/auth/social", {
       name: authUser.user.providerData[0].displayName,
       email: authUser.user.providerData[0].email,
-      password: password,
       image: authUser.user.providerData[0].photoURL,
     }).then(() => {
-      alert("Success");
+      toast.success("Success");
+      history.push("/");
     });
 
     return true;
@@ -126,6 +124,7 @@ export default function Register() {
                   <button
                     className="bg-white active:bg-blueGray-50 text-blueGray-700 px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
                     type="button"
+                    onClick={doLoginSocial}
                   >
                     <img
                       alt="..."
@@ -134,10 +133,11 @@ export default function Register() {
                     />
                     Google
                   </button>
-                  <button
+                  {/* <button
                     className="active:bg-blueGray-50 text-white px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
                     style={{ backgroundColor: "#0B84ED" }}
                     type="button"
+                    onClick={() => doLoginSocial(false)}
                   >
                     <img
                       alt="..."
@@ -145,7 +145,7 @@ export default function Register() {
                       src={require("assets/img/facebook.svg").default}
                     />
                     Facebook
-                  </button>
+                  </button> */}
                 </div>
                 <hr className="mt-6 border-b-1 border-blueGray-300" />
               </div>

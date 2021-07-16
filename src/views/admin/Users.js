@@ -112,7 +112,7 @@ export default function Users() {
         window.location.reload();
       });
     } else {
-      Axios.post(`http://localhost:3001/api/member/edit/${formData.id}`, {
+      Axios.put(`http://localhost:3001/api/member/edit/${formData.id}`, {
         name: formData.name,
         email: formData.email,
         gender: formData.gender,

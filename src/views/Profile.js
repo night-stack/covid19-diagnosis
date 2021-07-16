@@ -6,10 +6,19 @@ import Footer from "components/Footers/Footer.js";
 import firebase from "../services/firebase";
 import Axios from "axios";
 import { DateTimeHelper } from "../helpers";
+import { ToastContainer, toast } from "react-toastify";
+import FormMember from "./modal/memberForm";
+import FormPasswordMember from "./modal/passwordForm";
 
 export default function Profile() {
   const [user, setUser] = React.useState(null);
   const [riwayat, setRiwayat] = React.useState([]);
+  const [handle, setHandle] = React.useState({
+    editMode: false,
+    editPassword: false,
+    user: null,
+    proses: false,
+  });
 
   const history = useHistory();
   const data = localStorage.getItem("authUser");
@@ -41,33 +50,122 @@ export default function Profile() {
     }
   }, [data, history]);
 
-  const editProfile = async () => {
+  const editProfile = async (event) => {
+    const { target } = event;
+    const { files } = target;
     const metadata = {
       contentType: "image/jpeg",
     };
     const type = "png";
-    const newKey = this.formData.id
-      ? this.formData.id
-      : DateTimeHelper.getCurrentTimeMs();
-    let urlImg = this.formData.id ? this.formData.image : "";
-    if (this.formData.image) {
-      if (this.formData.urlImage) {
-        await firebase.storage().ref(`users/img-${newKey}.${type}`).delete();
+    const newKey = DateTimeHelper.getCurrentTimeMs();
+    let urlImg = "";
+
+    if (files[0]) {
+      const avatarFile = files[0];
+      if (user.foto_profil) {
+        await firebase
+          .storage()
+          .ref(`users/img-${user.foto_profil}.${type}`)
+          .delete();
       }
       await firebase
         .storage()
         .ref(`users/img-${newKey}.${type}`)
-        .put(this.formData.image, metadata);
+        .put(avatarFile, metadata);
       urlImg = await firebase
         .storage()
         .ref(`users/img-${newKey}.${type}`)
         .getDownloadURL();
+
+      Axios.put(
+        `http://localhost:3001/api/member/img-profile/${user.id_member}`,
+        {
+          image: urlImg,
+        }
+      ).then(() => {
+        toast.success("Foto profil berhasil dirubah");
+        window.location.reload();
+      });
     }
+  };
+
+  const onSave = async (formData) => {
+    Axios.put(`http://localhost:3001/api/member/edit/${formData.id}`, {
+      name: formData.name,
+      email: formData.email,
+      gender: formData.gender,
+      place: formData.place,
+      address: formData.address,
+      date: DateTimeHelper.getFormatedDate(
+        formData.date,
+        "YYYY-MM-DD HH:mm:ss"
+      ),
+      phone: formData.phone,
+      status: formData.status,
+    }).then(() => {
+      toast.success("Data member berhasil dirubah");
+      window.location.reload();
+    });
+  };
+  const onToggleEditMode = (user) => {
+    setHandle((prevState) => ({
+      ...prevState,
+      editMode: true,
+      user,
+    }));
+  };
+
+  const onSavePassword = async (formData) => {
+    Axios.post("http://localhost:3001/api/auth/change-password", {
+      id: formData.id,
+      password: formData.password,
+    }).then(() => {
+      toast.success("Password berhasil dirubah");
+      window.location.reload();
+    });
+  };
+  const onToggleEditPasswordMode = (user) => {
+    setHandle((prevState) => ({
+      ...prevState,
+      editPassword: true,
+      user,
+    }));
+  };
+
+  const clearForm = () => {
+    setHandle({
+      editMode: false,
+      addMode: false,
+      editPassword: false,
+      user: null,
+      proses: false,
+    });
+  };
+  const onCloseModal = () => {
+    clearForm();
   };
 
   return (
     <>
+      <ToastContainer position="top-center" />
       <Navbar />
+      <FormMember
+        user={handle.user}
+        onSave={onSave}
+        editMode={handle.editMode}
+        onCloseModal={onCloseModal}
+        clearForm={clearForm}
+        proses={handle.proses}
+        open={handle.editMode}
+      />
+      <FormPasswordMember
+        user={handle.user}
+        onSave={onSavePassword}
+        onCloseModal={onCloseModal}
+        clearForm={clearForm}
+        proses={handle.proses}
+        open={handle.editPassword}
+      />
       <main className="profile-page">
         <section className="relative block h-500-px">
           <div
@@ -119,21 +217,40 @@ export default function Profile() {
                         }
                         className="profilepic__image shadow-xl rounded-full h-auto align-middle border-none max-w-150-px"
                       />
+                      <input
+                        id="image"
+                        type="file"
+                        key={DateTimeHelper.getCurrentTimeMs()}
+                        onChange={editProfile}
+                        className="file"
+                      />
                       <div className="profilepic__content">
                         <span className="profilepic__icon">
                           <i className="fas fa-camera"></i>
                         </span>
-                        <span className="profilepic__text">Ganti Foto</span>
+                        <label htmlFor="image" className="profilepic__text">
+                          Ganti Foto
+                        </label>
                       </div>
                     </div>
                   </div>
                   <div className="w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center">
+                    <div className="py-6 px-3 mt-32 sm:mt-0 mr-3">
+                      <button
+                        className="bg-blueGray-800 active:bg-blueGray-65 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
+                        type="button"
+                        onClick={() => onToggleEditMode(user)}
+                      >
+                        Edit Profil
+                      </button>
+                    </div>
                     <div className="py-6 px-3 mt-32 sm:mt-0">
                       <button
                         className="bg-blueGray-800 active:bg-blueGray-65 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
                         type="button"
+                        onClick={() => onToggleEditPasswordMode(user)}
                       >
-                        Edit Profil
+                        Ganti Password
                       </button>
                     </div>
                   </div>

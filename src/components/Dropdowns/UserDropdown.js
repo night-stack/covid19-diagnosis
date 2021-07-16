@@ -1,10 +1,10 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import { createPopper } from "@popperjs/core";
 
 const UserDropdown = () => {
   const [user, setUser] = React.useState(null);
-  const history = useHistory();
+  // const history = useHistory();
   const data = localStorage.getItem("authUser");
 
   React.useEffect(() => {
