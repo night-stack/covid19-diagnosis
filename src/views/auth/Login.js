@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import Axios from "axios";
-// import firebase from "../../../services/firebase";
+import firebase from "../../services/firebase";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
@@ -36,6 +36,67 @@ export default function Login() {
       });
   };
 
+  const doLoginSocial = (googleProvider = true) => {
+    const provider = googleProvider
+      ? new firebase.auth.GoogleAuthProvider()
+      : new firebase.auth.FacebookAuthProvider();
+
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then((authUser) => {
+        return afterSocial(authUser);
+      })
+      .then(() => {
+        history.push("/profile");
+      })
+      .catch((error) => {
+        if (error.code === "auth/account-exists-with-different-credential") {
+          const pendingCred = error.credential;
+          firebase
+            .auth()
+            .fetchSignInMethodsForEmail(error.email)
+            .then((methods) => {
+              if (methods[0] === "password") {
+                // TODO: will implement later
+                return;
+              }
+
+              const otherProvider = new firebase.auth.GoogleAuthProvider();
+              firebase
+                .auth()
+                .signInWithPopup(otherProvider)
+                .then((result) => {
+                  result.user
+                    .linkAndRetrieveDataWithCredential(pendingCred)
+                    .then(() => {
+                      return afterSocial(result);
+                    })
+                    .then(() => {
+                      history.push("/profile");
+                    });
+                });
+            });
+        } else {
+          const errorMessage = error.message;
+          alert("Login gagal atau akun sudah digunakan!", errorMessage);
+        }
+      });
+  };
+
+  const afterSocial = async (authUser) => {
+    await Axios.post("http://localhost:3001/api/auth/social", {
+      name: authUser.user.providerData[0].displayName,
+      email: authUser.user.providerData[0].email,
+      image: authUser.user.providerData[0].photoURL,
+    }).then(() => {
+      toast.success("Success");
+      history.push("/");
+    });
+
+    return true;
+  };
+
   const handleInputChange = (event) => {
     const { target } = event;
     const { name, value } = target;
@@ -60,6 +121,7 @@ export default function Login() {
                   <button
                     className="bg-white active:bg-blueGray-50 text-blueGray-700 px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
                     type="button"
+                    onClick={doLoginSocial}
                   >
                     <img
                       alt="..."
@@ -68,7 +130,7 @@ export default function Login() {
                     />
                     Google
                   </button>
-                  <button
+                  {/* <button
                     className="active:bg-blueGray-50 text-white px-4 py-2 rounded outline-none focus:outline-none mr-1 mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold text-xs ease-linear transition-all duration-150"
                     style={{ backgroundColor: "#0B84ED" }}
                     type="button"
@@ -79,7 +141,7 @@ export default function Login() {
                       src={require("assets/img/facebook.svg").default}
                     />
                     Facebook
-                  </button>
+                  </button> */}
                 </div>
                 <hr className="mt-6 border-b-1 border-blueGray-300" />
               </div>

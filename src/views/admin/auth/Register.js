@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
 import Axios from "axios";
-import firebase from "../../../services/firebase";
+// import firebase from "../../../services/firebase";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
@@ -32,69 +32,6 @@ export default function Register() {
     });
   };
 
-  const doLoginSocial = (googleProvider = true) => {
-    const provider = googleProvider
-      ? new firebase.auth.GoogleAuthProvider()
-      : new firebase.auth.FacebookAuthProvider();
-
-    firebase
-      .auth()
-      .signInWithPopup(provider)
-      .then((authUser) => {
-        return afterSocial(authUser);
-      })
-      .then(() => {
-        history.push("/profile");
-      })
-      .catch((error) => {
-        if (error.code === "auth/account-exists-with-different-credential") {
-          const pendingCred = error.credential;
-          firebase
-            .auth()
-            .fetchSignInMethodsForEmail(error.email)
-            .then((methods) => {
-              if (methods[0] === "password") {
-                // TODO: will implement later
-                return;
-              }
-
-              const otherProvider = new firebase.auth.GoogleAuthProvider();
-              firebase
-                .auth()
-                .signInWithPopup(otherProvider)
-                .then((result) => {
-                  result.user
-                    .linkAndRetrieveDataWithCredential(pendingCred)
-                    .then(() => {
-                      return afterSocial(result);
-                    })
-                    .then(() => {
-                      history.push("/profile");
-                    });
-                });
-            });
-        } else {
-          const errorMessage = error.message;
-          alert("Login gagal atau akun sudah digunakan!", errorMessage);
-        }
-      });
-  };
-
-  const afterSocial = async (authUser) => {
-    const { password } = formData;
-
-    await Axios.post("http://localhost:3001/api/auth/register", {
-      name: authUser.user.providerData[0].displayName,
-      email: authUser.user.providerData[0].email,
-      password: password,
-      image: authUser.user.providerData[0].photoURL,
-    }).then(() => {
-      alert("Success");
-    });
-
-    return true;
-  };
-
   const handleInputChange = (event) => {
     const { target } = event;
     const { name, value } = target;
@@ -117,7 +54,7 @@ export default function Register() {
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
               <div className="rounded-t mb-0 px-6 py-6">
-                <div className="text-center mb-3">
+                {/* <div className="text-center mb-3">
                   <h6 className="text-blueGray-500 text-sm font-bold">
                     Sign up with
                   </h6>
@@ -147,12 +84,12 @@ export default function Register() {
                     Facebook
                   </button>
                 </div>
-                <hr className="mt-6 border-b-1 border-blueGray-300" />
+                <hr className="mt-6 border-b-1 border-blueGray-300" /> */}
               </div>
               <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-                <div className="text-blueGray-400 text-center mb-3 font-bold">
+                {/* <div className="text-blueGray-400 text-center mb-3 font-bold">
                   <small>Or sign up with credentials</small>
-                </div>
+                </div> */}
                 <form>
                   <div className="relative w-full mb-3">
                     <label

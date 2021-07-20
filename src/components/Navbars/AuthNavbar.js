@@ -1,14 +1,18 @@
 /*eslint-disable*/
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 
 export default function Navbar(props) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   const [user, setUser] = React.useState(null);
+  const [url, setUrl] = React.useState([]);
   const history = useHistory();
+  const { location } = useParams();
   const data = localStorage.getItem("authUser");
 
   React.useEffect(() => {
+    const arr = history.location.pathname.split("/");
+    setUrl(arr);
     if (data) {
       const authUser = JSON.parse(data);
       setUser(authUser);
@@ -76,19 +80,22 @@ export default function Navbar(props) {
                 </a>
               </li>
 
-              {user && (
-                <li className="flex items-center">
-                  <a
-                    className="lg:text-white lg:hover:text-blueGray-200 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs font-bold"
-                    href="/profile"
-                  >
-                    <i className="lg:text-blueGray-200 text-blueGray-400 fas fa-user-circle text-lg leading-lg " />
-                    <span className="inline-block ml-2">
-                      {user && user.email}
-                    </span>
-                  </a>
-                </li>
-              )}
+              {user &&
+                url.length > 0 &&
+                url[2] !==
+                  "auth"(
+                    <li className="flex items-center">
+                      <a
+                        className="lg:text-white lg:hover:text-blueGray-200 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs font-bold"
+                        href="/profile"
+                      >
+                        <i className="lg:text-blueGray-200 text-blueGray-400 fas fa-user-circle text-lg leading-lg " />
+                        <span className="inline-block ml-2">
+                          {user && user.email}
+                        </span>
+                      </a>
+                    </li>
+                  )}
 
               {!user && (
                 <li className="flex items-center">

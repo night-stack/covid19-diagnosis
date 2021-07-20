@@ -1,56 +1,62 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Axios from "axios";
+import { DateTimeHelper } from "../../helpers";
 
-const QUESTION_DATA = [
+const QUESTION_NODE = [
   {
-    title: "Pertanyaan 1",
+    title: "Kontak Langsung",
+    indikasi: "contactWithConfirm",
     question:
       "Apakah anda ada interaksi langsung dengan pasien positif covid dalam 14 hari kebelakang?",
     answer: false,
   },
   {
-    title: "Pertanyaan 2",
+    title: "Lainnya",
+    indikasi: "other",
     question:
       "Apakah anda dalam 14 hari kebelakang pernah berpergian ketempat umum. Seperti Pusat Perbelanjaan, Tempat Wisata, Pasar, Restoran, Taman, Gym dsb.?",
     answer: false,
   },
   {
-    title: "Pertanyaan 3",
+    title: "Abroad",
+    indikasi: "abroad",
     question:
       "Apakah anda pernah berpergian keluar negeri dalam 14 hari kebelakang?",
     answer: false,
   },
+];
+
+const QUESTION_DATA = [
   {
-    title: "Pertanyaan 4",
+    title: "Batuk",
+    indikasi: "batuk",
     question:
       "Apakah anda mengalami Batuk berkepanjangan dalam 5 hari kebelakang?",
     answer: false,
   },
   {
-    title: "Pertanyaan 5",
+    title: "Demam",
+    indikasi: "demam",
     question:
       "Apakah anda mengalami Demam dengan suhu 37.5 derajat celcius atau selebihnya?",
     answer: false,
   },
   {
-    title: "Pertanyaan 6",
-    question:
-      "Apakah anda mengalami Demam dengan suhu 37.5 derajat celcius atau selebihnya?",
-    answer: false,
-  },
-  {
-    title: "Pertanyaan 7",
+    title: "Sakit Tenggorokan",
+    indikasi: "sakitTenggorokan",
     question: "Apakah anda mengalami sakit di tenggorokan anda?",
     answer: false,
   },
   {
-    title: "Pertanyaan 8",
+    title: "Sakit Kepala",
+    indikasi: "sakitKepala",
     question: "Apakah anda mengalami sakit di kepala anda?",
     answer: false,
   },
   {
-    title: "Pertanyaan 9",
+    title: "Sesak Nafas",
+    indikasi: "sesakNafas",
     question: "Apakah anda mengalami Sesak Napas?",
     answer: false,
   },
@@ -59,10 +65,14 @@ const QUESTION_DATA = [
 const FormDiagnosis = () => {
   const [review, setReview] = useState([]);
   const [session, setSession] = useState(0);
+  const [nodeSession, setNodeSession] = useState(0);
   const [user, setUser] = useState(null);
   const [start, setStart] = useState(false);
+  const [nodeMode, setNodeMode] = useState(true);
   const [finish, setFinish] = useState(false);
+  const [node, setNode] = useState(QUESTION_NODE);
   const [pertanyaan, setPertanyaan] = useState(QUESTION_DATA);
+  const [payload, setPayload] = useState(null);
   const data = localStorage.getItem("authUser");
 
   React.useEffect(() => {
@@ -80,7 +90,37 @@ const FormDiagnosis = () => {
     }
   }, [data]);
 
-  const nextSession = (id, item) => {
+  const nextSession = (item) => {
+    const array = [...review];
+    const bol = item.answer === true ? 1 : 0;
+
+    function getIndex(value, arr, prop) {
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i][prop] === value) {
+          return i;
+        }
+      }
+      return -1;
+    }
+    const index = getIndex(item.indikasi, array, "id");
+
+    if (index !== -1) {
+      array.splice(index, 1);
+      setReview(array);
+    } else {
+      setReview([
+        ...review,
+        { id: item.indikasi, question: item.question, answer: item.answer },
+      ]);
+    }
+    payload[item.indikasi] = bol;
+    setSession(session + 1);
+
+    // setReview((prevState) => ({ ...prevState }, { id, answer }));
+  };
+
+  const nodeNextSession = (item) => {
     const array = [...review];
 
     function getIndex(value, arr, prop) {
@@ -92,7 +132,7 @@ const FormDiagnosis = () => {
       }
       return -1;
     }
-    const index = getIndex(id, array, "id");
+    const index = getIndex(item.indikasi, array, "id");
 
     if (index !== -1) {
       array.splice(index, 1);
@@ -100,16 +140,26 @@ const FormDiagnosis = () => {
     } else {
       setReview([
         ...review,
-        { id, question: item.question, answer: item.answer },
+        { id: item.indikasi, question: item.question, answer: item.answer },
       ]);
     }
-    setSession(session + 1);
+
+    if (item.answer === true) {
+      setNodeMode(false);
+      setPayload({ indikasi: item.indikasi });
+    } else {
+      setNodeSession(nodeSession + 1);
+    }
 
     // setReview((prevState) => ({ ...prevState }, { id, answer }));
   };
 
   const prevSession = () => {
     setSession(session - 1);
+  };
+
+  const nodePrevSession = () => {
+    setNodeSession(nodeSession - 1);
   };
 
   const radioChange = (id, answer) => {
@@ -119,12 +169,23 @@ const FormDiagnosis = () => {
     setPertanyaan(question);
   };
 
+  const nodeRadioChange = (id, answer) => {
+    let question = [...node];
+    question[id].answer = answer;
+
+    setNode(question);
+  };
+
   const clearForm = () => {
     setReview([]);
     setSession(0);
+    setNodeSession(0);
     setFinish(false);
     setStart(false);
     setPertanyaan(QUESTION_DATA);
+    setNode(QUESTION_NODE);
+    setNodeMode(true);
+    setPayload(null);
   };
 
   const finishSession = (id, item) => {
@@ -151,13 +212,14 @@ const FormDiagnosis = () => {
       ]);
     }
     setSession(0);
+    setNodeSession(0);
     setFinish(true);
   };
 
   return (
     <div
       className="container mx-auto px-4 h-full"
-      style={start ? { height: "22rem" } : null}
+      style={start ? { minHeight: "22rem" } : null}
     >
       <div
         className="items-center flex flex-wrap"
@@ -174,20 +236,38 @@ const FormDiagnosis = () => {
                   Hasil Diagnosa
                 </h1>
                 <h5 className="text-xl font-semibold uppercase">
-                  Miftahul Huda
+                  {user && user.nama_member}
                 </h5>
                 <div className="text-sm text-blueGray-500">
-                  <p>mifta@gmail.com | 08122321313</p>
-                  <p>Laki-laki</p>
-                  <p>Medan, 10 Juli 2022</p>
+                  <p>{`${user & user.email} | ${
+                    user && user.nomor_hp ? user.nomor_hp : "Belum diatur"
+                  }`}</p>
+                  <p>
+                    {user?.jenis_kelamin === "L" && "Laki"}
+                    {user?.jenis_kelamin === "P" && "Perempuan"}
+                    {user && !user.jenis_kelamin && "Belum diatur"}
+                  </p>
+                  <p>{`${
+                    user && user.tempat_lahir
+                      ? user.tempat_lahir
+                      : "Belum diatur"
+                  }, ${
+                    user && user.tanggal_lahir
+                      ? DateTimeHelper.getFormatedDate(
+                          user.tanggal_lahir,
+                          "DD MMMM YYYY"
+                        )
+                      : "Belum diatur"
+                  }`}</p>
                   <p className="uppercase">
-                    Jl. Thamrin No. 1, Kota Medan, Sumatera Utara
+                    {user && user.alamat ? user.alamat : "Alamat belum diatur"}
                   </p>
                 </div>
                 <div className="my-6 text-blueGray-500">
                   Berdasarkan hasil diagnosa yang dilakukan pada kalkulasi
                   jawaban sesi tanya jawab sebelumnya, bahwasannya pengguna atas
-                  nama <b>Mifta Huda</b> telah <b>Terbebas</b> dari Covid-19.
+                  nama <b>{user && user.nama_member}</b> telah <b>Terbebas</b>{" "}
+                  dari Covid-19.
                 </div>
                 {user && (
                   <div
@@ -225,24 +305,40 @@ const FormDiagnosis = () => {
             ) : (
               <>
                 <div className="w-full md:w-5/12 ml-auto mr-auto px-4">
-                  {pertanyaan.map((item, index) => {
-                    const show = index === session ? "" : "hidden";
-                    return (
-                      <QuestionForm
-                        show={show}
-                        item={item}
-                        index={index}
-                        radioChange={radioChange}
-                        session={session}
-                        setStart={setStart}
-                        nextSession={nextSession}
-                        prevSession={prevSession}
-                        start={start}
-                        pertanyaan={pertanyaan}
-                        finishSession={finishSession}
-                      />
-                    );
-                  })}
+                  {nodeMode &&
+                    node.map((item, index) => {
+                      const showNode = index === nodeSession ? "" : "hidden";
+                      return (
+                        <NodeForm
+                          show={showNode}
+                          item={item}
+                          index={index}
+                          radioChange={nodeRadioChange}
+                          session={nodeSession}
+                          nextSession={nodeNextSession}
+                          prevSession={nodePrevSession}
+                        />
+                      );
+                    })}
+
+                  {!nodeMode &&
+                    pertanyaan.map((item, index) => {
+                      const show = index === session ? "" : "hidden";
+                      return (
+                        <QuestionForm
+                          show={show}
+                          item={item}
+                          index={index}
+                          radioChange={radioChange}
+                          session={session}
+                          nextSession={nextSession}
+                          prevSession={prevSession}
+                          start={start}
+                          pertanyaan={pertanyaan}
+                          finishSession={finishSession}
+                        />
+                      );
+                    })}
                 </div>
                 {/* <div className="md:w-8/12"></div> */}
                 <div className="md:w-2/12"></div>
@@ -383,12 +479,77 @@ const QuestionForm = ({
           </button>
         ) : (
           <button
-            onClick={() => nextSession(index, item)}
+            onClick={() => nextSession(item)}
             className="text-xs font-bold bg-lightBlue-400 active:bg-lightBlue-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150"
           >
             Lanjut
           </button>
         )}
+      </div>
+    </div>
+  );
+};
+
+const NodeForm = ({
+  show,
+  index,
+  item,
+  radioChange,
+  session,
+  nextSession,
+  prevSession,
+}) => {
+  return (
+    <div key={item.indikasi} className={show}>
+      <h3 className="font-semibold">{item.title}</h3>
+      <div className="mt-4 text-sm leading-relaxed text-blueGray-500">
+        {item.question}
+      </div>
+      <div className="mt-4">
+        <input
+          type="radio"
+          name={item.indikasi}
+          id={`${item.indikasi}-1`}
+          checked={item.answer === true}
+          onChange={() => radioChange(index, true)}
+        />
+        <label
+          htmlFor={`${item.indikasi}-1`}
+          className="ml-3 text-sm leading-relaxed text-blueGray-500"
+        >
+          Ya
+        </label>
+      </div>
+      <div>
+        <input
+          type="radio"
+          name={item.indikasi}
+          id={`${item.indikasi}-0`}
+          checked={item.answer === false}
+          onChange={() => radioChange(index, false)}
+        />
+        <label
+          htmlFor={`${item.indikasi}-0`}
+          className="ml-3 text-sm leading-relaxed text-blueGray-500"
+        >
+          Tidak
+        </label>
+      </div>
+      <div className="mt-20 flex justify-between">
+        {session !== 0 && (
+          <button
+            onClick={prevSession}
+            className="text-xs font-bold bg-red-400 active:bg-red-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150"
+          >
+            Kembali
+          </button>
+        )}
+        <button
+          onClick={() => nextSession(item)}
+          className="text-xs font-bold bg-lightBlue-400 active:bg-lightBlue-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150"
+        >
+          Lanjut
+        </button>
       </div>
     </div>
   );
