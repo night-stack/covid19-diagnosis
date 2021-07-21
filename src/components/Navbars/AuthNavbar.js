@@ -80,22 +80,19 @@ export default function Navbar(props) {
                 </a>
               </li>
 
-              {user &&
-                url.length > 0 &&
-                url[2] !==
-                  "auth"(
-                    <li className="flex items-center">
-                      <a
-                        className="lg:text-white lg:hover:text-blueGray-200 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs font-bold"
-                        href="/profile"
-                      >
-                        <i className="lg:text-blueGray-200 text-blueGray-400 fas fa-user-circle text-lg leading-lg " />
-                        <span className="inline-block ml-2">
-                          {user && user.email}
-                        </span>
-                      </a>
-                    </li>
-                  )}
+              {user && url.length > 0 && url[2] !== "auth" && (
+                <li className="flex items-center">
+                  <a
+                    className="lg:text-white lg:hover:text-blueGray-200 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs font-bold"
+                    href="/profile"
+                  >
+                    <i className="lg:text-blueGray-200 text-blueGray-400 fas fa-user-circle text-lg leading-lg " />
+                    <span className="inline-block ml-2">
+                      {user && user.email}
+                    </span>
+                  </a>
+                </li>
+              )}
 
               {!user && (
                 <li className="flex items-center">
