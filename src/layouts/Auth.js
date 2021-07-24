@@ -12,6 +12,8 @@ import Login from "views/auth/Login.js";
 import Register from "views/auth/Register.js";
 import LoginAdmin from "views/admin/auth/Login.js";
 import RegisterAdmin from "views/admin/auth/Register.js";
+import ForgotPassword from "views/auth/ForgotPassword";
+import ForgotPasswordAdmin from "views/admin/auth/ForgotPassword";
 
 export default function Auth() {
   return (
@@ -29,11 +31,21 @@ export default function Auth() {
           <Switch>
             <Route path="/auth/login" exact component={Login} />
             <Route path="/auth/register" exact component={Register} />
+            <Route
+              path="/auth/forgot-password"
+              exact
+              component={ForgotPassword}
+            />
             <Route path="/auth/admin/login" exact component={LoginAdmin} />
             <Route
               path="/auth/admin/register"
               exact
               component={RegisterAdmin}
+            />
+            <Route
+              path="/auth/admin/forgot-password"
+              exact
+              component={ForgotPasswordAdmin}
             />
             {/* <Redirect from="/auth" to="/auth/login" /> */}
           </Switch>

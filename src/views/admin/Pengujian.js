@@ -5,34 +5,60 @@ import DataTable from "react-data-table-component";
 import memoize from "memoize-one";
 // import CardTable from "components/Cards/CardTable.js";
 import Axios from "axios";
-import FormMember from "../modal/memberForm";
-import FormPasswordMember from "../modal/passwordForm";
+// import FormMember from "../modal/memberForm";
+// import FormPasswordMember from "../modal/passwordForm";
+import CardTable from "components/Cards/CardTable.js";
 import { ToastContainer, toast } from "react-toastify";
 import { DateTimeHelper } from "../../helpers";
 
-const columns = memoize(
-  (onToggleEditMode, onToggleEditPasswordMode, onRemoveAdmin) => [
-    {
-      name: "ID",
-      selector: "id_member",
-      sortable: true,
-    },
-    {
-      name: "Email",
-      selector: "email",
-      sortable: true,
-    },
-    {
-      name: "Nama",
-      selector: "nama_member",
-      sortable: true,
-    },
-    {
-      name: "Aksi",
-      center: true,
-      cell: (row) => (
-        <div>
-          {/* <div
+const columns = memoize((calculate) => [
+  {
+    name: "ID",
+    selector: "id",
+    sortable: true,
+    width: "5.5rem",
+  },
+  {
+    name: "Indikasi",
+    selector: "indikasi",
+    sortable: true,
+  },
+  {
+    name: "Batuk",
+    selector: "batuk",
+    sortable: true,
+  },
+  {
+    name: "Demam",
+    selector: "demam",
+    sortable: true,
+  },
+  {
+    name: "Sakit Tenggorokan",
+    selector: "sakitTenggorokan",
+    sortable: true,
+  },
+  {
+    name: "Sesak Nafas",
+    selector: "sesakNafas",
+    sortable: true,
+  },
+  {
+    name: "Sakit Kepala",
+    selector: "sakitKepala",
+    sortable: true,
+  },
+  {
+    name: "Hasil",
+    selector: "result",
+    sortable: true,
+  },
+  {
+    name: "Aksi",
+    center: true,
+    cell: (row) => (
+      <div>
+        {/* <div
             className="mb-3 mb-xl-0 float-left"
             style={{ marginRight: "2rem" }}
           >
@@ -48,16 +74,19 @@ const columns = memoize(
               <i class="fas fa-unlock-alt"></i>
             </button>
           </div> */}
-          <div className="mb-3 mb-xl-0 float-left">
-            <button type="button" onClick={() => onRemoveAdmin(row.id_member)}>
-              <i className="fa fa-trash"></i>
-            </button>
-          </div>
+        <div className="mb-3 mb-xl-0 float-left">
+          <button
+            type="button"
+            onClick={() => calculate(row)}
+            className="bg-blueGray-800 text-sm text-white px-2 py-2 hover:bg-blueGray-600 rounded mt-2 mb-2"
+          >
+            Hitung
+          </button>
         </div>
-      ),
-    },
-  ]
-);
+      </div>
+    ),
+  },
+]);
 
 export default function Users() {
   const [search, setSearch] = React.useState("");
@@ -68,25 +97,36 @@ export default function Users() {
     user: null,
     proses: false,
   });
-  const [data, setData] = React.useState([]);
+  const [data, setData] = React.useState([
+    {
+      id: 1,
+      batuk: 0,
+      demam: 0,
+      sakitTenggorokan: 0,
+      sakitKepala: 0,
+      sesakNafas: 0,
+      indikasi: "Other",
+      result: "negatif",
+    },
+  ]);
   const history = useHistory();
   const user = localStorage.getItem("authUser");
   const filteredItems = data.filter(
     (item) =>
-      item.nama_member.toLowerCase() &&
-      item.nama_member.toLowerCase().includes(search)
+      item.indikasi.toLowerCase() &&
+      item.indikasi.toLowerCase().includes(search)
   );
 
   React.useEffect(() => {
     if (user) {
-      const authUser = JSON.parse(user);
-      if (authUser.role !== "admin") {
-        history.push("/auth/admin/login");
-      } else {
-        Axios.get("http://localhost:3001/api/member").then((response) => {
-          setData(response.data);
-        });
-      }
+      //   const authUser = JSON.parse(user);
+      //   if (authUser.role !== "admin") {
+      //     history.push("/auth/admin/login");
+      //   } else {
+      //     Axios.get("http://localhost:3001/api/member").then((response) => {
+      //       setData(response.data);
+      //     });
+      //   }
     } else {
       history.push("/auth/admin/login");
     }
@@ -199,21 +239,16 @@ export default function Users() {
     clearForm();
   };
 
+  const calculate = () => {
+    console.log("klik");
+  };
+
   return (
     <>
       <ToastContainer position="top-center" />
       <div className="flex flex-wrap mt-4">
         <div className="w-full mb-12 p-4" style={{ marginTop: "4rem" }}>
           <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-lightBlue-900 text-white"></div>
-          <div className="mb-3 float-right w-">
-            <button
-              type
-              className="px-6 py-2 rounded text-white bg-lightBlue-400 font-semibold text-sm"
-              onClick={btnMode}
-            >
-              Tambah
-            </button>
-          </div>
           <div className="flex float-left items-center mb-8">
             <input
               name="search"
@@ -241,20 +276,19 @@ export default function Users() {
             </div>
           </div>
           <DataTable
-            columns={columns(
-              onToggleEditMode,
-              onToggleEditPasswordMode,
-              onRemove
-            )}
+            columns={columns(calculate)}
             data={filteredItems}
             highlightOnHover
             pagination
           />
         </div>
+        <div className="w-full mb-12 px-4">
+          <CardTable color="dark" />
+        </div>
         {/* <div className="w-full mb-12 px-4">
           <CardTable color="dark" />
         </div> */}
-        <FormMember
+        {/* <FormMember
           user={handle.user}
           onSave={onSave}
           editMode={handle.editMode}
@@ -270,7 +304,7 @@ export default function Users() {
           clearForm={clearForm}
           proses={handle.proses}
           open={handle.editPassword}
-        />
+        /> */}
       </div>
     </>
   );

@@ -89,10 +89,19 @@ export default function Login() {
       name: authUser.user.providerData[0].displayName,
       email: authUser.user.providerData[0].email,
       image: authUser.user.providerData[0].photoURL,
-    }).then(() => {
-      toast.success("Success");
-      history.push("/");
-    });
+    })
+      .then((httpResponse) => {
+        if (httpResponse.data) {
+          toast.success("Login berhasil");
+          const data = JSON.stringify(httpResponse.data.authUser);
+          window.localStorage.setItem("authUser", data);
+        } else {
+          toast.error("Email atau password salah");
+        }
+      })
+      .catch(() => {
+        toast.error("Email atau password salah");
+      });
 
     return true;
   };
@@ -210,13 +219,9 @@ export default function Login() {
             </div>
             <div className="flex flex-wrap mt-6 relative">
               <div className="w-1/2">
-                <a
-                  href="#pablo"
-                  onClick={(e) => e.preventDefault()}
-                  className="text-blueGray-200"
-                >
+                <Link to="/auth/forgot-password" className="text-blueGray-200">
                   <small>Forgot password?</small>
-                </a>
+                </Link>
               </div>
               <div className="w-1/2 text-right">
                 <Link to="/auth/register" className="text-blueGray-200">

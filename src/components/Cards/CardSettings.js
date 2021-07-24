@@ -77,7 +77,11 @@ export default function CardSettings({ user = null }) {
   };
 
   const submit = async () => {
-    Axios.post(`http://localhost:3001/api/admin/edit/${formData.id}`, {
+    setFormData((prevState) => ({
+      ...prevState,
+      proses: true,
+    }));
+    Axios.put(`http://localhost:3001/api/admin/edit/${formData.id}`, {
       name: formData.name,
       email: formData.email,
       gender: formData.gender,
@@ -90,7 +94,11 @@ export default function CardSettings({ user = null }) {
       phone: formData.phone,
     }).then(() => {
       toast.success("Data admin berhasil dirubah");
-      window.location.reload();
+      setFormData((prevState) => ({
+        ...prevState,
+        proses: false,
+      }));
+      // window.location.reload();
     });
   };
 
@@ -242,8 +250,8 @@ export default function CardSettings({ user = null }) {
                     Tempat Lahir
                   </label>
                   <input
-                    id="address"
-                    name="address"
+                    id="place"
+                    name="place"
                     type="text"
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     value={formData.place}
@@ -290,6 +298,7 @@ export default function CardSettings({ user = null }) {
                     className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     value={formData.address}
                     rows="4"
+                    onChange={handleInputChange}
                   ></textarea>
                 </div>
               </div>
@@ -297,7 +306,7 @@ export default function CardSettings({ user = null }) {
 
             <button
               className="mt-6 bg-blueGray-800 text-white active:bg-blueGray-600 font-bold uppercase text-xs px-6 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-              type="button"
+              type="submit"
             >
               Ubah
             </button>

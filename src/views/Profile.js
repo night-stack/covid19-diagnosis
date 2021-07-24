@@ -59,6 +59,7 @@ export default function Profile() {
     const type = "png";
     const newKey = DateTimeHelper.getCurrentTimeMs();
     let urlImg = "";
+    console.log(user.id_member);
 
     if (files[0]) {
       const avatarFile = files[0];
@@ -77,15 +78,18 @@ export default function Profile() {
         .ref(`users/img-${newKey}.${type}`)
         .getDownloadURL();
 
-      Axios.put(
-        `http://localhost:3001/api/member/img-profile/${user.id_member}`,
-        {
-          image: urlImg,
-        }
-      ).then(() => {
-        toast.success("Foto profil berhasil dirubah");
-        window.location.reload();
-      });
+      if (urlImg !== "") {
+        console.log(urlImg);
+        Axios.put(
+          `http://localhost:3001/api/member/img-profile/${user.id_member}`,
+          {
+            image: urlImg,
+          }
+        ).then(() => {
+          toast.success("Foto profil berhasil dirubah");
+          window.location.reload();
+        });
+      }
     }
   };
 
@@ -216,6 +220,7 @@ export default function Profile() {
                                 .default
                         }
                         className="profilepic__image shadow-xl rounded-full h-auto align-middle border-none max-w-150-px"
+                        style={{ minWidth: "150px" }}
                       />
                       <input
                         id="image"

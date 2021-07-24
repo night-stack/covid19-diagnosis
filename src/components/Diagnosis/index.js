@@ -90,8 +90,8 @@ const FormDiagnosis = () => {
     }
   }, [data]);
 
-  const nextSession = (item) => {
-    const array = [...review];
+  const nextSession = (id, item) => {
+    let array = [...review];
     const bol = item.answer === true ? 1 : 0;
 
     function getIndex(value, arr, prop) {
@@ -104,9 +104,10 @@ const FormDiagnosis = () => {
       return -1;
     }
     const index = getIndex(item.indikasi, array, "id");
-
     if (index !== -1) {
-      array.splice(index, 1);
+      let items = { ...array[index] };
+      items.answer = item.answer;
+      array[index] = items;
       setReview(array);
     } else {
       setReview([
@@ -121,7 +122,7 @@ const FormDiagnosis = () => {
   };
 
   const nodeNextSession = (item) => {
-    const array = [...review];
+    let array = [...review];
 
     function getIndex(value, arr, prop) {
       // eslint-disable-next-line no-plusplus
@@ -135,7 +136,9 @@ const FormDiagnosis = () => {
     const index = getIndex(item.indikasi, array, "id");
 
     if (index !== -1) {
-      array.splice(index, 1);
+      let items = { ...array[index] };
+      items.answer = item.answer;
+      array[index] = items;
       setReview(array);
     } else {
       setReview([
@@ -200,7 +203,7 @@ const FormDiagnosis = () => {
       }
       return -1;
     }
-    const index = getIndex(id, array, "id");
+    const index = getIndex(item.indikasi, array, "id");
 
     if (index !== -1) {
       array.splice(index, 1);
@@ -209,6 +212,34 @@ const FormDiagnosis = () => {
       setReview([
         ...review,
         { id, question: item.question, answer: item.answer },
+      ]);
+    }
+    setSession(0);
+    setNodeSession(0);
+    setFinish(true);
+  };
+
+  const nodeFinishSession = (id, item) => {
+    const array = [...review];
+
+    function getIndex(value, arr, prop) {
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i][prop] === value) {
+          return i;
+        }
+      }
+      return -1;
+    }
+    const index = getIndex(id, array, "id");
+
+    if (index !== -1) {
+      array.splice(index, 1);
+      setReview(array);
+    } else {
+      setReview([
+        ...review,
+        { id: item.indikasi, question: item.question, answer: item.answer },
       ]);
     }
     setSession(0);
@@ -236,11 +267,13 @@ const FormDiagnosis = () => {
                   Hasil Diagnosa
                 </h1>
                 <h5 className="text-xl font-semibold uppercase">
-                  {user && user.nama_member}
+                  {user && user?.nama_member}
                 </h5>
                 <div className="text-sm text-blueGray-500">
-                  <p>{`${user & user.email} | ${
-                    user && user.nomor_hp ? user.nomor_hp : "Belum diatur"
+                  <p>{`${
+                    user && user?.email ? user?.email : "Belum diatur"
+                  } | ${
+                    user && user?.nomor_hp ? user?.nomor_hp : "Belum diatur"
                   }`}</p>
                   <p>
                     {user?.jenis_kelamin === "L" && "Laki"}
@@ -248,26 +281,46 @@ const FormDiagnosis = () => {
                     {user && !user.jenis_kelamin && "Belum diatur"}
                   </p>
                   <p>{`${
-                    user && user.tempat_lahir
-                      ? user.tempat_lahir
+                    user && user?.tempat_lahir
+                      ? user?.tempat_lahir
                       : "Belum diatur"
                   }, ${
-                    user && user.tanggal_lahir
+                    user && user?.tanggal_lahir
                       ? DateTimeHelper.getFormatedDate(
-                          user.tanggal_lahir,
+                          user?.tanggal_lahir,
                           "DD MMMM YYYY"
                         )
                       : "Belum diatur"
                   }`}</p>
                   <p className="uppercase">
-                    {user && user.alamat ? user.alamat : "Alamat belum diatur"}
+                    {user && user?.alamat ? user.alamat : "Alamat belum diatur"}
                   </p>
                 </div>
                 <div className="my-6 text-blueGray-500">
-                  Berdasarkan hasil diagnosa yang dilakukan pada kalkulasi
-                  jawaban sesi tanya jawab sebelumnya, bahwasannya pengguna atas
-                  nama <b>{user && user.nama_member}</b> telah <b>Terbebas</b>{" "}
-                  dari Covid-19.
+                  <p>
+                    Berdasarkan hasil diagnosa yang dilakukan pada kalkulasi
+                    jawaban sesi tanya jawab sebelumnya, bahwasannya pengguna
+                    atas nama <b>{user && user.nama_member}</b> <b>Negatif</b>{" "}
+                    Covid-19.
+                  </p>
+                  <br />
+                  <p>
+                    Segera periksa lebih lanjut kondisi kesehatan Anda di rumah
+                    sakit terdekat.
+                  </p>
+                  <br />
+                  <p>Saat ini Anda belum menunjukkan gejala apapun</p>
+                  <br />
+                  <p>
+                    Saat ini Anda hanya terkena gejala flu biasa. Istirahat yang
+                    cukup, jaga pola hidup sehat, serta olahraga teratur untuk
+                    meningkatkan daya tahan tubuh. Jika sakit tidak kunjung
+                    sembuh, kami menyarankan agar Anda segera memeriksa kondisi
+                    kesehatan dengan pergi ke klinik terdekat.
+                  </p>
+                  <br />
+                  Jangan lupa untuk tetap mematuhi & mengikuti protokol
+                  kesehatan.
                 </div>
                 {user && (
                   <div
@@ -317,6 +370,7 @@ const FormDiagnosis = () => {
                           session={nodeSession}
                           nextSession={nodeNextSession}
                           prevSession={nodePrevSession}
+                          finishSession={nodeFinishSession}
                         />
                       );
                     })}
@@ -479,7 +533,7 @@ const QuestionForm = ({
           </button>
         ) : (
           <button
-            onClick={() => nextSession(item)}
+            onClick={() => nextSession(index, item)}
             className="text-xs font-bold bg-lightBlue-400 active:bg-lightBlue-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150"
           >
             Lanjut
@@ -498,6 +552,7 @@ const NodeForm = ({
   session,
   nextSession,
   prevSession,
+  finishSession,
 }) => {
   return (
     <div key={item.indikasi} className={show}>
@@ -544,12 +599,21 @@ const NodeForm = ({
             Kembali
           </button>
         )}
-        <button
-          onClick={() => nextSession(item)}
-          className="text-xs font-bold bg-lightBlue-400 active:bg-lightBlue-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150"
-        >
-          Lanjut
-        </button>
+        {QUESTION_NODE.length - 1 === session ? (
+          <button
+            onClick={() => finishSession(index, item)}
+            className="text-xs font-bold bg-lightBlue-400 active:bg-lightBlue-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150"
+          >
+            Selesai
+          </button>
+        ) : (
+          <button
+            onClick={() => nextSession(item)}
+            className="text-xs font-bold bg-lightBlue-400 active:bg-lightBlue-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150"
+          >
+            Lanjut
+          </button>
+        )}
       </div>
     </div>
   );

@@ -16,14 +16,6 @@ export default function FooterAdmin() {
               <ul className="flex flex-wrap list-none md:justify-end  justify-center">
                 <li>
                   <a
-                    href="#about"
-                    className="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
-                  >
-                    About Us
-                  </a>
-                </li>
-                <li>
-                  <a
                     href="https://github.com/creativetimofficial/notus-react/blob/main/LICENSE.md?ref=nr-footer-admin"
                     className="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
                   >

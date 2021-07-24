@@ -14,6 +14,7 @@ import Dashboard from "views/admin/Dashboard.js";
 import Requests from "views/admin/Request.js";
 import Settings from "views/admin/Settings.js";
 import Users from "views/admin/Users.js";
+import Testing from "views/admin/Pengujian";
 
 export default function Admin() {
   return (
@@ -29,6 +30,7 @@ export default function Admin() {
             <Route path="/admin/request" exact component={Requests} />
             <Route path="/admin/settings" exact component={Settings} />
             <Route path="/admin/users" exact component={Users} />
+            <Route path="/admin/testing" exact component={Testing} />
             <Redirect from="/admin" to="/admin/dashboard" />
           </Switch>
           <FooterAdmin />

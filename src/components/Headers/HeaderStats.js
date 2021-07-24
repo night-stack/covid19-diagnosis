@@ -5,6 +5,7 @@ import CardStats from "components/Cards/CardStats.js";
 
 export default function HeaderStats() {
   const [data, setData] = React.useState([]);
+  const [dataset, setDataset] = React.useState([]);
 
   React.useEffect(() => {
     Axios.get("http://localhost:3001/api/member").then((response) => {
@@ -26,6 +27,14 @@ export default function HeaderStats() {
                   statTitle={data.length}
                   statIconName="fas fa-users"
                   statIconColor="bg-orange-500"
+                />
+              </div>
+              <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+                <CardStats
+                  statSubtitle="DATASET"
+                  statTitle={8005}
+                  statIconName="fas fa-database"
+                  statIconColor="bg-blueGray-800"
                 />
               </div>
             </div>

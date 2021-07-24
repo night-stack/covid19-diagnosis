@@ -22,14 +22,6 @@ export default function FooterSmall(props) {
               <ul className="flex flex-wrap list-none md:justify-end  justify-center">
                 <li>
                   <a
-                    href="#about"
-                    className="text-white hover:text-blueGray-300 text-sm font-semibold block py-1 px-3"
-                  >
-                    About Us
-                  </a>
-                </li>
-                <li>
-                  <a
                     href="https://github.com/creativetimofficial/notus-react/blob/main/LICENSE.md?ref=nr-footer-small"
                     className="text-white hover:text-blueGray-300 text-sm font-semibold block py-1 px-3"
                   >

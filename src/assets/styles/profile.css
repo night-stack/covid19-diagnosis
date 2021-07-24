@@ -17,6 +17,7 @@
   }
   
   .profilepic__image {
+    height: -webkit-fill-available;
     opacity: 1;
     transition: opacity .2s ease-in-out;
   }
@@ -50,6 +51,7 @@
     font-size: 12px;
     width: 50%;
     text-align: center;
+    cursor: pointer;
   }
 
   .react-datepicker-wrapper {
