@@ -1,5 +1,6 @@
 import React from "react";
-// import { useHistory } from "react-router-dom";
+import Axios from "axios";
+
 import { createPopper } from "@popperjs/core";
 
 const UserDropdown = () => {
@@ -10,7 +11,13 @@ const UserDropdown = () => {
   React.useEffect(() => {
     if (data) {
       const authUser = JSON.parse(data);
-      setUser(authUser);
+      Axios.get(`http://localhost:3001/api/admin/${authUser.id_admin}`).then(
+        (response) => {
+          response.data.forEach((item) => {
+            setUser({ ...item });
+          });
+        }
+      );
     }
   }, [data]);
 
@@ -57,7 +64,11 @@ const UserDropdown = () => {
               <img
                 alt="..."
                 className="w-full rounded-full align-middle border-none shadow-lg"
-                src={require("assets/img/default-image-user.png").default}
+                src={
+                  user && user.foto_profil
+                    ? user.foto_profil
+                    : require("assets/img/default-image-user.png").default
+                }
               />
             </span>
           </div>
