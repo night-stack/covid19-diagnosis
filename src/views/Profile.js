@@ -64,10 +64,8 @@ export default function Profile() {
     if (files[0]) {
       const avatarFile = files[0];
       if (user.foto_profil) {
-        await firebase
-          .storage()
-          .ref(`users/img-${user.foto_profil}.${type}`)
-          .delete();
+        let profileRef = firebase.storage().refFromURL(user.foto_profil);
+        profileRef.delete();
       }
       await firebase
         .storage()
