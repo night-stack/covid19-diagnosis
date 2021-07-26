@@ -325,7 +325,7 @@ const FormDiagnosis = ({ api = [] }) => {
             id_member: user.id_member,
             diagnosa: d,
             date: DateTimeHelper.getFormatedDate(Date(), "YYYY-MM-DD HH:mm:ss"),
-            id_diagnosis: responseData.data[0].id_diagnosis,
+            id_diagnosis: responseData.data[0]?.id_diagnosis,
           });
         }
       });
@@ -464,7 +464,7 @@ const FormDiagnosis = ({ api = [] }) => {
                       </p>
                     </>
                   )}
-                  {status === "negative" && diagnosa.length > 20 && (
+                  {status === "negative" && diagnosa.length > 30 && (
                     <>
                       <br />
                       <p>
@@ -475,7 +475,7 @@ const FormDiagnosis = ({ api = [] }) => {
                       </p>
                     </>
                   )}
-                  {status === "negative" && diagnosa.length < 20 && (
+                  {status === "negative" && diagnosa.length < 30 && (
                     <>
                       <br />
                       <p>
