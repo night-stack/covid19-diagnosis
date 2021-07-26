@@ -10,7 +10,7 @@ import Node5 from "../../views/admin/node/Node5";
 
 // import TableDropdown from "components/Dropdowns/TableDropdown.js";
 
-export default function CardTable({ color, api }) {
+export default function CardTable({ color, api = null }) {
   return (
     <>
       <div
@@ -36,15 +36,17 @@ export default function CardTable({ color, api }) {
         </div>
         <div className="block w-full overflow-x-auto">
           {/* Projects table */}
-          <table className="items-center w-full bg-transparent border-collapse">
-            <tbody>
-              <Node1 color={color} api={api} />
-              <Node2 color={color} api={api} />
-              <Node3 color={color} api={api} />
-              <Node4 color={color} api={api} />
-              <Node5 color={color} api={api} />
-            </tbody>
-          </table>
+          {api && (
+            <table className="items-center w-full bg-transparent border-collapse">
+              <tbody>
+                <Node1 color={color} api={api} />
+                <Node2 color={color} api={api} />
+                <Node3 color={color} api={api} />
+                <Node4 color={color} api={api} />
+                <Node5 color={color} api={api} />
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </>
