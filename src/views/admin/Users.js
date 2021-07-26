@@ -205,7 +205,7 @@ export default function Users() {
       <div className="flex flex-wrap mt-4">
         <div className="w-full mb-12 p-4" style={{ marginTop: "4rem" }}>
           <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-lightBlue-900 text-white"></div>
-          <div className="mb-3 float-right w-">
+          <div className="mb-3 float-right">
             <button
               type
               className="px-6 py-2 rounded text-white bg-lightBlue-400 font-semibold text-sm"

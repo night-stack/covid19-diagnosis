@@ -6,14 +6,16 @@ import Footer from "components/Footers/Footer.js";
 import FormDiagnosis from "components/Diagnosis";
 
 export default function Diagnosis() {
+  const [api, setApi] = React.useState([]);
+
   React.useEffect(() => {
     const fetch = async () => {
       const httpResponse = await HttpGetHelper.getData(
-        "http://localhost:8080/home/test",
-        { "Access-Control-Allow-Origin": "*" }
+        "http://localhost:8080/home/test?result",
+        {}
       );
       if (httpResponse) {
-        console.log(httpResponse);
+        setApi(httpResponse);
       }
     };
 
@@ -25,7 +27,7 @@ export default function Diagnosis() {
       <Navbar class="bg-blueGray-800" />
       <main>
         <section className="relative py-32">
-          <FormDiagnosis />
+          <FormDiagnosis api={api} />
         </section>
       </main>
       <Footer />

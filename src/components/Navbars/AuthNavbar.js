@@ -80,43 +80,50 @@ export default function Navbar(props) {
                 </a>
               </li>
 
-              {user && url.length > 0 && url[1] !== "auth" && (
-                <li className="flex items-center">
-                  <a
-                    className="lg:text-white lg:hover:text-blueGray-200 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs font-bold"
-                    href="/profile"
-                  >
-                    <i className="lg:text-blueGray-200 text-blueGray-400 fas fa-user-circle text-lg leading-lg " />
-                    <span className="inline-block ml-2">
-                      {user && user.email}
-                    </span>
-                  </a>
-                </li>
-              )}
+              {user &&
+                user.role === "user" &&
+                url.length > 0 &&
+                url[1] !== "auth" && (
+                  <li className="flex items-center">
+                    <a
+                      className="lg:text-white lg:hover:text-blueGray-200 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs font-bold"
+                      href="/profile"
+                    >
+                      <i className="lg:text-blueGray-200 text-blueGray-400 fas fa-user-circle text-lg leading-lg " />
+                      <span className="inline-block ml-2">
+                        {user && user.email}
+                      </span>
+                    </a>
+                  </li>
+                )}
 
-              {!user && (
-                <li className="flex items-center">
-                  <button
-                    className="bg-white text-blueGray-700 active:bg-blueGray-50 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={login}
-                  >
-                    <i className="fas fa-sign-in-alt"></i> Login
-                  </button>
-                </li>
-              )}
+              {!user ||
+                (user && user.role !== "user" && (
+                  <li className="flex items-center">
+                    <button
+                      className="bg-white text-blueGray-700 active:bg-blueGray-50 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
+                      type="button"
+                      onClick={login}
+                    >
+                      <i className="fas fa-sign-in-alt"></i> Login
+                    </button>
+                  </li>
+                ))}
 
-              {user && url.length > 0 && url[1] !== "auth" && (
-                <li className="flex items-center">
-                  <button
-                    className="bg-blueGray-800 text-white active:bg-blueGray-50 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
-                    type="button"
-                    onClick={logout}
-                  >
-                    <i className="fas fa-sign-out-alt"></i> Logout
-                  </button>
-                </li>
-              )}
+              {user &&
+                user.role === "user" &&
+                url.length > 0 &&
+                url[1] !== "auth" && (
+                  <li className="flex items-center">
+                    <button
+                      className="bg-blueGray-800 text-white active:bg-blueGray-50 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150"
+                      type="button"
+                      onClick={logout}
+                    >
+                      <i className="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                  </li>
+                )}
             </ul>
           </div>
         </div>

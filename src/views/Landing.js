@@ -108,9 +108,12 @@ export default function Landing() {
                       melakukan cek kondisi kesehatan Anda.
                     </p>
                     <div className="text-center mx-3">
-                      <button className="text-xs font-bold bg-lightBlue-400 active:bg-lightBlue-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150">
+                      <Link
+                        to="/diagnosis"
+                        className="text-xs font-bold bg-lightBlue-400 active:bg-lightBlue-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150"
+                      >
                         Diagnosis sekarang
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>

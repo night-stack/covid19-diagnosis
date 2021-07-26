@@ -9,7 +9,8 @@ import Axios from "axios";
 // import FormPasswordMember from "../modal/passwordForm";
 import CardTable from "components/Cards/CardTable.js";
 import { ToastContainer, toast } from "react-toastify";
-import { DateTimeHelper } from "../../helpers";
+import { DateTimeHelper, HttpGetHelper } from "../../helpers";
+import FormDataset from "views/modal/datasetForm";
 
 const columns = memoize((calculate) => [
   {
@@ -53,42 +54,9 @@ const columns = memoize((calculate) => [
     selector: "result",
     sortable: true,
   },
-  {
-    name: "Aksi",
-    center: true,
-    cell: (row) => (
-      <div>
-        {/* <div
-            className="mb-3 mb-xl-0 float-left"
-            style={{ marginRight: "2rem" }}
-          >
-            <button type="button" onClick={() => onToggleEditMode(row)}>
-              <i class="fas fa-pencil-alt"></i>
-            </button>
-          </div>
-          <div
-            className="mb-3 mb-xl-0 float-left"
-            style={{ marginRight: "2rem" }}
-          >
-            <button type="button" onClick={() => onToggleEditPasswordMode(row)}>
-              <i class="fas fa-unlock-alt"></i>
-            </button>
-          </div> */}
-        <div className="mb-3 mb-xl-0 float-left">
-          <button
-            type="button"
-            onClick={() => calculate(row)}
-            className="bg-blueGray-800 text-sm text-white px-2 py-2 hover:bg-blueGray-600 rounded mt-2 mb-2"
-          >
-            Hitung
-          </button>
-        </div>
-      </div>
-    ),
-  },
 ]);
 
-export default function Users() {
+export default function Testing() {
   const [search, setSearch] = React.useState("");
   const [handle, setHandle] = React.useState({
     editMode: false,
@@ -109,6 +77,7 @@ export default function Users() {
       result: "negatif",
     },
   ]);
+  const [api, setApi] = React.useState([]);
   const history = useHistory();
   const user = localStorage.getItem("authUser");
   const filteredItems = data.filter(
@@ -119,14 +88,17 @@ export default function Users() {
 
   React.useEffect(() => {
     if (user) {
-      //   const authUser = JSON.parse(user);
-      //   if (authUser.role !== "admin") {
-      //     history.push("/auth/admin/login");
-      //   } else {
-      //     Axios.get("http://localhost:3001/api/member").then((response) => {
-      //       setData(response.data);
-      //     });
-      //   }
+      const fetch = async () => {
+        const httpResponse = await HttpGetHelper.getData(
+          "http://localhost:3002/diagnosis",
+          {}
+        );
+        if (httpResponse) {
+          setData(httpResponse);
+        }
+      };
+
+      fetch();
     } else {
       history.push("/auth/admin/login");
     }
@@ -239,8 +211,14 @@ export default function Users() {
     clearForm();
   };
 
-  const calculate = () => {
-    console.log("klik");
+  const calculate = async () => {
+    const httpResponse = await HttpGetHelper.getData(
+      "http://localhost:8080/home/test",
+      {}
+    );
+    if (httpResponse) {
+      setApi(httpResponse);
+    }
   };
 
   return (
@@ -249,6 +227,22 @@ export default function Users() {
       <div className="flex flex-wrap mt-4">
         <div className="w-full mb-12 p-4" style={{ marginTop: "4rem" }}>
           <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-lightBlue-900 text-white"></div>
+          <div className="mb-3 float-right">
+            <button
+              type
+              className="px-6 py-2 rounded text-white bg-blueGray-800 font-semibold text-sm mr-3"
+              onClick={calculate}
+            >
+              Kalkulasi
+            </button>
+            <button
+              type
+              className="px-6 py-2 rounded text-white bg-lightBlue-400 font-semibold text-sm"
+              onClick={btnMode}
+            >
+              Tambah
+            </button>
+          </div>
           <div className="flex float-left items-center mb-8">
             <input
               name="search"
@@ -282,13 +276,15 @@ export default function Users() {
             pagination
           />
         </div>
-        <div className="w-full mb-12 px-4">
-          <CardTable color="dark" />
-        </div>
+        {api.length > 0 && (
+          <div className="w-full mb-12 px-4">
+            <CardTable color="dark" api={api} />
+          </div>
+        )}
         {/* <div className="w-full mb-12 px-4">
           <CardTable color="dark" />
         </div> */}
-        {/* <FormMember
+        <FormDataset
           user={handle.user}
           onSave={onSave}
           editMode={handle.editMode}
@@ -297,7 +293,7 @@ export default function Users() {
           proses={handle.proses}
           open={handle.addMode}
         />
-        <FormPasswordMember
+        {/* <FormPasswordMember
           user={handle.user}
           onSave={onSavePassword}
           onCloseModal={onCloseModal}
