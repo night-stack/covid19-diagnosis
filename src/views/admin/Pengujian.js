@@ -77,7 +77,7 @@ export default function Testing() {
       result: "negatif",
     },
   ]);
-  const [api, setApi] = React.useState([]);
+  const [api, setApi] = React.useState(null);
   const history = useHistory();
   const user = localStorage.getItem("authUser");
   const filteredItems = data.filter(
@@ -276,7 +276,7 @@ export default function Testing() {
             pagination
           />
         </div>
-        {api.length > 0 && (
+        {api && (
           <div className="w-full mb-12 px-4">
             <CardTable color="dark" api={api} />
           </div>
