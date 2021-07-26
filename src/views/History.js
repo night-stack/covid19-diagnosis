@@ -1,13 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 // import { HttpGetHelper } from "../helpers";
+import { DateTimeHelper } from "../helpers";
 
 import Axios from "axios";
 
 import Navbar from "components/Navbars/AuthNavbar.js";
 import Footer from "components/Footers/Footer.js";
 
-export default function History() {
+const History = () => {
   const [user, setUser] = React.useState(null);
   const [history, setHistory] = React.useState([]);
   const data = localStorage.getItem("authUser");
@@ -66,205 +67,29 @@ export default function History() {
                     overflow: "auto",
                   }}
                 >
-                  <div
-                    className="text-blueGray-600 text-sm shadow-md my-2 p-4 flex"
-                    style={{ width: "45%" }}
-                  >
+                  {history.length > 0 &&
+                    history.map((val, index) => (
+                      <div
+                        className="text-blueGray-600 text-sm shadow-md my-2 p-4 flex"
+                        style={{ width: "45%" }}
+                        key={index}
+                      >
+                        <Detail item={val} user={user} />
+                      </div>
+                    ))}
+                  {history.length === 0 && (
                     <div
-                      className="w-1/3"
+                      className="py-10 text-center font-bold mt-auto flex items-center"
                       style={{
-                        backgroundImage: `url(${
-                          require("assets/img/default-image-user.png").default
-                        })`,
-                        backgroundSize: "contain",
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "center",
-                        marginRight: ".75rem",
+                        width: "50%",
+                        height: "30rem",
+                        paddingLeft: "2rem",
+                        paddingRight: "2rem",
                       }}
-                    ></div>
-                    <div className="w-2/3">
-                      <div className="flex justify-between items-center py-1">
-                        Nama
-                        <span className="font-semibold">Mifta</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        Tanggal
-                        <span className="font-semibold">12 Juli 2020</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        Status
-                        <span className="font-semibold">Negatif</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        Persentase
-                        <span className="font-semibold">20%</span>
-                      </div>
-                      <p className="mt-3 text-blueGray-800 font-bold mb-2 border-b pb-2">
-                        Diagnosa
-                      </p>
-                      <p>Hanya terkena gejala flu ringan saja.</p>
+                    >
+                      *** Belum ada riwayat ***
                     </div>
-                  </div>
-
-                  <div
-                    className="text-blueGray-600 text-sm shadow-md my-2 p-4 flex"
-                    style={{ width: "45%" }}
-                  >
-                    <div
-                      className="w-1/3"
-                      style={{
-                        backgroundImage: `url(${
-                          require("assets/img/default-image-user.png").default
-                        })`,
-                        backgroundSize: "contain",
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "center",
-                        marginRight: ".75rem",
-                      }}
-                    ></div>
-                    <div className="w-2/3">
-                      <div className="flex justify-between items-center py-1">
-                        Nama
-                        <span className="font-semibold">Mifta</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        Tanggal
-                        <span className="font-semibold">12 Juli 2020</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        Status
-                        <span className="font-semibold">Negatif</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        Persentase
-                        <span className="font-semibold">20%</span>
-                      </div>
-                      <p className="mt-3 text-blueGray-800 font-bold mb-2 border-b pb-2">
-                        Diagnosa
-                      </p>
-                      <p>Hanya terkena gejala flu ringan saja.</p>
-                    </div>
-                  </div>
-
-                  <div
-                    className="text-blueGray-600 text-sm shadow-md my-2 p-4 flex"
-                    style={{ width: "45%" }}
-                  >
-                    <div
-                      className="w-1/3"
-                      style={{
-                        backgroundImage: `url(${
-                          require("assets/img/default-image-user.png").default
-                        })`,
-                        backgroundSize: "contain",
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "center",
-                        marginRight: ".75rem",
-                      }}
-                    ></div>
-                    <div className="w-2/3">
-                      <div className="flex justify-between items-center py-1">
-                        Nama
-                        <span className="font-semibold">Mifta</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        Tanggal
-                        <span className="font-semibold">12 Juli 2020</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        Status
-                        <span className="font-semibold">Negatif</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        Persentase
-                        <span className="font-semibold">20%</span>
-                      </div>
-                      <p className="mt-3 text-blueGray-800 font-bold mb-2 border-b pb-2">
-                        Diagnosa
-                      </p>
-                      <p>Hanya terkena gejala flu ringan saja.</p>
-                    </div>
-                  </div>
-
-                  <div
-                    className="text-blueGray-600 text-sm shadow-md my-2 p-4 flex"
-                    style={{ width: "45%" }}
-                  >
-                    <div
-                      className="w-1/3"
-                      style={{
-                        backgroundImage: `url(${
-                          require("assets/img/default-image-user.png").default
-                        })`,
-                        backgroundSize: "contain",
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "center",
-                        marginRight: ".75rem",
-                      }}
-                    ></div>
-                    <div className="w-2/3">
-                      <div className="flex justify-between items-center py-1">
-                        Nama
-                        <span className="font-semibold">Mifta</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        Tanggal
-                        <span className="font-semibold">12 Juli 2020</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        Status
-                        <span className="font-semibold">Negatif</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        Persentase
-                        <span className="font-semibold">20%</span>
-                      </div>
-                      <p className="mt-3 text-blueGray-800 font-bold mb-2 border-b pb-2">
-                        Diagnosa
-                      </p>
-                      <p>Hanya terkena gejala flu ringan saja.</p>
-                    </div>
-                  </div>
-
-                  <div
-                    className="text-blueGray-600 text-sm shadow-md my-2 p-4 flex"
-                    style={{ width: "45%" }}
-                  >
-                    <div
-                      className="w-1/3"
-                      style={{
-                        backgroundImage: `url(${
-                          require("assets/img/default-image-user.png").default
-                        })`,
-                        backgroundSize: "contain",
-                        backgroundRepeat: "no-repeat",
-                        backgroundPosition: "center",
-                        marginRight: ".75rem",
-                      }}
-                    ></div>
-                    <div className="w-2/3">
-                      <div className="flex justify-between items-center py-1">
-                        Nama
-                        <span className="font-semibold">Mifta</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        Tanggal
-                        <span className="font-semibold">12 Juli 2020</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        Status
-                        <span className="font-semibold">Negatif</span>
-                      </div>
-                      <div className="flex justify-between items-center py-1">
-                        Persentase
-                        <span className="font-semibold">20%</span>
-                      </div>
-                      <p className="mt-3 text-blueGray-800 font-bold mb-2 border-b pb-2">
-                        Diagnosa
-                      </p>
-                      <p>Hanya terkena gejala flu ringan saja.</p>
-                    </div>
-                  </div>
+                  )}
                 </div>
                 <div className="w-full md:w-4/12 mx-auto">
                   <div
@@ -297,4 +122,79 @@ export default function History() {
       <Footer />
     </>
   );
-}
+};
+
+const Detail = ({ item = null, user }) => {
+  const [diagnosa, setDiagnosa] = React.useState([]);
+
+  React.useEffect(() => {
+    if (item) {
+      Axios.get(
+        `http://localhost:3001/api/diagnosis/${item.id_diagnosis}`
+      ).then((response) => {
+        response.data.forEach((item) => {
+          setDiagnosa({ ...item });
+        });
+      });
+    }
+  }, [item]);
+
+  return (
+    <>
+      <div
+        className="w-1/3"
+        style={{
+          backgroundImage: `url(${
+            user && user.foto_profil
+              ? user.foto_profil
+              : require("assets/img/default-image-user.png").default
+          })`,
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "center",
+          marginRight: ".75rem",
+        }}
+      ></div>
+      <div className="w-2/3">
+        <div className="flex justify-between items-center py-1">
+          Nama
+          <span className="font-semibold">{user && user.nama_member}</span>
+        </div>
+        <div className="flex justify-between items-center py-1">
+          Tanggal
+          <span className="font-semibold">
+            {DateTimeHelper.getFormatedDate(
+              user && user.tanggal_lahir,
+              "DD MMMM YYYY"
+            )}
+          </span>
+        </div>
+        <div className="flex justify-between items-center py-1">
+          Status
+          <span
+            className="font-semibold"
+            style={{ textTransform: "capitalize" }}
+          >
+            {diagnosa && diagnosa.hasil_diagnosis}
+          </span>
+        </div>
+        <p className="mt-3 text-blueGray-800 font-bold mb-2 border-b pb-2">
+          Diagnosa
+        </p>
+        {diagnosa && diagnosa.hasil_diagnosis === "negative" ? (
+          <p>
+            Hanya terkena{" "}
+            <span style={{ textTransform: "lowercase" }}>{item.diagnosa}</span>.
+          </p>
+        ) : (
+          <p>
+            Terkena{" "}
+            <span style={{ textTransform: "lowercase" }}>{item.diagnosa}</span>.
+          </p>
+        )}
+      </div>
+    </>
+  );
+};
+
+export default History;

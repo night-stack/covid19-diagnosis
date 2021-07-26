@@ -2,6 +2,7 @@ import React from "react";
 import Axios from "axios";
 
 import CardStats from "components/Cards/CardStats.js";
+import { HttpGetHelper } from "../../helpers";
 
 export default function HeaderStats() {
   const [data, setData] = React.useState([]);
@@ -11,6 +12,17 @@ export default function HeaderStats() {
     Axios.get("http://localhost:3001/api/member").then((response) => {
       setData(response.data);
     });
+    const fetch = async () => {
+      const httpResponse = await HttpGetHelper.getData(
+        "http://localhost:3002/diagnosis",
+        {}
+      );
+      if (httpResponse) {
+        setDataset(httpResponse);
+      }
+    };
+
+    fetch();
   }, []);
 
   return (
@@ -32,7 +44,7 @@ export default function HeaderStats() {
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
                   statSubtitle="DATASET"
-                  statTitle={8005}
+                  statTitle={dataset.length}
                   statIconName="fas fa-database"
                   statIconColor="bg-blueGray-800"
                 />

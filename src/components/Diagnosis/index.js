@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import { DateTimeHelper } from "../../helpers";
+import _ from "lodash";
+import { ToastContainer, toast } from "react-toastify";
 
 const QUESTION_NODE = [
   {
@@ -62,7 +64,7 @@ const QUESTION_DATA = [
   },
 ];
 
-const FormDiagnosis = () => {
+const FormDiagnosis = ({ api = [] }) => {
   const [review, setReview] = useState([]);
   const [session, setSession] = useState(0);
   const [nodeSession, setNodeSession] = useState(0);
@@ -73,9 +75,21 @@ const FormDiagnosis = () => {
   const [node, setNode] = useState(QUESTION_NODE);
   const [pertanyaan, setPertanyaan] = useState(QUESTION_DATA);
   const [payload, setPayload] = useState(null);
+  const [compare, setCompare] = useState([]);
+  const [diagnosa, setDiagnosa] = useState("");
+  const [status, setStatus] = useState("");
   const data = localStorage.getItem("authUser");
 
   React.useEffect(() => {
+    if (api.length > 0) {
+      let array = [];
+      api.map((item) => {
+        const tes = item.split("= ");
+        let arr = tes[0].split(",");
+        array.push([arr, tes[1]]);
+      });
+      setCompare(array);
+    }
     if (data) {
       const authUser = JSON.parse(data);
       if (authUser.role === "user") {
@@ -88,9 +102,9 @@ const FormDiagnosis = () => {
         });
       }
     }
-  }, [data]);
+  }, [data, api]);
 
-  const nextSession = (id, item) => {
+  const nextSession = (item) => {
     let array = [...review];
     const bol = item.answer === true ? 1 : 0;
 
@@ -189,11 +203,14 @@ const FormDiagnosis = () => {
     setNode(QUESTION_NODE);
     setNodeMode(true);
     setPayload(null);
+    setDiagnosa("");
+    setStatus("");
+    setCompare([]);
   };
 
-  const finishSession = (id, item) => {
-    const array = [...review];
-
+  const finishSession = (item) => {
+    let array = [...review];
+    const bol = item.answer === true ? 1 : 0;
     function getIndex(value, arr, prop) {
       // eslint-disable-next-line no-plusplus
       for (let i = 0; i < arr.length; i++) {
@@ -211,12 +228,108 @@ const FormDiagnosis = () => {
     } else {
       setReview([
         ...review,
-        { id, question: item.question, answer: item.answer },
+        { id: item.indikasi, question: item.question, answer: item.answer },
       ]);
     }
+    payload[item.indikasi] = bol;
     setSession(0);
     setNodeSession(0);
     setFinish(true);
+
+    let tesData = [];
+    tesData.push(payload.indikasi);
+    if (payload.indikasi === "other" || payload.indikasi === "abroad") {
+      if (payload.sakitKepala) {
+        tesData.push("sakitKepala");
+      }
+    } else {
+      if (payload.batuk) {
+        tesData.push("batuk");
+      } else {
+        tesData.push("tidakBatuk");
+      }
+      if (payload.demam) {
+        tesData.push("demam");
+      } else {
+        tesData.push("tidakDemam");
+      }
+      if (payload.sakitKepala) {
+        tesData.push("sakitKepala");
+      } else {
+        tesData.push("tidakSakitKepala");
+      }
+      if (payload.sakitTenggorokan) {
+        tesData.push("sakitTenggorokan");
+      } else {
+        tesData.push("tidakSakitTenggorokan");
+      }
+      if (payload.sesakNafas) {
+        tesData.push("sesakNafas");
+      } else {
+        tesData.push("tidakSesakNafas");
+      }
+    }
+    // console.log("tesData", tesData);
+    function getIndexOfArray(arr, arr2) {
+      for (var i = 0; i < arr.length; i++) {
+        var equal = _.isEqual(arr[i][0], arr2);
+        if (equal) {
+          return i;
+        }
+      }
+    }
+    const idx = getIndexOfArray(compare, tesData);
+    let d = "";
+    if (idx) {
+      setStatus(compare[idx][1]);
+    }
+    if (compare[idx][1] === "negative") {
+      if (
+        (payload.batuk && payload.sakitTenggorokan) ||
+        (payload.batuk && payload.sakitTenggorokan && payload.demam)
+      ) {
+        setDiagnosa("Radang tenggorokan biasa");
+        d = "Radang tenggorokan biasa";
+      } else if (payload.batuk) {
+        setDiagnosa("Batuk biasa");
+        d = "Batuk biasa";
+      } else if (payload.demam || (payload.batuk && payload.demam)) {
+        setDiagnosa("Demam biasa");
+        d = "Demam biasa";
+      } else if (payload.batuk && payload.sesakNafas) {
+        setDiagnosa("Gejala flu biasa");
+        d = "Gejala flu biasa";
+      }
+    } else {
+      setDiagnosa("Gejala covid-19");
+      d = "Gejala covid-19";
+    }
+    toast.info("Mohon tunggu sebentar");
+    setTimeout(() => {
+      Axios.post("http://localhost:3001/api/diagnosis/add", {
+        indikasi: payload.indikasi,
+        batuk: payload.batuk,
+        demam: payload.demam,
+        sakitTenggorokan: payload.sakitTenggorokan,
+        sesakNafas: bol,
+        sakitKepala: payload.sakitKepala,
+        result: compare[idx][1],
+      }).then(async () => {
+        toast.success("Diagnosa berhasil disimpan");
+        // window.location.reload();
+        const responseData = await Axios.get(
+          "http://localhost:3001/api/diagnosis/id"
+        );
+        if (responseData.data) {
+          Axios.post("http://localhost:3001/api/history/add", {
+            id_member: user.id_member,
+            diagnosa: d,
+            date: DateTimeHelper.getFormatedDate(Date(), "YYYY-MM-DD HH:mm:ss"),
+            id_diagnosis: responseData.data[0].id_diagnosis,
+          });
+        }
+      });
+    }, 1500);
   };
 
   const nodeFinishSession = (id, item) => {
@@ -245,6 +358,43 @@ const FormDiagnosis = () => {
     setSession(0);
     setNodeSession(0);
     setFinish(true);
+    setDiagnosa("Belum menunjukkan gejala apapun");
+    toast.info("Mohon tunggu sebentar");
+    setTimeout(() => {
+      Axios.post("http://localhost:3001/api/diagnosis/add", {
+        indikasi: "None",
+        batuk: 0,
+        demam: 0,
+        sakitTenggorokan: 0,
+        sesakNafas: 0,
+        sakitKepala: 0,
+        result: "negative",
+      }).then(async () => {
+        toast.success("Diagnosa berhasil disimpan");
+        // window.location.reload();
+        const responseData = await Axios.get(
+          "http://localhost:3001/api/diagnosis/id"
+        );
+        if (responseData.data) {
+          Axios.post("http://localhost:3001/api/history/add", {
+            id_member: user.id_member,
+            diagnosa: "Belum menunjukkan gejala apapun",
+            date: DateTimeHelper.getFormatedDate(Date(), "YYYY-MM-DD HH:mm:ss"),
+            id_diagnosis: responseData.data[0].id_diagnosis,
+          });
+        }
+      });
+    }, 1500);
+  };
+
+  const resetNode = () => {
+    setSession(0);
+    setNodeSession(0);
+    setNodeMode(true);
+
+    setNode(QUESTION_NODE);
+    setPertanyaan(QUESTION_DATA);
+    setReview([]);
   };
 
   return (
@@ -252,6 +402,7 @@ const FormDiagnosis = () => {
       className="container mx-auto px-4 h-full"
       style={start ? { minHeight: "22rem" } : null}
     >
+      <ToastContainer position="top-center" />
       <div
         className="items-center flex flex-wrap"
         style={start ? { marginTop: "auto", height: "100%" } : null}
@@ -300,24 +451,46 @@ const FormDiagnosis = () => {
                   <p>
                     Berdasarkan hasil diagnosa yang dilakukan pada kalkulasi
                     jawaban sesi tanya jawab sebelumnya, bahwasannya pengguna
-                    atas nama <b>{user && user.nama_member}</b> <b>Negatif</b>{" "}
+                    atas nama <b>{user && user.nama_member}</b> yaitu "
+                    <b style={{ textTransform: "capitalize" }}>{status}</b>"{" "}
                     Covid-19.
                   </p>
-                  <br />
-                  <p>
-                    Segera periksa lebih lanjut kondisi kesehatan Anda di rumah
-                    sakit terdekat.
-                  </p>
-                  <br />
-                  <p>Saat ini Anda belum menunjukkan gejala apapun</p>
-                  <br />
-                  <p>
-                    Saat ini Anda hanya terkena gejala flu biasa. Istirahat yang
-                    cukup, jaga pola hidup sehat, serta olahraga teratur untuk
-                    meningkatkan daya tahan tubuh. Jika sakit tidak kunjung
-                    sembuh, kami menyarankan agar Anda segera memeriksa kondisi
-                    kesehatan dengan pergi ke klinik terdekat.
-                  </p>
+                  {status === "positive" && (
+                    <>
+                      <br />
+                      <p>
+                        Segera periksa lebih lanjut kondisi kesehatan Anda di
+                        rumah sakit terdekat.
+                      </p>
+                    </>
+                  )}
+                  {status === "negative" && diagnosa.length > 20 && (
+                    <>
+                      <br />
+                      <p>
+                        Saat ini Anda{" "}
+                        <span style={{ textTransform: "lowercase" }}>
+                          {diagnosa}
+                        </span>
+                      </p>
+                    </>
+                  )}
+                  {status === "negative" && diagnosa.length < 20 && (
+                    <>
+                      <br />
+                      <p>
+                        Saat ini Anda hanya terkena{" "}
+                        <span style={{ textTransform: "lowercase" }}>
+                          {diagnosa}
+                        </span>
+                        . Istirahat yang cukup, jaga pola hidup sehat, serta
+                        olahraga teratur untuk meningkatkan daya tahan tubuh.
+                        Jika sakit tidak kunjung sembuh, kami menyarankan agar
+                        Anda segera memeriksa kondisi kesehatan dengan pergi ke
+                        klinik terdekat.
+                      </p>
+                    </>
+                  )}
                   <br />
                   Jangan lupa untuk tetap mematuhi & mengikuti protokol
                   kesehatan.
@@ -387,6 +560,7 @@ const FormDiagnosis = () => {
                           session={session}
                           nextSession={nextSession}
                           prevSession={prevSession}
+                          resetNode={resetNode}
                           start={start}
                           pertanyaan={pertanyaan}
                           finishSession={finishSession}
@@ -478,6 +652,7 @@ const QuestionForm = ({
   nextSession,
   prevSession,
   finishSession,
+  resetNode,
 }) => {
   return (
     <div key={index} className={show}>
@@ -516,6 +691,14 @@ const QuestionForm = ({
         </label>
       </div>
       <div className="mt-20 flex justify-between">
+        {session === 0 && (
+          <button
+            onClick={resetNode}
+            className="text-xs font-bold bg-red-400 active:bg-red-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150"
+          >
+            Kembali
+          </button>
+        )}
         {session !== 0 && (
           <button
             onClick={prevSession}
@@ -533,7 +716,7 @@ const QuestionForm = ({
           </button>
         ) : (
           <button
-            onClick={() => nextSession(index, item)}
+            onClick={() => nextSession(item)}
             className="text-xs font-bold bg-lightBlue-400 active:bg-lightBlue-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150"
           >
             Lanjut
@@ -601,7 +784,7 @@ const NodeForm = ({
         )}
         {QUESTION_NODE.length - 1 === session ? (
           <button
-            onClick={() => finishSession(index, item)}
+            onClick={() => finishSession(item)}
             className="text-xs font-bold bg-lightBlue-400 active:bg-lightBlue-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150"
           >
             Selesai
