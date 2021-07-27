@@ -356,7 +356,7 @@ const Node4 = ({ color, api = null }) => {
           </p>
         </td>
       </tr>
-      {/* wow */}
+
       <tr>
         <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
           <p
@@ -370,116 +370,79 @@ const Node4 = ({ color, api = null }) => {
           contactWithConfirm
         </td>
         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-          Batuk, Tidak Demam,Sakit Tenggorokan
+          Batuk, Tidak Demam, Sakit Kepala
         </td>
         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-          Sakit Kepala
+          Sakit Tenggorokan
           <p>
             Total :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sakitKepala?.sakitKepala.total
+                ?.sakitKepala?.sakitTenggorokan?.sakitTenggorokan.total
             }
           </p>
           <p>
             Positive :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sakitKepala?.sakitKepala.Positive
+              ?.sakitKepala?.sakitTenggorokan?.sakitTenggorokan.Positive
             }
           </p>
           <p>
             Negative :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sakitKepala?.sakitKepala.Negative
+              ?.sakitKepala?.sakitTenggorokan?.sakitTenggorokan.Negative
             }
           </p>
           <p>
             Hasil :{" "}
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sakitKepala?.hasil
+              ?.sakitKepala?.sakitTenggorokan?.hasil
             }
           </p>
           <p>
             Gain Rasio :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sakitKepala?.gainRasio
+              ?.sakitKepala?.sakitTenggorokan?.gainRasio
             }
           </p>
-          Tidak Sakit Kepala
+          Tidak Sakit Tenggorokan
           <p>
             Total :
             {
-              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sakitKepala?.tidakSakitKepala.total
+             api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+             ?.sakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.total
             }
           </p>
           <p>
             Positive :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sakitKepala?.tidakSakitKepala.Positive
+              ?.sakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.Positive
             }
           </p>
           <p>
             Negative :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sakitKepala?.tidakSakitKepala.Negative
+              ?.sakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.Negative
             }
           </p>
           <p>
             Hasil :{" "}
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sakitKepala?.hasil
+              ?.sakitKepala?.sakitTenggorokan?.hasil
             }
           </p>
           <p>
             Gain Rasio :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sakitKepala?.gainRasio
-            }
-          </p>
-        </td>
-        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-          <p>
-            Total :
-            {
-              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sesakNafas?.sesakNafas.total
-            }
-          </p>
-          <p>
-            Positive :
-            {
-              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sesakNafas?.sesakNafas.Positive
-            }
-          </p>
-          <p>
-            Negative :
-            {
-              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sesakNafas?.sesakNafas.Negative
-            }
-          </p>
-          <p>
-            Hasil :{" "}
-            {
-              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sesakNafas?.hasil
-            }
-          </p>
-          <p>
-            Gain Rasio :
-            {
-              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sesakNafas?.gainRasio
+              ?.sakitKepala?.sakitTenggorokan?.gainRasio
             }
           </p>
         </td>
@@ -488,35 +451,72 @@ const Node4 = ({ color, api = null }) => {
             Total :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sesakNafas?.tidakSesakNafas.total
+                ?.sakitKepala?.sesakNafas?.sesakNafas.total
             }
           </p>
           <p>
             Positive :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sesakNafas?.tidakSesakNafas.Positive
+              ?.sakitKepala?.sesakNafas?.sesakNafas.Positive
             }
           </p>
           <p>
             Negative :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sesakNafas?.tidakSesakNafas.Negative
+              ?.sakitKepala?.sesakNafas?.sesakNafas.Negative
             }
           </p>
           <p>
             Hasil :{" "}
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sesakNafas?.hasil
+              ?.sakitKepala?.sesakNafas?.hasil
             }
           </p>
           <p>
             Gain Rasio :
             {
+             api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+             ?.sakitKepala?.sesakNafas?.gainRasio
+            }
+          </p>
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          <p>
+            Total :
+            {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.sakitTenggorokan?.sesakNafas?.gainRasio
+              ?.sakitKepala?.sesakNafas?.tidakSesakNafas?.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.sakitKepala?.sesakNafas?.tidakSesakNafas?.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.sakitKepala?.sesakNafas?.tidakSesakNafas?.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.sakitKepala?.sesakNafas?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+             api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+             ?.sakitKepala?.sesakNafas?.gainRasio
             }
           </p>
         </td>
@@ -535,116 +535,79 @@ const Node4 = ({ color, api = null }) => {
           contactWithConfirm
         </td>
         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-          Batuk, Tidak Demam, Tidak Sakit Tenggorokan
+          Batuk, Tidak Demam, Tidak Sakit Kepala
         </td>
         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-          Sakit Kepala
+          Sakit Tenggorokan
           <p>
             Total :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sakitKepala?.sakitKepala.total
+                ?.tidakSakitKepala?.sakitTenggorokan?.sakitTenggorokan.total
             }
           </p>
           <p>
             Positive :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sakitKepala?.sakitKepala.Positive
+              ?.tidakSakitKepala?.sakitTenggorokan?.sakitTenggorokan.Positive
             }
           </p>
           <p>
             Negative :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sakitKepala?.sakitKepala.Negative
+              ?.tidakSakitKepala?.sakitTenggorokan?.sakitTenggorokan.Negative
             }
           </p>
           <p>
             Hasil :{" "}
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sakitKepala?.hasil
+              ?.tidakSakitKepala?.sakitTenggorokan?.hasil
             }
           </p>
           <p>
             Gain Rasio :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sakitKepala?.gainRasio
+              ?.tidakSakitKepala?.sakitTenggorokan?.gainRasio
             }
           </p>
-          Tidak Sakit Kepala
+          Tidak Sakit Tenggorokan
           <p>
             Total :
             {
-              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sakitKepala?.tidakSakitKepala.total
+             api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+             ?.tidakSakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.total
             }
           </p>
           <p>
             Positive :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sakitKepala?.tidakSakitKepala.Positive
+              ?.tidakSakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.Positive
             }
           </p>
           <p>
             Negative :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sakitKepala?.tidakSakitKepala.Negative
+              ?.tidakSakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.Negative
             }
           </p>
           <p>
             Hasil :{" "}
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sakitKepala?.hasil
+              ?.tidakSakitKepala?.sakitTenggorokan?.hasil
             }
           </p>
           <p>
             Gain Rasio :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sakitKepala?.gainRasio
-            }
-          </p>
-        </td>
-        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-          <p>
-            Total :
-            {
-              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sesakNafas?.sesakNafas.total
-            }
-          </p>
-          <p>
-            Positive :
-            {
-              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sesakNafas?.sesakNafas.Positive
-            }
-          </p>
-          <p>
-            Negative :
-            {
-              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sesakNafas?.sesakNafas.Negative
-            }
-          </p>
-          <p>
-            Hasil :{" "}
-            {
-              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sesakNafas?.hasil
-            }
-          </p>
-          <p>
-            Gain Rasio :
-            {
-              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sesakNafas?.gainRasio
+              ?.tidakSakitKepala?.sakitTenggorokan?.gainRasio
             }
           </p>
         </td>
@@ -653,39 +616,903 @@ const Node4 = ({ color, api = null }) => {
             Total :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sesakNafas?.tidakSesakNafas.total
+                ?.tidakSakitKepala?.sesakNafas?.sesakNafas.total
             }
           </p>
           <p>
             Positive :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sesakNafas?.tidakSesakNafas.Positive
+              ?.tidakSakitKepala?.sesakNafas?.sesakNafas.Positive
             }
           </p>
           <p>
             Negative :
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sesakNafas?.tidakSesakNafas.Negative
+              ?.tidakSakitKepala?.sesakNafas?.sesakNafas.Negative
             }
           </p>
           <p>
             Hasil :{" "}
             {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sesakNafas?.hasil
+              ?.tidakSakitKepala?.sesakNafas?.hasil
             }
           </p>
           <p>
             Gain Rasio :
             {
+             api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+             ?.tidakSakitKepala?.sesakNafas?.gainRasio
+            }
+          </p>
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          <p>
+            Total :
+            {
               api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
-                ?.tidakSakitTenggorokan?.sesakNafas?.gainRasio
+              ?.tidakSakitKepala?.sesakNafas?.tidakSesakNafas?.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.tidakSesakNafas?.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.tidakSesakNafas?.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+             api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+             ?.tidakSakitKepala?.sesakNafas?.gainRasio
             }
           </p>
         </td>
       </tr>
+
+      <tr>
+        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+          <p
+            className={
+              "ml-3 font-bold " +
+              +(color === "light" ? "text-blueGray-600" : "text-white")
+            }
+          ></p>
+        </th>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          contactWithConfirm
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          Batuk, Tidak Demam, Tidak Sakit Kepala
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          Sakit Tenggorokan
+          <p>
+            Total :
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+                ?.tidakSakitKepala?.sakitTenggorokan?.sakitTenggorokan.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.tidakSakitKepala?.sakitTenggorokan?.sakitTenggorokan.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.tidakSakitKepala?.sakitTenggorokan?.sakitTenggorokan.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.tidakSakitKepala?.sakitTenggorokan?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.tidakSakitKepala?.sakitTenggorokan?.gainRasio
+            }
+          </p>
+          Tidak Sakit Tenggorokan
+          <p>
+            Total :
+            {
+             api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+             ?.tidakSakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.tidakSakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.tidakSakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.tidakSakitKepala?.sakitTenggorokan?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.tidakSakitKepala?.sakitTenggorokan?.gainRasio
+            }
+          </p>
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          <p>
+            Total :
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+                ?.tidakSakitKepala?.sesakNafas?.sesakNafas.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.sesakNafas.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.sesakNafas.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+             api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+             ?.tidakSakitKepala?.sesakNafas?.gainRasio
+            }
+          </p>
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          <p>
+            Total :
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.tidakSesakNafas?.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.tidakSesakNafas?.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.tidakSesakNafas?.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+             api?.node4?.result?.contactWithConfirm?.batuk?.tidakDemam
+             ?.tidakSakitKepala?.sesakNafas?.gainRasio
+            }
+          </p>
+        </td>
+      </tr>
+
+      {/* wow */}
+      <tr>
+        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+          <p
+            className={
+              "ml-3 font-bold " +
+              +(color === "light" ? "text-blueGray-600" : "text-white")
+            }
+          ></p>
+        </th>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          contactWithConfirm
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          Tidak Batuk, Demam, Sakit Kepala
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          Sakit Tenggorokan
+          <p>
+            Total :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+                ?.sakitKepala?.sakitTenggorokan?.sakitTenggorokan.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.sakitKepala?.sakitTenggorokan?.sakitTenggorokan.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.sakitKepala?.sakitTenggorokan?.sakitTenggorokan.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.sakitKepala?.sakitTenggorokan?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.sakitKepala?.sakitTenggorokan?.gainRasio
+            }
+          </p>
+          Tidak Sakit Tenggorokan
+          <p>
+            Total :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.sakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.sakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.sakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.sakitKepala?.sakitTenggorokan?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.sakitKepala?.sakitTenggorokan?.gainRasio
+            }
+          </p>
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          <p>
+            Total :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.sakitKepala?.sesakNafas?.sesakNafas.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.sakitKepala?.sesakNafas?.sesakNafas.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.sakitKepala?.sesakNafas?.sesakNafas.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.sakitKepala?.sesakNafas?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.sakitKepala?.sesakNafas?.gainRasio
+            }
+          </p>
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          <p>
+            Total :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.sakitKepala?.sesakNafas?.tidakSesakNafas.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.sakitKepala?.sesakNafas?.tidakSesakNafas.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.sakitKepala?.sesakNafas?.tidakSesakNafas.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.sakitKepala?.sesakNafas.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.sakitKepala?.sesakNafas.gainRasio
+            }
+          </p>
+        </td>
+      </tr>
+
+      <tr>
+        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+          <p
+            className={
+              "ml-3 font-bold " +
+              +(color === "light" ? "text-blueGray-600" : "text-white")
+            }
+          ></p>
+        </th>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          contactWithConfirm
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          Tidak Batuk, Demam, Tidak Sakit Kepala
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          Sakit Tenggorokan
+          <p>
+            Total :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+                ?.tidakSakitKepala?.sakitTenggorokan?.sakitTenggorokan.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.tidakSakitKepala?.sakitTenggorokan?.sakitTenggorokan.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.tidakSakitKepala?.sakitTenggorokan?.sakitTenggorokan.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.tidakSakitKepala?.sakitTenggorokan?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.tidakSakitKepala?.sakitTenggorokan?.gainRasio
+            }
+          </p>
+          Tidak Sakit Tenggorokan
+          <p>
+            Total :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.tidakSakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.tidakSakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.tidakSakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.tidakSakitKepala?.sakitTenggorokan?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.tidakSakitKepala?.sakitTenggorokan?.gainRasio
+            }
+          </p>
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          <p>
+            Total :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.tidakSakitKepala?.sesakNafas?.sesakNafas.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.tidakSakitKepala?.sesakNafas?.sesakNafas.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.tidakSakitKepala?.sesakNafas?.sesakNafas.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.tidakSakitKepala?.sesakNafas?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.tidakSakitKepala?.sesakNafas?.gainRasio
+            }
+          </p>
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          <p>
+            Total :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.tidakSakitKepala?.sesakNafas?.tidakSesakNafas.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.tidakSakitKepala?.sesakNafas?.tidakSesakNafas.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.tidakSakitKepala?.sesakNafas?.tidakSesakNafas.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.tidakSakitKepala?.sesakNafas.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.demam
+              ?.tidakSakitKepala?.sesakNafas.gainRasio
+            }
+          </p>
+        </td>
+      </tr>
+
+      <tr>
+        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+          <p
+            className={
+              "ml-3 font-bold " +
+              +(color === "light" ? "text-blueGray-600" : "text-white")
+            }
+          ></p>
+        </th>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          contactWithConfirm
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          Tidak Batuk, Tidak Demam, Sakit Kepala
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          Sakit Tenggorokan
+          <p>
+            Total :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+                ?.sakitKepala?.sakitTenggorokan?.sakitTenggorokan.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.sakitKepala?.sakitTenggorokan?.sakitTenggorokan.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.sakitKepala?.sakitTenggorokan?.sakitTenggorokan.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.sakitKepala?.sakitTenggorokan?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.sakitKepala?.sakitTenggorokan?.gainRasio
+            }
+          </p>
+          Tidak Sakit Sakit Tenggorokan
+          <p>
+            Total :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.sakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.sakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.sakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.sakitKepala?.sakitTenggorokan?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.sakitKepala?.sakitTenggorokan?.gainRasio
+            }
+          </p>
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          <p>
+            Total :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.sakitKepala?.sesakNafas?.sesakNafas.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.sakitKepala?.sesakNafas?.sesakNafas.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.sakitKepala?.sesakNafas?.sesakNafas.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.sakitKepala?.sesakNafas?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.sakitKepala?.sesakNafas?.gainRasio
+            }
+          </p>
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          <p>
+            Total :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.sakitKepala?.sesakNafas?.tidakSesakNafas.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.sakitKepala?.sesakNafas?.tidakSesakNafas.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.sakitKepala?.sesakNafas?.tidakSesakNafas.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.sakitKepala?.sesakNafas?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.sakitKepala?.sesakNafas?.gainRasio
+            }
+          </p>
+        </td>
+      </tr>
+
+      <tr>
+        <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+          <p
+            className={
+              "ml-3 font-bold " +
+              +(color === "light" ? "text-blueGray-600" : "text-white")
+            }
+          ></p>
+        </th>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          contactWithConfirm
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          Tidak Batuk, Tidak Demam, Tidak Sakit Kepala
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          Sakit Tenggorokan
+          <p>
+            Total :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+                ?.tidakSakitKepala?.sakitTenggorokan?.sakitTenggorokan.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+             api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+             ?.tidakSakitKepala?.sakitTenggorokan?.sakitTenggorokan.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.tidakSakitKepala?.sakitTenggorokan?.sakitTenggorokan.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+             api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+             ?.tidakSakitKepala?.sakitTenggorokan?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+             api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+             ?.tidakSakitKepala?.sakitTenggorokan?.gainRasio
+            }
+          </p>
+          Tidak Sakit Sakit Tenggorokan
+          <p>
+            Total :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.tidakSakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.tidakSakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.tidakSakitKepala?.sakitTenggorokan?.tidakSakitTenggorokan.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.tidakSakitKepala?.sakitTenggorokan?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.tidakSakitKepala?.sakitTenggorokan?.gainRasio
+            }
+          </p>
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          <p>
+            Total :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.sesakNafas.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.sesakNafas.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.sesakNafas.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.gainRasio
+            }
+          </p>
+        </td>
+        <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+          <p>
+            Total :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.tidakSesakNafas.total
+            }
+          </p>
+          <p>
+            Positive :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.tidakSesakNafas.Positive
+            }
+          </p>
+          <p>
+            Negative :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.tidakSesakNafas.Negative
+            }
+          </p>
+          <p>
+            Hasil :{" "}
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.hasil
+            }
+          </p>
+          <p>
+            Gain Rasio :
+            {
+              api?.node4?.result?.contactWithConfirm?.tidakBatuk?.tidakDemam
+              ?.tidakSakitKepala?.sesakNafas?.gainRasio
+            }
+          </p>
+        </td>
+      </tr>
+
     </>
   );
 };
