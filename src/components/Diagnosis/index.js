@@ -264,16 +264,16 @@ const FormDiagnosis = ({ api = [] }) => {
       } else {
         tesData.push("tidakSakitTenggorokan");
       }
-      if (payload.sesakNafas) {
+      if (bol) {
         tesData.push("sesakNafas");
       } else {
         tesData.push("tidakSesakNafas");
       }
     }
-    // console.log("tesData", tesData);
+    console.log("tesData", tesData);
     function getIndexOfArray(arr, arr2) {
       for (var i = 0; i < arr.length; i++) {
-        var equal = _.isEqual(arr[i][0].sort(), arr2.sort());
+        var equal = _.isEqual(arr[i][0], arr2);
         if (equal) {
           return i;
         }
@@ -283,54 +283,58 @@ const FormDiagnosis = ({ api = [] }) => {
     let d = "";
     if (idx) {
       setStatus(compare[idx][1]);
-    }
-    if (compare[idx][1] === "negative") {
-      if (
-        (payload.batuk && payload.sakitTenggorokan) ||
-        (payload.batuk && payload.sakitTenggorokan && payload.demam)
-      ) {
-        setDiagnosa("Radang tenggorokan biasa");
-        d = "Radang tenggorokan biasa";
-      } else if (payload.batuk) {
-        setDiagnosa("Batuk biasa");
-        d = "Batuk biasa";
-      } else if (payload.demam || (payload.batuk && payload.demam)) {
-        setDiagnosa("Demam biasa");
-        d = "Demam biasa";
-      } else if (payload.batuk && payload.sesakNafas) {
-        setDiagnosa("Gejala flu biasa");
-        d = "Gejala flu biasa";
-      }
-    } else {
-      setDiagnosa("Gejala covid-19");
-      d = "Gejala covid-19";
-    }
-    toast("Mohon tunggu sebentar");
-    setTimeout(() => {
-      Axios.post("http://localhost:3001/api/diagnosis/add", {
-        indikasi: payload.indikasi,
-        batuk: payload.batuk,
-        demam: payload.demam,
-        sakitTenggorokan: payload.sakitTenggorokan,
-        sesakNafas: bol,
-        sakitKepala: payload.sakitKepala,
-        result: compare[idx][1],
-      }).then(async () => {
-        toast.success("Diagnosa berhasil disimpan");
-        // window.location.reload();
-        const responseData = await Axios.get(
-          "http://localhost:3001/api/diagnosis/id"
-        );
-        if (responseData.data) {
-          Axios.post("http://localhost:3001/api/history/add", {
-            id_member: user.id_member,
-            diagnosa: d,
-            date: DateTimeHelper.getFormatedDate(Date(), "YYYY-MM-DD HH:mm:ss"),
-            id_diagnosis: responseData.data[0]?.id_diagnosis,
-          });
+
+      if (compare[idx][1] === "negative") {
+        if (
+          (payload.batuk && payload.sakitTenggorokan) ||
+          (payload.batuk && payload.sakitTenggorokan && payload.demam)
+        ) {
+          setDiagnosa("Radang tenggorokan biasa");
+          d = "Radang tenggorokan biasa";
+        } else if (payload.demam || (payload.batuk && payload.demam)) {
+          setDiagnosa("Demam biasa");
+          d = "Demam biasa";
+        } else if (payload.batuk && bol) {
+          setDiagnosa("Gejala flu biasa");
+          d = "Gejala flu biasa";
+        } else if (payload.batuk) {
+          setDiagnosa("Batuk biasa");
+          d = "Batuk biasa";
         }
-      });
-    }, 1500);
+      } else {
+        setDiagnosa("Gejala covid-19");
+        d = "Gejala covid-19";
+      }
+      toast("Mohon tunggu sebentar");
+      setTimeout(() => {
+        Axios.post("http://localhost:3001/api/diagnosis/add", {
+          indikasi: payload.indikasi,
+          batuk: payload.batuk,
+          demam: payload.demam,
+          sakitTenggorokan: payload.sakitTenggorokan,
+          sesakNafas: bol,
+          sakitKepala: payload.sakitKepala,
+          result: compare[idx][1],
+        }).then(async () => {
+          toast.success("Diagnosa berhasil disimpan");
+          // window.location.reload();
+          const responseData = await Axios.get("http://localhost:3001/api/id");
+          if (responseData.data) {
+            Axios.post("http://localhost:3001/api/history/add", {
+              id_member: user.id_member,
+              diagnosa: d,
+              date: DateTimeHelper.getFormatedDate(
+                Date(),
+                "YYYY-MM-DD HH:mm:ss"
+              ),
+              id_diagnosis: responseData.data[0]?.id_diagnosis,
+            });
+          }
+        });
+      }, 1500);
+    } else {
+      toast.warning("Data tidak cocok");
+    }
   };
 
   const nodeFinishSession = (id, item) => {
@@ -710,7 +714,7 @@ const QuestionForm = ({
         )}
         {pertanyaan.length - 1 === session ? (
           <button
-            onClick={() => finishSession(index, item)}
+            onClick={() => finishSession(item)}
             className="text-xs font-bold bg-lightBlue-400 active:bg-lightBlue-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150"
           >
             Selesai

@@ -7,6 +7,7 @@ import { HttpGetHelper } from "../../helpers";
 export default function HeaderStats() {
   const [data, setData] = React.useState([]);
   const [dataset, setDataset] = React.useState([]);
+  const [datasetTesting, setDatasetTesting] = React.useState([]);
 
   React.useEffect(() => {
     Axios.get("http://localhost:3001/api/member").then((response) => {
@@ -14,11 +15,18 @@ export default function HeaderStats() {
     });
     const fetch = async () => {
       const httpResponse = await HttpGetHelper.getData(
-        "http://localhost:3002/diagnosis",
+        "http://localhost:3002/training",
         {}
       );
       if (httpResponse) {
         setDataset(httpResponse);
+      }
+      const httpResponseTesting = await HttpGetHelper.getData(
+        "http://localhost:3002/testing",
+        {}
+      );
+      if (httpResponseTesting) {
+        setDatasetTesting(httpResponseTesting);
       }
     };
 
@@ -43,10 +51,18 @@ export default function HeaderStats() {
               </div>
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
-                  statSubtitle="DATASET"
+                  statSubtitle="TRAINING"
                   statTitle={dataset.length}
                   statIconName="fas fa-database"
                   statIconColor="bg-blueGray-800"
+                />
+              </div>
+              <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
+                <CardStats
+                  statSubtitle="TESTING"
+                  statTitle={datasetTesting.length}
+                  statIconName="fas fa-database"
+                  statIconColor="bg-lightBlue-500"
                 />
               </div>
             </div>

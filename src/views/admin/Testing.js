@@ -7,7 +7,7 @@ import memoize from "memoize-one";
 import Axios from "axios";
 // import FormMember from "../modal/memberForm";
 // import FormPasswordMember from "../modal/passwordForm";
-import CardTable from "components/Cards/CardTable.js";
+import TestingTable from "components/Cards/TestingTable";
 import { ToastContainer, toast } from "react-toastify";
 import { HttpGetHelper } from "../../helpers";
 import FormDataset from "views/modal/datasetForm";
@@ -56,7 +56,7 @@ const columns = memoize((calculate) => [
   },
 ]);
 
-export default function Training() {
+export default function Testing() {
   const [search, setSearch] = React.useState("");
   const [handle, setHandle] = React.useState({
     editMode: false,
@@ -90,7 +90,7 @@ export default function Training() {
     if (user) {
       const fetch = async () => {
         const httpResponse = await HttpGetHelper.getData(
-          "http://localhost:3002/training",
+          "http://localhost:3002/testing",
           {}
         );
         if (httpResponse) {
@@ -106,7 +106,7 @@ export default function Training() {
 
   const onSave = async (formData) => {
     if (formData.id === "") {
-      Axios.post("http://localhost:3002/training/add", {
+      Axios.post("http://localhost:3002/testing/add", {
         batuk: formData.batuk,
         demam: formData.demam,
         sakitTenggorokan: formData.sakitTenggorokan,
@@ -234,7 +234,7 @@ export default function Training() {
         </div>
         {api && (
           <div className="w-full mb-12 px-4">
-            <CardTable color="dark" api={api} />
+            <TestingTable color="dark" api={api} />
           </div>
         )}
         {/* <div className="w-full mb-12 px-4">

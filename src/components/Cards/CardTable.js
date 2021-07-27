@@ -5,6 +5,7 @@ import Node2 from "../../views/admin/node/Node2";
 import Node3 from "../../views/admin/node/Node3";
 import Node4 from "../../views/admin/node/Node4";
 import Node5 from "../../views/admin/node/Node5";
+import Root from "../../views/admin/node/Root";
 
 // components
 
@@ -39,6 +40,7 @@ export default function CardTable({ color, api = null }) {
           {api && (
             <table className="items-center w-full bg-transparent border-collapse">
               <tbody>
+                <Root color={color} api={api} />
                 <Node1 color={color} api={api} />
                 <Node2 color={color} api={api} />
                 <Node3 color={color} api={api} />
