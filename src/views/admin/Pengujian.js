@@ -9,7 +9,7 @@ import Axios from "axios";
 // import FormPasswordMember from "../modal/passwordForm";
 import CardTable from "components/Cards/CardTable.js";
 import { ToastContainer, toast } from "react-toastify";
-import { DateTimeHelper, HttpGetHelper } from "../../helpers";
+import { HttpGetHelper } from "../../helpers";
 import FormDataset from "views/modal/datasetForm";
 
 const columns = memoize((calculate) => [
@@ -106,79 +106,35 @@ export default function Testing() {
 
   const onSave = async (formData) => {
     if (formData.id === "") {
-      Axios.post("http://localhost:3001/api/member/add", {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        gender: formData.gender,
-        place: formData.place,
-        address: formData.address,
-        date: DateTimeHelper.getFormatedDate(
-          formData.date,
-          "YYYY-MM-DD HH:mm:ss"
-        ),
-        phone: formData.phone,
-        status: formData.status,
+      Axios.post("http://localhost:3002/diagnosis/add", {
+        batuk: formData.batuk,
+        demam: formData.demam,
+        sakitTenggorokan: formData.sakitTenggorokan,
+        sakitKepala: formData.sakitKepala,
+        sesakNafas: formData.sesakNafas,
+        indikasi: formData.indikasi,
+        result: formData.result,
       }).then(() => {
-        toast.success("Member berhasil ditambah");
+        toast.success("Dataset berhasil ditambah");
         window.location.reload();
       });
     } else {
-      Axios.put(`http://localhost:3001/api/member/edit/${formData.id}`, {
-        name: formData.name,
-        email: formData.email,
-        gender: formData.gender,
-        place: formData.place,
-        address: formData.address,
-        date: DateTimeHelper.getFormatedDate(
-          formData.date,
-          "YYYY-MM-DD HH:mm:ss"
-        ),
-        phone: formData.phone,
-        status: formData.status,
-      }).then(() => {
-        toast.success("Data member berhasil dirubah");
-        window.location.reload();
-      });
-    }
-  };
-
-  const onSavePassword = async (formData) => {
-    Axios.post("http://localhost:3001/api/auth/change-password", {
-      id: formData.id,
-      password: formData.password,
-    }).then(() => {
-      toast.success("Password berhasil dirubah");
-      window.location.reload();
-    });
-  };
-
-  const onToggleEditMode = (user) => {
-    setHandle((prevState) => ({
-      ...prevState,
-      addMode: true,
-      editMode: true,
-      user,
-    }));
-  };
-
-  const onToggleEditPasswordMode = (user) => {
-    setHandle((prevState) => ({
-      ...prevState,
-      editPassword: true,
-      user,
-    }));
-  };
-
-  const onRemove = async (id) => {
-    var result = window.confirm("Yakin hapus data member?");
-    if (result === true) {
-      Axios.delete(`http://localhost:3001/api/member/delete/${id}`).then(() => {
-        toast.success("Data berhasil dihapus");
-        window.location.reload();
-      });
-    } else {
-      toast.error("Data tidak jadi dihapus");
+      // Axios.put(`http://localhost:3001/api/member/edit/${formData.id}`, {
+      //   name: formData.name,
+      //   email: formData.email,
+      //   gender: formData.gender,
+      //   place: formData.place,
+      //   address: formData.address,
+      //   date: DateTimeHelper.getFormatedDate(
+      //     formData.date,
+      //     "YYYY-MM-DD HH:mm:ss"
+      //   ),
+      //   phone: formData.phone,
+      //   status: formData.status,
+      // }).then(() => {
+      //   toast.success("Data member berhasil dirubah");
+      //   window.location.reload();
+      // });
     }
   };
 
@@ -213,7 +169,7 @@ export default function Testing() {
 
   const calculate = async () => {
     const httpResponse = await HttpGetHelper.getData(
-      "http://localhost:8080/home/test",
+      "http://localhost:8080/home/test?db=true",
       {}
     );
     if (httpResponse) {

@@ -83,6 +83,7 @@ const FormDiagnosis = ({ api = [] }) => {
   React.useEffect(() => {
     if (api.length > 0) {
       let array = [];
+      // eslint-disable-next-line array-callback-return
       api.map((item) => {
         const tes = item.split("= ");
         let arr = tes[0].split(",");
@@ -272,7 +273,7 @@ const FormDiagnosis = ({ api = [] }) => {
     // console.log("tesData", tesData);
     function getIndexOfArray(arr, arr2) {
       for (var i = 0; i < arr.length; i++) {
-        var equal = _.isEqual(arr[i][0], arr2);
+        var equal = _.isEqual(arr[i][0].sort(), arr2.sort());
         if (equal) {
           return i;
         }
@@ -304,7 +305,7 @@ const FormDiagnosis = ({ api = [] }) => {
       setDiagnosa("Gejala covid-19");
       d = "Gejala covid-19";
     }
-    toast.info("Mohon tunggu sebentar");
+    toast("Mohon tunggu sebentar");
     setTimeout(() => {
       Axios.post("http://localhost:3001/api/diagnosis/add", {
         indikasi: payload.indikasi,

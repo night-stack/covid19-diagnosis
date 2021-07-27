@@ -9,6 +9,16 @@ export default function Diagnosis() {
   const [api, setApi] = React.useState([]);
 
   React.useEffect(() => {
+    // const fetch = async () => {
+    //   const httpResponse = await HttpGetHelper.getData(
+    //     "http://localhost:8080/home/test?db=true&result",
+    //     {}
+    //   );
+    //   if (httpResponse) {
+    //     setApi(httpResponse);
+    //   }
+    // };
+
     const fetch = async () => {
       const httpResponse = await HttpGetHelper.getData(
         "http://localhost:8080/home/test?result",
