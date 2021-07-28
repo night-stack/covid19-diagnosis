@@ -253,51 +253,51 @@ const FormDiagnosis = ({ api = [] }) => {
       }
       if (payload.demam) {
         tesData.push("demam");
-        if (item.sakitKepala) {
+        if (payload.sakitKepala) {
           tesData.push("sakitKepala");
-          if (item.sakitTenggorokan) {
+          if (payload.sakitTenggorokan) {
             tesData.push("sakitTenggorokan");
-          } else if (!item.sakitTenggorokan) {
+          } else if (!payload.sakitTenggorokan) {
             tesData.push("tidakSakitTenggorokan");
-          } else if (item.sesakNafas) {
+          } else if (bol) {
             tesData.push("sesakNafas");
-          } else if (!item.sesakNafas) {
+          } else if (!bol) {
             tesData.push("tidakSesakNafas");
           }
         } else {
           tesData.push("tidakSakitKepala");
-          if (item.sakitTenggorokan) {
+          if (payload.sakitTenggorokan) {
             tesData.push("sakitTenggorokan");
-          } else if (!item.sakitTenggorokan) {
+          } else if (!payload.sakitTenggorokan) {
             tesData.push("tidakSakitTenggorokan");
-          } else if (item.sesakNafas) {
+          } else if (bol) {
             tesData.push("sesakNafas");
-          } else if (!item.sesakNafas) {
+          } else if (!bol) {
             tesData.push("tidakSesakNafas");
           }
         }
       } else {
         tesData.push("tidakDemam");
-        if (item.sakitKepala) {
+        if (payload.sakitKepala) {
           tesData.push("sakitKepala");
-          if (item.sakitTenggorokan) {
+          if (payload.sakitTenggorokan) {
             tesData.push("sakitTenggorokan");
-          } else if (!item.sakitTenggorokan) {
+          } else if (!payload.sakitTenggorokan) {
             tesData.push("tidakSakitTenggorokan");
-          } else if (item.sesakNafas) {
+          } else if (bol) {
             tesData.push("sesakNafas");
-          } else if (!item.sesakNafas) {
+          } else if (!bol) {
             tesData.push("tidakSesakNafas");
           }
         } else {
           tesData.push("tidakSakitKepala");
-          if (item.sakitTenggorokan) {
+          if (payload.sakitTenggorokan) {
             tesData.push("sakitTenggorokan");
-          } else if (!item.sakitTenggorokan) {
+          } else if (!payload.sakitTenggorokan) {
             tesData.push("tidakSakitTenggorokan");
-          } else if (item.sesakNafas) {
+          } else if (bol) {
             tesData.push("sesakNafas");
-          } else if (!item.sesakNafas) {
+          } else if (!bol) {
             tesData.push("tidakSesakNafas");
           }
         }
@@ -318,16 +318,16 @@ const FormDiagnosis = ({ api = [] }) => {
       //   tesData.push("tidakSesakNafas");
       // }
     }
-    // console.log("tesData", tesData);
+    console.log("tesData", tesData.sort());
     function getIndexOfArray(arr, arr2) {
       for (var i = 0; i < arr.length; i++) {
-        var equal = _.isEqual(arr[i][0], arr2);
+        var equal = _.isEqual(arr[i][0].sort(), arr2);
         if (equal) {
           return i;
         }
       }
     }
-    const idx = getIndexOfArray(compare, tesData);
+    const idx = getIndexOfArray(compare, tesData.sort());
     let d = "";
     if (idx) {
       setStatus(compare[idx][1]);
@@ -349,7 +349,7 @@ const FormDiagnosis = ({ api = [] }) => {
           setDiagnosa("Batuk biasa");
           d = "Batuk biasa";
         } else if (payload.sakitKepala) {
-          setDiagnosa("Batuk biasa");
+          setDiagnosa("Sakit kepala biasa");
           d = "Sakit kepala biasa";
         } else if (
           !payload.batuk &&
@@ -395,6 +395,92 @@ const FormDiagnosis = ({ api = [] }) => {
             }
           });
         }, 1500);
+      }
+    } else if (idx === undefined) {
+      if (bol) {
+        tesData.push("sesakNafas");
+      } else {
+        tesData.push("tidakSesakNafas");
+      }
+
+      function getIndexOfArray(arr, arr2) {
+        for (var i = 0; i < arr.length; i++) {
+          var equal = _.isEqual(arr[i][0].sort(), arr2);
+          if (equal) {
+            return i;
+          }
+        }
+      }
+      const index = getIndexOfArray(compare, tesData.sort());
+      if (index) {
+        setStatus(compare[index][1]);
+
+        if (compare[index][1] === "negative") {
+          if (
+            (payload.batuk && payload.sakitTenggorokan) ||
+            (payload.batuk && payload.sakitTenggorokan && payload.demam)
+          ) {
+            setDiagnosa("Radang tenggorokan biasa");
+            d = "Radang tenggorokan biasa";
+          } else if (payload.demam || (payload.batuk && payload.demam)) {
+            setDiagnosa("Demam biasa");
+            d = "Demam biasa";
+          } else if (payload.batuk && bol) {
+            setDiagnosa("Gejala flu biasa");
+            d = "Gejala flu biasa";
+          } else if (payload.batuk) {
+            setDiagnosa("Batuk biasa");
+            d = "Batuk biasa";
+          } else if (payload.sakitKepala) {
+            setDiagnosa("Sakit kepala biasa");
+            d = "Sakit kepala biasa";
+          } else if (
+            !payload.batuk &&
+            !payload.sakitTenggorokan &&
+            !payload.sakitTenggorokan &&
+            !payload.demam &&
+            !bol
+          ) {
+            setDiagnosa("Belum menunjukkan gejala apapun");
+            d = "Belum menunjukkan gejala apapun";
+          }
+        } else {
+          setDiagnosa("Gejala covid-19");
+          d = "Gejala covid-19";
+        }
+        if (user) {
+          toast("Mohon tunggu sebentar");
+          setTimeout(() => {
+            Axios.post("http://localhost:3001/api/diagnosis/add", {
+              indikasi: payload.indikasi,
+              batuk: payload.batuk,
+              demam: payload.demam,
+              sakitTenggorokan: payload.sakitTenggorokan,
+              sesakNafas: bol,
+              sakitKepala: payload.sakitKepala,
+              result: compare[index][1],
+            }).then(async () => {
+              toast.success("Diagnosa berhasil disimpan");
+              // window.location.reload();
+              const responseData = await Axios.get(
+                "http://localhost:3001/api/id"
+              );
+              if (responseData.data) {
+                Axios.post("http://localhost:3001/api/history/add", {
+                  id_member: user.id_member,
+                  diagnosa: d,
+                  date: DateTimeHelper.getFormatedDate(
+                    Date(),
+                    "YYYY-MM-DD HH:mm:ss"
+                  ),
+                  id_diagnosis: responseData.data[0]?.id_diagnosis,
+                });
+              }
+            });
+          }, 1500);
+        }
+      } else {
+        toast.warning("Data tidak cocok");
       }
     } else {
       toast.warning("Data tidak cocok");
