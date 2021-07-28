@@ -242,6 +242,8 @@ const FormDiagnosis = ({ api = [] }) => {
     if (payload.indikasi === "other" || payload.indikasi === "abroad") {
       if (payload.sakitKepala) {
         tesData.push("sakitKepala");
+      } else {
+        tesData.push("tidakSakitKepala");
       }
     } else {
       if (payload.batuk) {
@@ -300,6 +302,18 @@ const FormDiagnosis = ({ api = [] }) => {
         } else if (payload.batuk) {
           setDiagnosa("Batuk biasa");
           d = "Batuk biasa";
+        } else if (payload.sakitKepala) {
+          setDiagnosa("Batuk biasa");
+          d = "Sakit kepala biasa";
+        } else if (
+          !payload.batuk &&
+          !payload.sakitTenggorokan &&
+          !payload.sakitTenggorokan &&
+          !payload.demam &&
+          !bol
+        ) {
+          setDiagnosa("Belum menunjukkan gejala apapun");
+          d = "Belum menunjukkan gejala apapun";
         }
       } else {
         setDiagnosa("Gejala covid-19");

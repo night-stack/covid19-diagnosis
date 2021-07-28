@@ -46,10 +46,12 @@ export default function TestingTable({ color, api = null }) {
                   </p>
                 </th>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  (TP+TN) / (TP+FP+FN+TN) *100 %
+                  {`(${api.tp}+${api.tn}) / (${api.tp}+${api.fp}+${api.fn}+${api.tn}) *100 %`}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  Result
+                  {((api.tp + api.tn) / (api.tp + api.fp + api.fn + api.tn)) *
+                    100 +
+                    "%"}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"></td>
               </tr>
@@ -66,10 +68,10 @@ export default function TestingTable({ color, api = null }) {
                   </p>
                 </th>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  (TP) / (TP + FP) *100 %
+                  {`(${api.tp}) / (${api.tp} + ${api.fp}) *100 %`}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  Result
+                  {((api.tp / (api.tp + api.fp)) * 100).toFixed(2) + "%"}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"></td>
               </tr>
@@ -86,10 +88,10 @@ export default function TestingTable({ color, api = null }) {
                   </p>
                 </th>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  TP / (TP + FN) *100 %
+                  {`${api.tp} / (${api.tp} + ${api.fn}) *100 %`}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  Result
+                  {(api.tp / (api.tp + api.fn)) * 100 + "%"}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"></td>
               </tr>

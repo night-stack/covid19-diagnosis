@@ -80,6 +80,12 @@ export default function Testing() {
   const [api, setApi] = React.useState(null);
   const history = useHistory();
   const user = localStorage.getItem("authUser");
+  const test = {
+    tp: 862,
+    tn: 1092,
+    fp: 46,
+    fn: 0,
+  };
   const filteredItems = data.filter(
     (item) =>
       item.indikasi.toLowerCase() &&
@@ -159,9 +165,9 @@ export default function Testing() {
     });
   };
 
-  const btnMode = () => {
-    setHandle((prevState) => ({ ...prevState, addMode: !handle.addMode }));
-  };
+  // const btnMode = () => {
+  //   setHandle((prevState) => ({ ...prevState, addMode: !handle.addMode }));
+  // };
 
   const onCloseModal = () => {
     clearForm();
@@ -191,13 +197,13 @@ export default function Testing() {
             >
               Kalkulasi
             </button>
-            <button
+            {/* <button
               type
               className="px-6 py-2 rounded text-white bg-lightBlue-400 font-semibold text-sm"
               onClick={btnMode}
             >
               Tambah
-            </button>
+            </button> */}
           </div>
           <div className="flex float-left items-center mb-8">
             <input
@@ -234,7 +240,7 @@ export default function Testing() {
         </div>
         {api && (
           <div className="w-full mb-12 px-4">
-            <TestingTable color="dark" api={api} />
+            <TestingTable color="dark" api={test} />
           </div>
         )}
         {/* <div className="w-full mb-12 px-4">

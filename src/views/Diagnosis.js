@@ -11,7 +11,7 @@ export default function Diagnosis() {
   React.useEffect(() => {
     const fetch = async () => {
       const httpResponse = await HttpGetHelper.getData(
-        "http://localhost:8080/home/test?db=true&result",
+        "http://localhost:8080/home/test?result",
         {}
       );
       if (httpResponse) {
