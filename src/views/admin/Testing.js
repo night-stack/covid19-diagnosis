@@ -11,6 +11,7 @@ import TestingTable from "components/Cards/TestingTable";
 import { ToastContainer, toast } from "react-toastify";
 import { HttpGetHelper } from "../../helpers";
 import FormDataset from "views/modal/datasetForm";
+import _ from "lodash";
 
 const columns = memoize((calculate) => [
   {
@@ -175,12 +176,73 @@ export default function Testing() {
 
   const calculate = async () => {
     const httpResponse = await HttpGetHelper.getData(
-      "http://localhost:8080/home/test?db=true",
+      "http://localhost:8080/home/test?result",
       {}
     );
     if (httpResponse) {
-      setApi(httpResponse);
+      let array = [];
+      // eslint-disable-next-line array-callback-return
+      httpResponse.map((item) => {
+        const tes = item.split("= ");
+        let arr = tes[0].split(",");
+        array.push([arr, tes[1]]);
+      });
+      setApi(array);
     }
+
+    let tesData = [];
+
+    // eslint-disable-next-line array-callback-return
+    data.map((item) => {
+      tesData.push(item.indikasi);
+      if (item.indikasi === "other" || item.indikasi === "abroad") {
+        if (item.sakitKepala) {
+          tesData.push("sakitKepala");
+        } else {
+          tesData.push("tidakSakitKepala");
+        }
+      } else {
+        if (item.batuk) {
+          tesData.push("batuk");
+        } else {
+          tesData.push("tidakBatuk");
+        }
+        if (item.demam) {
+          tesData.push("demam");
+        } else {
+          tesData.push("tidakDemam");
+        }
+        if (item.sakitKepala) {
+          tesData.push("sakitKepala");
+        } else {
+          tesData.push("tidakSakitKepala");
+        }
+        if (item.sakitTenggorokan) {
+          tesData.push("sakitTenggorokan");
+        } else {
+          tesData.push("tidakSakitTenggorokan");
+        }
+        if (item.sesakNafas) {
+          tesData.push("sesakNafas");
+        } else {
+          tesData.push("tidakSesakNafas");
+        }
+      }
+      console.log("tesData", tesData);
+      function getIndexOfArray(arr, arr2) {
+        for (var i = 0; i < arr.length; i++) {
+          var equal = _.isEqual(arr[i][0], arr2);
+          if (equal) {
+            return i;
+          }
+        }
+      }
+      const idx = getIndexOfArray(api, tesData);
+      if (idx) {
+        if (api[idx][1] === "negative") {
+        }
+      }
+    });
   };
 
   return (
@@ -240,7 +302,7 @@ export default function Testing() {
         </div>
         {api && (
           <div className="w-full mb-12 px-4">
-            <TestingTable color="dark" api={test} />
+            <TestingTable color="dark" api={test} result={api} />
           </div>
         )}
         {/* <div className="w-full mb-12 px-4">

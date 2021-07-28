@@ -169,7 +169,7 @@ export default function Training() {
 
   const calculate = async () => {
     const httpResponse = await HttpGetHelper.getData(
-      "http://localhost:8080/home/test?db=true",
+      "http://localhost:8080/home/test",
       {}
     );
     if (httpResponse) {
