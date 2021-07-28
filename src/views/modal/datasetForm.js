@@ -160,9 +160,11 @@ const FormDataset = ({
                   required
                 >
                   <option>- Pilih Indikasi -</option>
-                  <option value="contactWithConfirm">contactWithConfirm</option>
-                  <option value="other">other</option>
-                  <option value="abroad">abroad</option>
+                  <option value="contactWithConfirm">
+                    Contact with confirmed
+                  </option>
+                  <option value="other">Other</option>
+                  <option value="abroad">Abroad</option>
                 </select>
               </div>
             </div>

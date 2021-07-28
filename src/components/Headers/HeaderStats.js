@@ -22,7 +22,7 @@ export default function HeaderStats() {
         setDataset(httpResponse);
       }
       const httpResponseTesting = await HttpGetHelper.getData(
-        "http://localhost:3002/testing",
+        "http://localhost:3002/raw",
         {}
       );
       if (httpResponseTesting) {

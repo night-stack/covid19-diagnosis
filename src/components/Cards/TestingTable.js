@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 // import TableDropdown from "components/Dropdowns/TableDropdown.js";
 
-export default function TestingTable({ color, api = null }) {
+export default function TestingTable({ color, api = null, result = null }) {
   return (
     <>
       <div
@@ -46,12 +46,13 @@ export default function TestingTable({ color, api = null }) {
                   </p>
                 </th>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {`(${api.tp}+${api.tn}) / (${api.tp}+${api.fp}+${api.fn}+${api.tn}) *100 %`}
+                  {`(${api.tp}+${api.tn}) / (${api.tp}+${api.fp}+${api.fn}+${api.tn}) x 100%`}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {((api.tp + api.tn) / (api.tp + api.fp + api.fn + api.tn)) *
-                    100 +
-                    "%"}
+                  {(
+                    ((api.tp + api.tn) / (api.tp + api.fp + api.fn + api.tn)) *
+                    100
+                  ).toFixed(2) + "%"}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"></td>
               </tr>
@@ -68,7 +69,7 @@ export default function TestingTable({ color, api = null }) {
                   </p>
                 </th>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {`(${api.tp}) / (${api.tp} + ${api.fp}) *100 %`}
+                  {`(${api.tp}) / (${api.tp} + ${api.fp}) x 100%`}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                   {((api.tp / (api.tp + api.fp)) * 100).toFixed(2) + "%"}
@@ -88,10 +89,10 @@ export default function TestingTable({ color, api = null }) {
                   </p>
                 </th>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {`${api.tp} / (${api.tp} + ${api.fn}) *100 %`}
+                  {`${api.tp} / (${api.tp} + ${api.fn}) x 100%`}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {(api.tp / (api.tp + api.fn)) * 100 + "%"}
+                  {((api.tp / (api.tp + api.fn)) * 100).toFixed(2) + "%"}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4"></td>
               </tr>

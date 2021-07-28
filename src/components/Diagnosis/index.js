@@ -319,33 +319,37 @@ const FormDiagnosis = ({ api = [] }) => {
         setDiagnosa("Gejala covid-19");
         d = "Gejala covid-19";
       }
-      toast("Mohon tunggu sebentar");
-      setTimeout(() => {
-        Axios.post("http://localhost:3001/api/diagnosis/add", {
-          indikasi: payload.indikasi,
-          batuk: payload.batuk,
-          demam: payload.demam,
-          sakitTenggorokan: payload.sakitTenggorokan,
-          sesakNafas: bol,
-          sakitKepala: payload.sakitKepala,
-          result: compare[idx][1],
-        }).then(async () => {
-          toast.success("Diagnosa berhasil disimpan");
-          // window.location.reload();
-          const responseData = await Axios.get("http://localhost:3001/api/id");
-          if (responseData.data) {
-            Axios.post("http://localhost:3001/api/history/add", {
-              id_member: user.id_member,
-              diagnosa: d,
-              date: DateTimeHelper.getFormatedDate(
-                Date(),
-                "YYYY-MM-DD HH:mm:ss"
-              ),
-              id_diagnosis: responseData.data[0]?.id_diagnosis,
-            });
-          }
-        });
-      }, 1500);
+      if (user) {
+        toast("Mohon tunggu sebentar");
+        setTimeout(() => {
+          Axios.post("http://localhost:3001/api/diagnosis/add", {
+            indikasi: payload.indikasi,
+            batuk: payload.batuk,
+            demam: payload.demam,
+            sakitTenggorokan: payload.sakitTenggorokan,
+            sesakNafas: bol,
+            sakitKepala: payload.sakitKepala,
+            result: compare[idx][1],
+          }).then(async () => {
+            toast.success("Diagnosa berhasil disimpan");
+            // window.location.reload();
+            const responseData = await Axios.get(
+              "http://localhost:3001/api/id"
+            );
+            if (responseData.data) {
+              Axios.post("http://localhost:3001/api/history/add", {
+                id_member: user.id_member,
+                diagnosa: d,
+                date: DateTimeHelper.getFormatedDate(
+                  Date(),
+                  "YYYY-MM-DD HH:mm:ss"
+                ),
+                id_diagnosis: responseData.data[0]?.id_diagnosis,
+              });
+            }
+          });
+        }, 1500);
+      }
     } else {
       toast.warning("Data tidak cocok");
     }
