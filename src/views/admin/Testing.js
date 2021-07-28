@@ -190,59 +190,59 @@ export default function Testing() {
       setApi(array);
     }
 
-    let tesData = [];
+    // let tesData = [];
 
-    // eslint-disable-next-line array-callback-return
-    data.map((item) => {
-      tesData.push(item.indikasi);
-      if (item.indikasi === "other" || item.indikasi === "abroad") {
-        if (item.sakitKepala) {
-          tesData.push("sakitKepala");
-        } else {
-          tesData.push("tidakSakitKepala");
-        }
-      } else {
-        if (item.batuk) {
-          tesData.push("batuk");
-        } else {
-          tesData.push("tidakBatuk");
-        }
-        if (item.demam) {
-          tesData.push("demam");
-        } else {
-          tesData.push("tidakDemam");
-        }
-        if (item.sakitKepala) {
-          tesData.push("sakitKepala");
-        } else {
-          tesData.push("tidakSakitKepala");
-        }
-        if (item.sakitTenggorokan) {
-          tesData.push("sakitTenggorokan");
-        } else {
-          tesData.push("tidakSakitTenggorokan");
-        }
-        if (item.sesakNafas) {
-          tesData.push("sesakNafas");
-        } else {
-          tesData.push("tidakSesakNafas");
-        }
-      }
-      console.log("tesData", tesData);
-      function getIndexOfArray(arr, arr2) {
-        for (var i = 0; i < arr.length; i++) {
-          var equal = _.isEqual(arr[i][0], arr2);
-          if (equal) {
-            return i;
-          }
-        }
-      }
-      const idx = getIndexOfArray(api, tesData);
-      if (idx) {
-        if (api[idx][1] === "negative") {
-        }
-      }
-    });
+    // // eslint-disable-next-line array-callback-return
+    // data.map((item) => {
+    //   tesData.push(item.indikasi);
+    //   if (item.indikasi === "other" || item.indikasi === "abroad") {
+    //     if (item.sakitKepala) {
+    //       tesData.push("sakitKepala");
+    //     } else {
+    //       tesData.push("tidakSakitKepala");
+    //     }
+    //   } else {
+    //     if (item.batuk) {
+    //       tesData.push("batuk");
+    //     } else {
+    //       tesData.push("tidakBatuk");
+    //     }
+    //     if (item.demam) {
+    //       tesData.push("demam");
+    //     } else {
+    //       tesData.push("tidakDemam");
+    //     }
+    //     if (item.sakitKepala) {
+    //       tesData.push("sakitKepala");
+    //     } else {
+    //       tesData.push("tidakSakitKepala");
+    //     }
+    //     if (item.sakitTenggorokan) {
+    //       tesData.push("sakitTenggorokan");
+    //     } else {
+    //       tesData.push("tidakSakitTenggorokan");
+    //     }
+    //     if (item.sesakNafas) {
+    //       tesData.push("sesakNafas");
+    //     } else {
+    //       tesData.push("tidakSesakNafas");
+    //     }
+    //   }
+    //   console.log("tesData", tesData);
+    //   function getIndexOfArray(arr, arr2) {
+    //     for (var i = 0; i < arr.length; i++) {
+    //       var equal = _.isEqual(arr[i][0], arr2);
+    //       if (equal) {
+    //         return i;
+    //       }
+    //     }
+    //   }
+    //   const idx = getIndexOfArray(api, tesData);
+    //   if (idx) {
+    //     if (api[idx][1] === "negative") {
+    //     }
+    //   }
+    // });
   };
 
   return (
