@@ -79,14 +79,14 @@ export default function Testing() {
     },
   ]);
   const [api, setApi] = React.useState(null);
+  const [test, setTest] = React.useState({
+    tp: 0,
+    tn: 0,
+    fp: 0,
+    fn: 0,
+  });
   const history = useHistory();
   const user = localStorage.getItem("authUser");
-  const test = {
-    tp: 862,
-    tn: 1092,
-    fp: 46,
-    fn: 0,
-  };
   const filteredItems = data.filter(
     (item) =>
       item.indikasi.toLowerCase() &&
@@ -163,72 +163,128 @@ export default function Testing() {
       editPassword: false,
       user: null,
       proses: false,
+      api: null,
     });
   };
 
-  // const btnMode = () => {
-  //   setHandle((prevState) => ({ ...prevState, addMode: !handle.addMode }));
-  // };
+  const btnMode = () => {
+    setHandle((prevState) => ({ ...prevState, addMode: !handle.addMode }));
+  };
 
   const onCloseModal = () => {
     clearForm();
   };
 
   const calculate = async () => {
+    let array = [];
     const httpResponse = await HttpGetHelper.getData(
       "http://localhost:8080/home/test?result",
       {}
     );
     if (httpResponse) {
-      let array = [];
       // eslint-disable-next-line array-callback-return
       httpResponse.map((item) => {
         const tes = item.split("= ");
         let arr = tes[0].split(",");
         array.push([arr, tes[1]]);
       });
-      setApi(array);
+      setApi(httpResponse);
     }
 
     let tesData = [];
-
     // eslint-disable-next-line array-callback-return
     data.map((item) => {
-      tesData.push(item.indikasi);
+      let raw = [];
       if (item.indikasi === "other" || item.indikasi === "abroad") {
+        raw.push(item.indikasi);
         if (item.sakitKepala) {
-          tesData.push("sakitKepala");
+          raw.push("sakitKepala");
         } else {
-          tesData.push("tidakSakitKepala");
+          raw.push("tidakSakitKepala");
         }
       } else {
+        if (
+          item.indikasi === "Contact with confirmed" ||
+          item.indikasi === "contactWithConfirm"
+        ) {
+          raw.push("contactWithConfirm");
+        }
         if (item.batuk) {
-          tesData.push("batuk");
+          raw.push("batuk");
         } else {
-          tesData.push("tidakBatuk");
+          raw.push("tidakBatuk");
         }
         if (item.demam) {
-          tesData.push("demam");
+          raw.push("demam");
+          if (item.sakitKepala) {
+            raw.push("sakitKepala");
+            if (item.sakitTenggorokan) {
+              raw.push("sakitTenggorokan");
+            } else if (!item.sakitTenggorokan) {
+              raw.push("tidakSakitTenggorokan");
+            } else if (item.sesakNafas) {
+              raw.push("sesakNafas");
+            } else if (!item.sesakNafas) {
+              raw.push("tidakSesakNafas");
+            }
+          } else {
+            raw.push("tidakSakitKepala");
+            if (item.sakitTenggorokan) {
+              raw.push("sakitTenggorokan");
+            } else if (!item.sakitTenggorokan) {
+              raw.push("tidakSakitTenggorokan");
+            } else if (item.sesakNafas) {
+              raw.push("sesakNafas");
+            } else if (!item.sesakNafas) {
+              raw.push("tidakSesakNafas");
+            }
+          }
         } else {
-          tesData.push("tidakDemam");
+          raw.push("tidakDemam");
+          if (item.sakitKepala) {
+            raw.push("sakitKepala");
+            if (item.sakitTenggorokan) {
+              raw.push("sakitTenggorokan");
+            } else if (!item.sakitTenggorokan) {
+              raw.push("tidakSakitTenggorokan");
+            } else if (item.sesakNafas) {
+              raw.push("sesakNafas");
+            } else if (!item.sesakNafas) {
+              raw.push("tidakSesakNafas");
+            }
+          } else {
+            raw.push("tidakSakitKepala");
+            if (item.sakitTenggorokan) {
+              raw.push("sakitTenggorokan");
+            } else if (!item.sakitTenggorokan) {
+              raw.push("tidakSakitTenggorokan");
+            } else if (item.sesakNafas) {
+              raw.push("sesakNafas");
+            } else if (!item.sesakNafas) {
+              raw.push("tidakSesakNafas");
+            }
+          }
         }
-        if (item.sakitKepala) {
-          tesData.push("sakitKepala");
-        } else {
-          tesData.push("tidakSakitKepala");
-        }
-        if (item.sakitTenggorokan) {
-          tesData.push("sakitTenggorokan");
-        } else {
-          tesData.push("tidakSakitTenggorokan");
-        }
-        if (item.sesakNafas) {
-          tesData.push("sesakNafas");
-        } else {
-          tesData.push("tidakSesakNafas");
-        }
+        // if (item.sakitKepala) {
+        //   raw.push("sakitKepala");
+        // } else {
+        //   raw.push("tidakSakitKepala");
+        // }
+        // if (item.sakitTenggorokan) {
+        //   raw.push("sakitTenggorokan");
+        // } else {
+        //   raw.push("tidakSakitTenggorokan");
+        // }
+        // if (item.sesakNafas) {
+        //   raw.push("sesakNafas");
+        // } else {
+        //   raw.push("tidakSesakNafas");
+        // }
       }
-      console.log("tesData", tesData);
+      tesData.push(raw);
+      if (item.id === 2000) {
+        console.log("tesData", tesData);
+      }
       function getIndexOfArray(arr, arr2) {
         for (var i = 0; i < arr.length; i++) {
           var equal = _.isEqual(arr[i][0], arr2);
@@ -237,10 +293,21 @@ export default function Testing() {
           }
         }
       }
-      const idx = getIndexOfArray(api, tesData);
+      // console.log("ARRAY", array);
+      // console.log("raw", raw);
+      const idx = getIndexOfArray(array, raw);
+      console.log("idx", idx);
+
       if (idx) {
-        if (api[idx][1] === "negative") {
+        if (array[idx][1] === "negative" && item.result === "negative") {
+          setTest((prevState) => ({ ...prevState, tn: prevState.tn + 1 }));
+        } else if (array[idx][1] === "positive" && item.result === "positive") {
+          setTest((prevState) => ({ ...prevState, tp: prevState.tp + 1 }));
+        } else {
+          setTest((prevState) => ({ ...prevState, fp: prevState.fp + 1 }));
         }
+      } else if (idx === undefined) {
+        setTest((prevState) => ({ ...prevState, fn: prevState.fn + 1 }));
       }
     });
   };
@@ -259,13 +326,13 @@ export default function Testing() {
             >
               Kalkulasi
             </button>
-            {/* <button
+            <button
               type
               className="px-6 py-2 rounded text-white bg-lightBlue-400 font-semibold text-sm"
               onClick={btnMode}
             >
               Tambah
-            </button> */}
+            </button>
           </div>
           <div className="flex float-left items-center mb-8">
             <input
