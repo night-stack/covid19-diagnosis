@@ -253,26 +253,72 @@ const FormDiagnosis = ({ api = [] }) => {
       }
       if (payload.demam) {
         tesData.push("demam");
+        if (item.sakitKepala) {
+          tesData.push("sakitKepala");
+          if (item.sakitTenggorokan) {
+            tesData.push("sakitTenggorokan");
+          } else if (!item.sakitTenggorokan) {
+            tesData.push("tidakSakitTenggorokan");
+          } else if (item.sesakNafas) {
+            tesData.push("sesakNafas");
+          } else if (!item.sesakNafas) {
+            tesData.push("tidakSesakNafas");
+          }
+        } else {
+          tesData.push("tidakSakitKepala");
+          if (item.sakitTenggorokan) {
+            tesData.push("sakitTenggorokan");
+          } else if (!item.sakitTenggorokan) {
+            tesData.push("tidakSakitTenggorokan");
+          } else if (item.sesakNafas) {
+            tesData.push("sesakNafas");
+          } else if (!item.sesakNafas) {
+            tesData.push("tidakSesakNafas");
+          }
+        }
       } else {
         tesData.push("tidakDemam");
+        if (item.sakitKepala) {
+          tesData.push("sakitKepala");
+          if (item.sakitTenggorokan) {
+            tesData.push("sakitTenggorokan");
+          } else if (!item.sakitTenggorokan) {
+            tesData.push("tidakSakitTenggorokan");
+          } else if (item.sesakNafas) {
+            tesData.push("sesakNafas");
+          } else if (!item.sesakNafas) {
+            tesData.push("tidakSesakNafas");
+          }
+        } else {
+          tesData.push("tidakSakitKepala");
+          if (item.sakitTenggorokan) {
+            tesData.push("sakitTenggorokan");
+          } else if (!item.sakitTenggorokan) {
+            tesData.push("tidakSakitTenggorokan");
+          } else if (item.sesakNafas) {
+            tesData.push("sesakNafas");
+          } else if (!item.sesakNafas) {
+            tesData.push("tidakSesakNafas");
+          }
+        }
       }
-      if (payload.sakitKepala) {
-        tesData.push("sakitKepala");
-      } else {
-        tesData.push("tidakSakitKepala");
-      }
-      if (payload.sakitTenggorokan) {
-        tesData.push("sakitTenggorokan");
-      } else {
-        tesData.push("tidakSakitTenggorokan");
-      }
-      if (bol) {
-        tesData.push("sesakNafas");
-      } else {
-        tesData.push("tidakSesakNafas");
-      }
+      // if (payload.sakitKepala) {
+      //   tesData.push("sakitKepala");
+      // } else {
+      //   tesData.push("tidakSakitKepala");
+      // }
+      // if (payload.sakitTenggorokan) {
+      //   tesData.push("sakitTenggorokan");
+      // } else {
+      //   tesData.push("tidakSakitTenggorokan");
+      // }
+      // if (bol) {
+      //   tesData.push("sesakNafas");
+      // } else {
+      //   tesData.push("tidakSesakNafas");
+      // }
     }
-    console.log("tesData", tesData);
+    // console.log("tesData", tesData);
     function getIndexOfArray(arr, arr2) {
       for (var i = 0; i < arr.length; i++) {
         var equal = _.isEqual(arr[i][0], arr2);
@@ -355,60 +401,60 @@ const FormDiagnosis = ({ api = [] }) => {
     }
   };
 
-  const nodeFinishSession = (id, item) => {
-    const array = [...review];
+  // const nodeFinishSession = (id, item) => {
+  //   const array = [...review];
 
-    function getIndex(value, arr, prop) {
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < arr.length; i++) {
-        if (arr[i][prop] === value) {
-          return i;
-        }
-      }
-      return -1;
-    }
-    const index = getIndex(id, array, "id");
+  //   function getIndex(value, arr, prop) {
+  //     // eslint-disable-next-line no-plusplus
+  //     for (let i = 0; i < arr.length; i++) {
+  //       if (arr[i][prop] === value) {
+  //         return i;
+  //       }
+  //     }
+  //     return -1;
+  //   }
+  //   const index = getIndex(id, array, "id");
 
-    if (index !== -1) {
-      array.splice(index, 1);
-      setReview(array);
-    } else {
-      setReview([
-        ...review,
-        { id: item.indikasi, question: item.question, answer: item.answer },
-      ]);
-    }
-    setSession(0);
-    setNodeSession(0);
-    setFinish(true);
-    setDiagnosa("Belum menunjukkan gejala apapun");
-    toast.info("Mohon tunggu sebentar");
-    setTimeout(() => {
-      Axios.post("http://localhost:3001/api/diagnosis/add", {
-        indikasi: "None",
-        batuk: 0,
-        demam: 0,
-        sakitTenggorokan: 0,
-        sesakNafas: 0,
-        sakitKepala: 0,
-        result: "negative",
-      }).then(async () => {
-        toast.success("Diagnosa berhasil disimpan");
-        // window.location.reload();
-        const responseData = await Axios.get(
-          "http://localhost:3001/api/diagnosis/id"
-        );
-        if (responseData.data) {
-          Axios.post("http://localhost:3001/api/history/add", {
-            id_member: user.id_member,
-            diagnosa: "Belum menunjukkan gejala apapun",
-            date: DateTimeHelper.getFormatedDate(Date(), "YYYY-MM-DD HH:mm:ss"),
-            id_diagnosis: responseData.data[0].id_diagnosis,
-          });
-        }
-      });
-    }, 1500);
-  };
+  //   if (index !== -1) {
+  //     array.splice(index, 1);
+  //     setReview(array);
+  //   } else {
+  //     setReview([
+  //       ...review,
+  //       { id: item.indikasi, question: item.question, answer: item.answer },
+  //     ]);
+  //   }
+  //   setSession(0);
+  //   setNodeSession(0);
+  //   setFinish(true);
+  //   setDiagnosa("Belum menunjukkan gejala apapun");
+  //   toast.info("Mohon tunggu sebentar");
+  //   setTimeout(() => {
+  //     Axios.post("http://localhost:3001/api/diagnosis/add", {
+  //       indikasi: "None",
+  //       batuk: 0,
+  //       demam: 0,
+  //       sakitTenggorokan: 0,
+  //       sesakNafas: 0,
+  //       sakitKepala: 0,
+  //       result: "negative",
+  //     }).then(async () => {
+  //       toast.success("Diagnosa berhasil disimpan");
+  //       // window.location.reload();
+  //       const responseData = await Axios.get(
+  //         "http://localhost:3001/api/diagnosis/id"
+  //       );
+  //       if (responseData.data) {
+  //         Axios.post("http://localhost:3001/api/history/add", {
+  //           id_member: user.id_member,
+  //           diagnosa: "Belum menunjukkan gejala apapun",
+  //           date: DateTimeHelper.getFormatedDate(Date(), "YYYY-MM-DD HH:mm:ss"),
+  //           id_diagnosis: responseData.data[0].id_diagnosis,
+  //         });
+  //       }
+  //     });
+  //   }, 1500);
+  // };
 
   const resetNode = () => {
     setSession(0);
@@ -566,7 +612,6 @@ const FormDiagnosis = ({ api = [] }) => {
                           session={nodeSession}
                           nextSession={nodeNextSession}
                           prevSession={nodePrevSession}
-                          finishSession={nodeFinishSession}
                         />
                       );
                     })}
@@ -758,7 +803,6 @@ const NodeForm = ({
   session,
   nextSession,
   prevSession,
-  finishSession,
 }) => {
   return (
     <div key={item.indikasi} className={show}>
@@ -805,21 +849,13 @@ const NodeForm = ({
             Kembali
           </button>
         )}
-        {QUESTION_NODE.length - 1 === session ? (
-          <button
-            onClick={() => finishSession(item)}
-            className="text-xs font-bold bg-lightBlue-400 active:bg-lightBlue-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150"
-          >
-            Selesai
-          </button>
-        ) : (
-          <button
-            onClick={() => nextSession(item)}
-            className="text-xs font-bold bg-lightBlue-400 active:bg-lightBlue-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150"
-          >
-            Lanjut
-          </button>
-        )}
+
+        <button
+          onClick={() => nextSession(item)}
+          className="text-xs font-bold bg-lightBlue-400 active:bg-lightBlue-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150"
+        >
+          Lanjut
+        </button>
       </div>
     </div>
   );
