@@ -164,7 +164,7 @@ const Detail = ({ item = null, user }) => {
           Tanggal
           <span className="font-semibold">
             {DateTimeHelper.getFormatedDate(
-              user && user.tanggal_lahir,
+              item && item.tanggal_diagnosis,
               "DD MMMM YYYY"
             )}
           </span>
