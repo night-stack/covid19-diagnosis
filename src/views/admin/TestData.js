@@ -57,7 +57,7 @@ const columns = memoize((calculate) => [
   },
 ]);
 
-export default function Testing() {
+export default function TestData() {
   const [search, setSearch] = React.useState("");
   const [handle, setHandle] = React.useState({
     editMode: false,
@@ -97,7 +97,7 @@ export default function Testing() {
     if (user) {
       const fetch = async () => {
         const httpResponse = await HttpGetHelper.getData(
-          "http://localhost:3002/testing",
+          "http://localhost:3002/test-data",
           {}
         );
         if (httpResponse) {
@@ -113,7 +113,7 @@ export default function Testing() {
 
   const onSave = async (formData) => {
     if (formData.id === "") {
-      Axios.post("http://localhost:3002/testing/add", {
+      Axios.post("http://localhost:3002/test-data/add", {
         batuk: formData.batuk,
         demam: formData.demam,
         sakitTenggorokan: formData.sakitTenggorokan,
@@ -176,7 +176,6 @@ export default function Testing() {
   };
 
   const calculate = async () => {
-    toast("Mohon tunggu beberapa saat");
     let array = [];
     const httpResponse = await HttpGetHelper.getData(
       "http://localhost:8080/home/test?result",
@@ -192,7 +191,7 @@ export default function Testing() {
       setApi(httpResponse);
     }
 
-    // let tesData = [];
+    let tesData = [];
     // eslint-disable-next-line array-callback-return
     data.map((item) => {
       let raw = [];
@@ -282,10 +281,10 @@ export default function Testing() {
         //   raw.push("tidakSesakNafas");
         // }
       }
-      // tesData.push(raw);
-      // if (item.id === 2000) {
-      //   console.log("tesData", tesData);
-      // }
+      //   tesData.push(raw);
+      //   if (item.id === 2000) {
+      //     console.log("tesData", tesData);
+      //   }
       function getIndexOfArray(arr, arr2) {
         for (var i = 0; i < arr.length; i++) {
           var equal = _.isEqual(arr[i][0].sort(), arr2);
@@ -297,7 +296,7 @@ export default function Testing() {
       // console.log("ARRAY", array);
       // console.log("raw", raw);
       const idx = getIndexOfArray(array, raw.sort());
-      // console.log("idx", idx);
+      //   console.log("idx", idx);
 
       if (idx) {
         if (array[idx][1] === "negative" && item.result === "negative") {
