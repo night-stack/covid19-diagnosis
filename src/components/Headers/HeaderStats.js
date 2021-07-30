@@ -8,6 +8,7 @@ export default function HeaderStats() {
   const [data, setData] = React.useState([]);
   const [dataset, setDataset] = React.useState([]);
   const [datasetTesting, setDatasetTesting] = React.useState([]);
+  const [dataTes, setDataTes] = React.useState([]);
 
   React.useEffect(() => {
     Axios.get("http://localhost:3001/api/member").then((response) => {
@@ -28,6 +29,13 @@ export default function HeaderStats() {
       if (httpResponseTesting) {
         setDatasetTesting(httpResponseTesting);
       }
+      const httpResponseTest = await HttpGetHelper.getData(
+        "http://localhost:3002/test-data",
+        {}
+      );
+      if (httpResponseTesting) {
+        setDataTes(httpResponseTest);
+      }
     };
 
     fetch();
@@ -43,9 +51,9 @@ export default function HeaderStats() {
             <div className="flex flex-wrap">
               <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
-                  statSubtitle="MEMBER"
-                  statTitle={data.length}
-                  statIconName="fas fa-users"
+                  statSubtitle="DATA TES"
+                  statTitle={dataTes.length}
+                  statIconName="fab fa-cloudsmith"
                   statIconColor="bg-orange-500"
                 />
               </div>

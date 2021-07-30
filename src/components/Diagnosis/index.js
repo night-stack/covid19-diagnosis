@@ -318,7 +318,7 @@ const FormDiagnosis = ({ api = [] }) => {
       //   tesData.push("tidakSesakNafas");
       // }
     }
-    console.log("tesData", tesData.sort());
+    // console.log("tesData", tesData.sort());
     function getIndexOfArray(arr, arr2) {
       for (var i = 0; i < arr.length; i++) {
         var equal = _.isEqual(arr[i][0].sort(), arr2);
@@ -403,14 +403,6 @@ const FormDiagnosis = ({ api = [] }) => {
         tesData.push("tidakSesakNafas");
       }
 
-      function getIndexOfArray(arr, arr2) {
-        for (var i = 0; i < arr.length; i++) {
-          var equal = _.isEqual(arr[i][0].sort(), arr2);
-          if (equal) {
-            return i;
-          }
-        }
-      }
       const index = getIndexOfArray(compare, tesData.sort());
       if (index) {
         setStatus(compare[index][1]);
