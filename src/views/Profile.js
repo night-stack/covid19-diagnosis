@@ -40,9 +40,9 @@ export default function Profile() {
         Axios.get(
           `http://localhost:3001/api/history/${authUser.id_member}`
         ).then((response) => {
-          response.data.forEach((item) => {
-            setRiwayat({ ...item });
-          });
+          if (response.data) {
+            setRiwayat(response.data);
+          }
         });
       }
     } else {

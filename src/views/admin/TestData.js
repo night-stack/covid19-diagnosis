@@ -347,13 +347,13 @@ export default function TestData() {
             >
               Hitung Confusion Matrix
             </button>
-            {/* <button
+            <button
               type
               className="px-6 py-2 rounded text-white bg-lightBlue-400 font-semibold text-sm"
               onClick={btnMode}
             >
               Tambah
-            </button> */}
+            </button>
           </div>
           <div className="flex float-left items-center mb-8">
             <input

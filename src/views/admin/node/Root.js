@@ -103,15 +103,15 @@ const Root = ({ color, api = null }) => {
         </td>
         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
           <p>
-            Total :{api?.root?.result?.sakitKepala?.tidakSakitKepala?.total}
+            Total :{api?.root?.result?.sakitKepala?.tidaksakitKepala?.total}
           </p>
           <p>
             Positive :
-            {api?.root?.result?.sakitKepala?.tidakSakitKepala?.Positive}
+            {api?.root?.result?.sakitKepala?.tidaksakitKepala?.Positive}
           </p>
           <p>
             Negative :
-            {api?.root?.result?.sakitKepala?.tidakSakitKepala?.Negative}
+            {api?.root?.result?.sakitKepala?.tidaksakitKepala?.Negative}
           </p>
           <p>Hasil : {api?.root?.result?.sakitKepala?.hasil}</p>
           <p>Gain Rasio :{api?.root?.result?.sakitKepala?.gainRasio}</p>
