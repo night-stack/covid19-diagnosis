@@ -173,6 +173,7 @@ export default function Landing() {
                       viewBox="0 0 583 95"
                       className="absolute left-0 w-full block h-95-px -top-94-px"
                     >
+                      
                       <polygon
                         points="-30,95 583,95 583,65"
                         className="text-lightBlue-500 fill-current"

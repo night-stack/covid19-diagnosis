@@ -18,6 +18,7 @@ export default function ForgotPassword() {
   const submit = () => {
     const { email, password } = formData;
 
+    // Change password
     Axios.put("http://localhost:3001/api/auth/forgot-password", {
       email: email,
       password: password,

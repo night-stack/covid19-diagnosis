@@ -118,7 +118,7 @@ export default function Profile() {
   };
 
   const onSavePassword = async (formData) => {
-    Axios.post("http://localhost:3001/api/auth/change-password", {
+    Axios.put("http://localhost:3001/api/auth/change-password", {
       id: formData.id,
       password: formData.password,
     }).then(() => {

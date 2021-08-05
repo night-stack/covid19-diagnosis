@@ -24,7 +24,7 @@ export default function TestingTable({ color, api = null, result = null }) {
                   (color === "light" ? "text-blueGray-700" : "text-white")
                 }
               >
-                Perhitungan
+                Perhitungan Confusion Matrix
               </h3>
             </div>
           </div>

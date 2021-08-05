@@ -14,14 +14,14 @@ const QUESTION_NODE = [
     answer: false,
   },
   {
-    title: "Lainnya",
+    title: "Ketempat Umum",
     indikasi: "other",
     question:
       "Apakah anda dalam 14 hari kebelakang pernah berpergian ketempat umum. Seperti Pusat Perbelanjaan, Tempat Wisata, Pasar, Restoran, Taman, Gym dsb.?",
     answer: false,
   },
   {
-    title: "Abroad",
+    title: "Pergi Keluar Negeri",
     indikasi: "abroad",
     question:
       "Apakah anda pernah berpergian keluar negeri dalam 14 hari kebelakang?",
@@ -81,6 +81,7 @@ const FormDiagnosis = ({ api = [] }) => {
   const data = localStorage.getItem("authUser");
 
   React.useEffect(() => {
+    // Split API C5.0
     if (api.length > 0) {
       let array = [];
       // eslint-disable-next-line array-callback-return
@@ -105,6 +106,7 @@ const FormDiagnosis = ({ api = [] }) => {
     }
   }, [data, api]);
 
+  // Session node
   const nextSession = (item) => {
     let array = [...review];
     const bol = item.answer === true ? 1 : 0;
@@ -136,6 +138,7 @@ const FormDiagnosis = ({ api = [] }) => {
     // setReview((prevState) => ({ ...prevState }, { id, answer }));
   };
 
+  // Session root
   const nodeNextSession = (item) => {
     let array = [...review];
 
@@ -163,6 +166,9 @@ const FormDiagnosis = ({ api = [] }) => {
     }
 
     if (item.answer === true) {
+      setNodeMode(false); // nyembunyikan pertanyaan root
+      setPayload({ indikasi: item.indikasi }); // send api
+    } else if (nodeSession === 2){
       setNodeMode(false);
       setPayload({ indikasi: item.indikasi });
     } else {
@@ -172,10 +178,12 @@ const FormDiagnosis = ({ api = [] }) => {
     // setReview((prevState) => ({ ...prevState }, { id, answer }));
   };
 
+  // back node
   const prevSession = () => {
     setSession(session - 1);
   };
 
+  // back root
   const nodePrevSession = () => {
     setNodeSession(nodeSession - 1);
   };
@@ -354,7 +362,7 @@ const FormDiagnosis = ({ api = [] }) => {
         } else if (
           !payload.batuk &&
           !payload.sakitTenggorokan &&
-          !payload.sakitTenggorokan &&
+          !payload.sakitKepala &&
           !payload.demam &&
           !bol
         ) {
@@ -429,7 +437,7 @@ const FormDiagnosis = ({ api = [] }) => {
           } else if (
             !payload.batuk &&
             !payload.sakitTenggorokan &&
-            !payload.sakitTenggorokan &&
+            !payload.sakitKepala &&
             !payload.demam &&
             !bol
           ) {
@@ -479,60 +487,91 @@ const FormDiagnosis = ({ api = [] }) => {
     }
   };
 
-  // const nodeFinishSession = (id, item) => {
-  //   const array = [...review];
+  // Root
+  const nodeFinishSession = (id, item) => {
+    if (item.answer === true){
+      let array = [...review];
 
-  //   function getIndex(value, arr, prop) {
-  //     // eslint-disable-next-line no-plusplus
-  //     for (let i = 0; i < arr.length; i++) {
-  //       if (arr[i][prop] === value) {
-  //         return i;
-  //       }
-  //     }
-  //     return -1;
-  //   }
-  //   const index = getIndex(id, array, "id");
+    function getIndex(value, arr, prop) {
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i][prop] === value) {
+          return i;
+        }
+      }
+      return -1;
+    }
+    const index = getIndex(item.indikasi, array, "id");
 
-  //   if (index !== -1) {
-  //     array.splice(index, 1);
-  //     setReview(array);
-  //   } else {
-  //     setReview([
-  //       ...review,
-  //       { id: item.indikasi, question: item.question, answer: item.answer },
-  //     ]);
-  //   }
-  //   setSession(0);
-  //   setNodeSession(0);
-  //   setFinish(true);
-  //   setDiagnosa("Belum menunjukkan gejala apapun");
-  //   toast.info("Mohon tunggu sebentar");
-  //   setTimeout(() => {
-  //     Axios.post("http://localhost:3001/api/diagnosis/add", {
-  //       indikasi: "None",
-  //       batuk: 0,
-  //       demam: 0,
-  //       sakitTenggorokan: 0,
-  //       sesakNafas: 0,
-  //       sakitKepala: 0,
-  //       result: "negative",
-  //     }).then(async () => {
-  //       toast.success("Diagnosa berhasil disimpan");
-  //       // window.location.reload();
-  //       const responseData = await Axios.get(
-  //         "http://localhost:3001/api/diagnosis/id"
-  //       );
-  //       if (responseData.data) {
-  //         Axios.post("http://localhost:3001/api/history/add", {
-  //           id_member: user.id_member,
-  //           diagnosa: "Belum menunjukkan gejala apapun",
-  //           date: DateTimeHelper.getFormatedDate(Date(), "YYYY-MM-DD HH:mm:ss"),
-  //           id_diagnosis: responseData.data[0].id_diagnosis,
-  //         });
-  //       }
-  //     });
-  //   }, 1500);
-  // };
+    if (index !== -1) {
+      let items = { ...array[index] };
+      items.answer = item.answer;
+      array[index] = items;
+      setReview(array);
+    } else {
+      setReview([
+        ...review,
+        { id: item.indikasi, question: item.question, answer: item.answer },
+      ]);
+    }
+      setNodeMode(false);
+      setPayload({ indikasi: item.indikasi });
+    } else {
+      const array = [...review];
+  
+      function getIndex(value, arr, prop) {
+        // eslint-disable-next-line no-plusplus
+        for (let i = 0; i < arr.length; i++) {
+          if (arr[i][prop] === value) {
+            return i;
+          }
+        }
+        return -1;
+      }
+      const index = getIndex(id, array, "id");
+  
+      if (index !== -1) {
+        array.splice(index, 1);
+        setReview(array);
+      } else {
+        setReview([
+          ...review,
+          { id: item.indikasi, question: item.question, answer: item.answer },
+        ]);
+      }
+      setSession(0);
+      setNodeSession(0);
+      setFinish(true);
+      setDiagnosa("Belum menunjukkan gejala apapun");
+      setStatus("negative");
+      toast.info("Mohon tunggu sebentar");
+      setTimeout(() => {
+        Axios.post("http://localhost:3001/api/diagnosis/add", {
+          indikasi: "None",
+          batuk: 0,
+          demam: 0,
+          sakitTenggorokan: 0,
+          sesakNafas: 0,
+          sakitKepala: 0,
+          result: "negative",
+        }).then(async () => {
+          toast.success("Diagnosa berhasil disimpan");
+          // window.location.reload();
+          const responseData = await Axios.get(
+            "http://localhost:3001/api/id"
+          );
+          if (responseData.data) {
+            Axios.post("http://localhost:3001/api/history/add", {
+              id_member: user.id_member,
+              diagnosa: "Belum menunjukkan gejala apapun",
+              date: DateTimeHelper.getFormatedDate(Date(), "YYYY-MM-DD HH:mm:ss"),
+              id_diagnosis: responseData.data[0]?.id_diagnosis,
+            });
+          }
+        });
+      }, 1500);
+    }
+  };
 
   const resetNode = () => {
     setSession(0);
@@ -683,6 +722,7 @@ const FormDiagnosis = ({ api = [] }) => {
                       const showNode = index === nodeSession ? "" : "hidden";
                       return (
                         <NodeForm
+                          nodeFinishSession={nodeFinishSession}
                           show={showNode}
                           item={item}
                           index={index}
@@ -690,6 +730,7 @@ const FormDiagnosis = ({ api = [] }) => {
                           session={nodeSession}
                           nextSession={nodeNextSession}
                           prevSession={nodePrevSession}
+                          pertanyaan={node}
                         />
                       );
                     })}
@@ -874,6 +915,7 @@ const QuestionForm = ({
 };
 
 const NodeForm = ({
+  nodeFinishSession,
   show,
   index,
   item,
@@ -881,6 +923,7 @@ const NodeForm = ({
   session,
   nextSession,
   prevSession,
+  pertanyaan,
 }) => {
   return (
     <div key={item.indikasi} className={show}>
@@ -928,12 +971,21 @@ const NodeForm = ({
           </button>
         )}
 
+        {pertanyaan.length - 1 === session ? (
+          <button
+            onClick={() => nodeFinishSession(index, item)}
+            className="text-xs font-bold bg-lightBlue-400 active:bg-lightBlue-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150"
+          >
+            Lanjut
+          </button>
+        ) : (
         <button
           onClick={() => nextSession(item)}
           className="text-xs font-bold bg-lightBlue-400 active:bg-lightBlue-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150"
         >
           Lanjut
         </button>
+        )}
       </div>
     </div>
   );

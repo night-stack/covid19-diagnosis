@@ -18,17 +18,7 @@ export default function Diagnosis() {
         setApi(httpResponse);
       }
     };
-
-    // const fetch = async () => {
-    //   const httpResponse = await HttpGetHelper.getData(
-    //     "http://localhost:8080/home/test?result",
-    //     {}
-    //   );
-    //   if (httpResponse) {
-    //     setApi(httpResponse);
-    //   }
-    // };
-
+    
     fetch();
   }, []);
 

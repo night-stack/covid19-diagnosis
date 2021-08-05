@@ -84,6 +84,7 @@ export default function Login() {
       });
   };
 
+  // Simpan data dari user google
   const afterSocial = async (authUser) => {
     await Axios.post("http://localhost:3001/api/auth/social", {
       name: authUser.user.providerData[0].displayName,

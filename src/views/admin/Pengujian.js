@@ -82,6 +82,8 @@ export default function Training() {
   const user = localStorage.getItem("authUser");
   const filteredItems = data.filter(
     (item) =>
+      // item.id &&
+      // item.id.toString().includes(search) ||
       item.indikasi.toLowerCase() &&
       item.indikasi.toLowerCase().includes(search)
   );

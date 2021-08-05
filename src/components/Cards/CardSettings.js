@@ -103,7 +103,7 @@ export default function CardSettings({ user = null }) {
   };
 
   const onSavePassword = async (formData) => {
-    Axios.post("http://localhost:3001/api/auth/admin/change-password", {
+    Axios.put("http://localhost:3001/api/auth/admin/change-password", {
       id: formData.id,
       password: formData.password,
     }).then(() => {
