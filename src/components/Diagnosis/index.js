@@ -78,6 +78,8 @@ const FormDiagnosis = ({ api = [] }) => {
   const [compare, setCompare] = useState([]);
   const [diagnosa, setDiagnosa] = useState("");
   const [status, setStatus] = useState("");
+  const [idx, setIdx] = useState(false);
+  const [tes, setTes] = useState([]);
   const data = localStorage.getItem("authUser");
 
   React.useEffect(() => {
@@ -168,7 +170,7 @@ const FormDiagnosis = ({ api = [] }) => {
     if (item.answer === true) {
       setNodeMode(false); // nyembunyikan pertanyaan root
       setPayload({ indikasi: item.indikasi }); // send api
-    } else if (nodeSession === 2){
+    } else if (nodeSession === 2) {
       setNodeMode(false);
       setPayload({ indikasi: item.indikasi });
     } else {
@@ -339,7 +341,8 @@ const FormDiagnosis = ({ api = [] }) => {
     let d = "";
     if (idx) {
       setStatus(compare[idx][1]);
-
+      setTes(tesData);
+      setIdx(idx);
       if (compare[idx][1] === "negative") {
         if (
           (payload.batuk && payload.sakitTenggorokan) ||
@@ -414,7 +417,8 @@ const FormDiagnosis = ({ api = [] }) => {
       const index = getIndexOfArray(compare, tesData.sort());
       if (index) {
         setStatus(compare[index][1]);
-
+        setTes(tesData);
+        setIdx(index);
         if (compare[index][1] === "negative") {
           if (
             (payload.batuk && payload.sakitTenggorokan) ||
@@ -489,36 +493,36 @@ const FormDiagnosis = ({ api = [] }) => {
 
   // Root
   const nodeFinishSession = (id, item) => {
-    if (item.answer === true){
+    if (item.answer === true) {
       let array = [...review];
 
-    function getIndex(value, arr, prop) {
-      // eslint-disable-next-line no-plusplus
-      for (let i = 0; i < arr.length; i++) {
-        if (arr[i][prop] === value) {
-          return i;
+      function getIndex(value, arr, prop) {
+        // eslint-disable-next-line no-plusplus
+        for (let i = 0; i < arr.length; i++) {
+          if (arr[i][prop] === value) {
+            return i;
+          }
         }
+        return -1;
       }
-      return -1;
-    }
-    const index = getIndex(item.indikasi, array, "id");
+      const index = getIndex(item.indikasi, array, "id");
 
-    if (index !== -1) {
-      let items = { ...array[index] };
-      items.answer = item.answer;
-      array[index] = items;
-      setReview(array);
-    } else {
-      setReview([
-        ...review,
-        { id: item.indikasi, question: item.question, answer: item.answer },
-      ]);
-    }
+      if (index !== -1) {
+        let items = { ...array[index] };
+        items.answer = item.answer;
+        array[index] = items;
+        setReview(array);
+      } else {
+        setReview([
+          ...review,
+          { id: item.indikasi, question: item.question, answer: item.answer },
+        ]);
+      }
       setNodeMode(false);
       setPayload({ indikasi: item.indikasi });
     } else {
       const array = [...review];
-  
+
       function getIndex(value, arr, prop) {
         // eslint-disable-next-line no-plusplus
         for (let i = 0; i < arr.length; i++) {
@@ -529,7 +533,7 @@ const FormDiagnosis = ({ api = [] }) => {
         return -1;
       }
       const index = getIndex(id, array, "id");
-  
+
       if (index !== -1) {
         array.splice(index, 1);
         setReview(array);
@@ -557,14 +561,15 @@ const FormDiagnosis = ({ api = [] }) => {
         }).then(async () => {
           toast.success("Diagnosa berhasil disimpan");
           // window.location.reload();
-          const responseData = await Axios.get(
-            "http://localhost:3001/api/id"
-          );
+          const responseData = await Axios.get("http://localhost:3001/api/id");
           if (responseData.data) {
             Axios.post("http://localhost:3001/api/history/add", {
               id_member: user.id_member,
               diagnosa: "Belum menunjukkan gejala apapun",
-              date: DateTimeHelper.getFormatedDate(Date(), "YYYY-MM-DD HH:mm:ss"),
+              date: DateTimeHelper.getFormatedDate(
+                Date(),
+                "YYYY-MM-DD HH:mm:ss"
+              ),
               id_diagnosis: responseData.data[0]?.id_diagnosis,
             });
           }
@@ -596,124 +601,167 @@ const FormDiagnosis = ({ api = [] }) => {
         {start ? (
           <>
             {finish ? (
-              <div className="w-6/12 justify-center items-center mx-auto text-center">
-                <h1
-                  className="font-semibold text-3xl uppercase border-b-2 border-blueGray-800"
-                  style={{ paddingBottom: "1.2rem", marginBottom: "1.2rem" }}
-                >
-                  Hasil Diagnosa
-                </h1>
-                <h5 className="text-xl font-semibold uppercase">
-                  {user && user?.nama_member}
-                </h5>
-                <div className="text-sm text-blueGray-500">
-                  <p>{`${
-                    user && user?.email ? user?.email : "Belum diatur"
-                  } | ${
-                    user && user?.nomor_hp ? user?.nomor_hp : "Belum diatur"
-                  }`}</p>
-                  <p>
-                    {user?.jenis_kelamin === "L" && "Laki"}
-                    {user?.jenis_kelamin === "P" && "Perempuan"}
-                    {user && !user.jenis_kelamin && "Belum diatur"}
-                  </p>
-                  <p>{`${
-                    user && user?.tempat_lahir
-                      ? user?.tempat_lahir
-                      : "Belum diatur"
-                  }, ${
-                    user && user?.tanggal_lahir
-                      ? DateTimeHelper.getFormatedDate(
-                          user?.tanggal_lahir,
-                          "DD MMMM YYYY"
-                        )
-                      : "Belum diatur"
-                  }`}</p>
-                  <p className="uppercase">
-                    {user && user?.alamat ? user.alamat : "Alamat belum diatur"}
-                  </p>
-                </div>
-                <div className="my-6 text-blueGray-500">
-                  <p>
-                    Berdasarkan hasil diagnosa yang dilakukan pada kalkulasi
-                    jawaban sesi tanya jawab sebelumnya, bahwasannya pengguna
-                    atas nama <b>{user && user.nama_member}</b> yaitu "
-                    <b style={{ textTransform: "capitalize" }}>{status}</b>"{" "}
-                    Covid-19.
-                  </p>
-                  {status === "positive" && (
-                    <>
-                      <br />
-                      <p>
-                        Segera periksa lebih lanjut kondisi kesehatan Anda di
-                        rumah sakit terdekat.
-                      </p>
-                    </>
-                  )}
-                  {status === "negative" && diagnosa.length > 30 && (
-                    <>
-                      <br />
-                      <p>
-                        Saat ini Anda{" "}
-                        <span style={{ textTransform: "lowercase" }}>
-                          {diagnosa}
-                        </span>
-                      </p>
-                    </>
-                  )}
-                  {status === "negative" && diagnosa.length < 30 && (
-                    <>
-                      <br />
-                      <p>
-                        Saat ini Anda hanya terkena{" "}
-                        <span style={{ textTransform: "lowercase" }}>
-                          {diagnosa}
-                        </span>
-                        . Istirahat yang cukup, jaga pola hidup sehat, serta
-                        olahraga teratur untuk meningkatkan daya tahan tubuh.
-                        Jika sakit tidak kunjung sembuh, kami menyarankan agar
-                        Anda segera memeriksa kondisi kesehatan dengan pergi ke
-                        klinik terdekat.
-                      </p>
-                    </>
-                  )}
-                  <br />
-                  Jangan lupa untuk tetap mematuhi & mengikuti protokol
-                  kesehatan.
-                </div>
-                {user && (
-                  <div
-                    className="border-t-2 flex justify-between items-center"
-                    style={{ paddingTop: "1.2rem" }}
+              <>
+                <div className="w-6/12 justify-center items-center mx-auto text-center">
+                  <h1
+                    className="font-semibold text-3xl uppercase border-b-2 border-blueGray-800"
+                    style={{ paddingBottom: "1.2rem", marginBottom: "1.2rem" }}
                   >
-                    <button
-                      onClick={clearForm}
-                      className="w-full px-3 py-2 rounded text-white bg-lightBlue-400 mr-4"
-                    >
-                      Coba lagi
-                    </button>
-                    <Link
-                      to="/history"
-                      className="w-full px-3 py-2 rounded text-white bg-blueGray-800"
-                    >
-                      Lihat riwayat
-                    </Link>
+                    Hasil Diagnosa
+                  </h1>
+                  <h5 className="text-xl font-semibold uppercase">
+                    {user && user?.nama_member}
+                  </h5>
+                  <div className="text-sm text-blueGray-500">
+                    <p>{`${
+                      user && user?.email ? user?.email : "Belum diatur"
+                    } | ${
+                      user && user?.nomor_hp ? user?.nomor_hp : "Belum diatur"
+                    }`}</p>
+                    <p>
+                      {user?.jenis_kelamin === "L" && "Laki"}
+                      {user?.jenis_kelamin === "P" && "Perempuan"}
+                      {user && !user.jenis_kelamin && "Belum diatur"}
+                    </p>
+                    <p>{`${
+                      user && user?.tempat_lahir
+                        ? user?.tempat_lahir
+                        : "Belum diatur"
+                    }, ${
+                      user && user?.tanggal_lahir
+                        ? DateTimeHelper.getFormatedDate(
+                            user?.tanggal_lahir,
+                            "DD MMMM YYYY"
+                          )
+                        : "Belum diatur"
+                    }`}</p>
+                    <p className="uppercase">
+                      {user && user?.alamat
+                        ? user.alamat
+                        : "Alamat belum diatur"}
+                    </p>
                   </div>
-                )}
-                {!user && (
-                  <div
-                    className="border-t-2 flex justify-between items-center"
-                    style={{ paddingTop: "1.2rem" }}
-                  >
-                    <button
-                      onClick={clearForm}
-                      className="w-full px-3 py-2 rounded text-white bg-lightBlue-400"
-                    >
-                      Coba lagi
-                    </button>
+                  <div className="my-6 text-blueGray-500">
+                    <p>
+                      Berdasarkan hasil diagnosa yang dilakukan pada kalkulasi
+                      jawaban sesi tanya jawab sebelumnya, bahwasannya pengguna
+                      atas nama <b>{user && user.nama_member}</b> yaitu "
+                      <b style={{ textTransform: "capitalize" }}>{status}</b>"{" "}
+                      Covid-19.
+                    </p>
+                    {status === "positive" && (
+                      <>
+                        <br />
+                        <p>
+                          Segera periksa lebih lanjut kondisi kesehatan Anda di
+                          rumah sakit terdekat.
+                        </p>
+                      </>
+                    )}
+                    {status === "negative" && diagnosa.length > 30 && (
+                      <>
+                        <br />
+                        <p>
+                          Saat ini Anda{" "}
+                          <span style={{ textTransform: "lowercase" }}>
+                            {diagnosa}
+                          </span>
+                        </p>
+                      </>
+                    )}
+                    {status === "negative" && diagnosa.length < 30 && (
+                      <>
+                        <br />
+                        <p>
+                          Saat ini Anda hanya terkena{" "}
+                          <span style={{ textTransform: "lowercase" }}>
+                            {diagnosa}
+                          </span>
+                          . Istirahat yang cukup, jaga pola hidup sehat, serta
+                          olahraga teratur untuk meningkatkan daya tahan tubuh.
+                          Jika sakit tidak kunjung sembuh, kami menyarankan agar
+                          Anda segera memeriksa kondisi kesehatan dengan pergi
+                          ke klinik terdekat.
+                        </p>
+                      </>
+                    )}
+                    <br />
+                    Jangan lupa untuk tetap mematuhi & mengikuti protokol
+                    kesehatan.
                   </div>
-                )}
-              </div>
+                  {user && (
+                    <div
+                      className="border-t-2 flex justify-between items-center"
+                      style={{ paddingTop: "1.2rem" }}
+                    >
+                      <button
+                        onClick={clearForm}
+                        className="w-full px-3 py-2 rounded text-white bg-lightBlue-400 mr-4"
+                      >
+                        Coba lagi
+                      </button>
+                      <Link
+                        to="/history"
+                        className="w-full px-3 py-2 rounded text-white bg-blueGray-800"
+                      >
+                        Lihat riwayat
+                      </Link>
+                    </div>
+                  )}
+                  {!user && (
+                    <div
+                      className="border-t-2 flex justify-between items-center"
+                      style={{ paddingTop: "1.2rem" }}
+                    >
+                      <button
+                        onClick={clearForm}
+                        className="w-full px-3 py-2 rounded text-white bg-lightBlue-400"
+                      >
+                        Coba lagi
+                      </button>
+                    </div>
+                  )}
+                </div>
+                <div className="flex w-full justify-items-center mt-10">
+                  <div className="w-4/12">
+                    <b>Indikasi saat ini</b>
+                    <ol className="mt-3" style={{ listStyle: "inside" }}>
+                      {tes?.map((val) => (
+                        <li>{val}</li>
+                      ))}
+                    </ol>
+                  </div>
+                  <div className="w-4/12">
+                    <b>Acuan dari C5</b>
+                    <ol className="mt-3 pl-3" style={{ listStyle: "decimal" }}>
+                      {api?.map((val) => (
+                        <li
+                          className="px-2"
+                          style={{ overflowWrap: "break-word" }}
+                        >
+                          {val}
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                  <div className="w-4/12">
+                    <b>Index data yang sesuai</b>
+                    <p>Index ke : {idx}</p>
+                  </div>
+                  <div className="w-4/12">
+                    <b>Hasil perbandingan</b>
+                    <ol className="mt-3" style={{ listStyle: "none" }}>
+                      <li style={{ overflowWrap: "break-word" }}>
+                        Array acuan :
+                        {compare[idx][0].map((val) => (
+                          <li style={{ listStyle: "inside" }}>{val}</li>
+                        ))}
+                      </li>
+                      <li className="mt-3">Hasil : {compare[idx][1]}</li>
+                    </ol>
+                  </div>
+                </div>
+              </>
             ) : (
               <>
                 <div className="w-full md:w-5/12 ml-auto mr-auto px-4">
@@ -979,12 +1027,12 @@ const NodeForm = ({
             Lanjut
           </button>
         ) : (
-        <button
-          onClick={() => nextSession(item)}
-          className="text-xs font-bold bg-lightBlue-400 active:bg-lightBlue-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150"
-        >
-          Lanjut
-        </button>
+          <button
+            onClick={() => nextSession(item)}
+            className="text-xs font-bold bg-lightBlue-400 active:bg-lightBlue-100 uppercase text-white px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 mb-3 ease-linear transition-all duration-150"
+          >
+            Lanjut
+          </button>
         )}
       </div>
     </div>
