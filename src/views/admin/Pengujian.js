@@ -82,6 +82,8 @@ export default function Training() {
   const user = localStorage.getItem("authUser");
   const filteredItems = data.filter(
     (item) =>
+      // item.id &&
+      // item.id.toString().includes(search) ||
       item.indikasi.toLowerCase() &&
       item.indikasi.toLowerCase().includes(search)
   );
@@ -169,7 +171,7 @@ export default function Training() {
 
   const calculate = async () => {
     const httpResponse = await HttpGetHelper.getData(
-      "http://localhost:8080/home/test",
+      "http://localhost:8080/home/test?db=true",
       {}
     );
     if (httpResponse) {

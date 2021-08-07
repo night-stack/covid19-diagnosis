@@ -16,6 +16,7 @@ import Users from "views/admin/Users.js";
 import Training from "views/admin/Pengujian";
 import Testing from "views/admin/Testing";
 import TestData from "views/admin/TestData";
+// import TestBar from 'views/admin/TestBar';
 
 export default function Admin() {
   return (
@@ -33,6 +34,7 @@ export default function Admin() {
             <Route path="/admin/training" exact component={Training} />
             <Route path="/admin/testing" exact component={Testing} />
             <Route path="/admin/test-data" exact component={TestData} />
+            {/* <Route path="/admin/testbar" exact component={TestBar} /> */}
             <Redirect from="/admin" to="/admin/dashboard" />
           </Switch>
           <FooterAdmin />
