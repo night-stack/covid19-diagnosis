@@ -1,19 +1,19 @@
 import React from "react";
-import Axios from "axios";
+// import Axios from "axios";
 
 import CardStats from "components/Cards/CardStats.js";
 import { HttpGetHelper } from "../../helpers";
 
 export default function HeaderStats() {
-  const [data, setData] = React.useState([]);
+  // const [data, setData] = React.useState([]);
   const [dataset, setDataset] = React.useState([]);
   const [datasetTesting, setDatasetTesting] = React.useState([]);
   const [dataTes, setDataTes] = React.useState([]);
 
   React.useEffect(() => {
-    Axios.get("http://localhost:3001/api/member").then((response) => {
-      setData(response.data);
-    });
+    // Axios.get("http://localhost:3001/api/member").then((response) => {
+    //   setData(response.data);
+    // });
     const fetch = async () => {
       const httpResponse = await HttpGetHelper.getData(
         "http://localhost:3002/training",

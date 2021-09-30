@@ -161,9 +161,9 @@ export default function Training() {
     });
   };
 
-  const btnMode = () => {
-    setHandle((prevState) => ({ ...prevState, addMode: !handle.addMode }));
-  };
+  // const btnMode = () => {
+  //   setHandle((prevState) => ({ ...prevState, addMode: !handle.addMode }));
+  // };
 
   const onCloseModal = () => {
     clearForm();
